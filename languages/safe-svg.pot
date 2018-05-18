@@ -1,0 +1,40 @@
+# Copyright (C) 2015 Safe SVG
+# This file is distributed under the same license as the Safe SVG package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Safe SVG 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/safe-svg\n"
+"POT-Creation-Date: 2015-07-04 12:31:03+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: safe-svg.php:66
+msgid ""
+"Sorry, this file couldn't be sanitized so for security reasons wasn't "
+"uploaded"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Safe SVG"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://wordpress.org/plugins/safe-svg/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Allows SVG uploads into Wordpress and sanitizes the SVG before saving it"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Daryll Doyle"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://enshrined.co.uk"
+msgstr ""

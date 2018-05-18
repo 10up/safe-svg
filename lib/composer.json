@@ -1,0 +1,5 @@
+{
+    "require": {
+        "enshrined/svg-sanitize": "0.*"
+    }
+}

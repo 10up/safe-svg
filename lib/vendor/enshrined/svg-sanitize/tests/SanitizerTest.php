@@ -1,0 +1,181 @@
+<?php
+require 'data/TestAllowedTags.php';
+require 'data/TestAllowedAttributes.php';
+
+use \enshrined\svgSanitize\Sanitizer;
+
+/**
+ * Class SanitizerTest
+ */
+class SanitizerTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * @var Sanitizer
+     */
+    protected $class;
+
+    /**
+     * Set up the test class
+     */
+    public function setUp()
+    {
+        $this->class = new Sanitizer();
+    }
+
+    /**
+     * Make sure the initial tags are loaded
+     */
+    public function testLoadDefaultTags()
+    {
+        $tags = $this->class->getAllowedTags();
+
+        $this->assertInternalType('array', $tags);
+    }
+
+    /**
+     * Make sure the initial attributes are loaded
+     */
+    public function testLoadDefaultAttributes()
+    {
+        $attributes = $this->class->getAllowedAttrs();
+
+        $this->assertInternalType('array', $attributes);
+    }
+
+    /**
+     * Test the custom tag setters and getters
+     */
+    public function testSetCustomTags()
+    {
+        $this->class->setAllowedTags(new TestAllowedTags());
+
+        $tags = $this->class->getAllowedTags();
+
+        $this->assertInternalType('array', $tags);
+        $this->assertEquals(TestAllowedTags::getTags(), $tags);
+    }
+
+    /**
+     * Test the custom attribute setters and getters
+     */
+    public function testSetCustomAttributes()
+    {
+        $this->class->setAllowedAttrs(new TestAllowedAttributes());
+
+        $attributes = $this->class->getAllowedAttrs();
+
+        $this->assertInternalType('array', $attributes);
+        $this->assertEquals(TestAllowedAttributes::getAttributes(), $attributes);
+    }
+
+    /**
+     * Test that malicious elements and attributes are removed from standard XML
+     */
+    public function testSanitizeXMLDoc()
+    {
+        $initialData = file_get_contents('tests/data/xmlTestOne.xml');
+        $expected = file_get_contents('tests/data/xmlCleanOne.xml');
+
+        $cleanData = $this->class->sanitize($initialData);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Test that malicious elements and attributes are removed from an SVG
+     */
+    public function testSanitizeSVGDoc()
+    {
+        $initialData = file_get_contents('tests/data/svgTestOne.svg');
+        $expected = file_get_contents('tests/data/svgCleanOne.svg');
+
+        $cleanData = $this->class->sanitize($initialData);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Test that a badly formatted XML document returns false
+     */
+    public function testBadXMLReturnsFalse()
+    {
+        $initialData = file_get_contents('tests/data/badXmlTestOne.svg');
+
+        $cleanData = $this->class->sanitize($initialData);
+
+        $this->assertEquals(false, $cleanData);
+    }
+
+    /**
+     * Make sure that hrefs get sanitized correctly
+     */
+    public function testSanitizeHrefs()
+    {
+        $initialData = file_get_contents('tests/data/hrefTestOne.svg');
+        $expected = file_get_contents('tests/data/hrefCleanOne.svg');
+
+        $cleanData = $this->class->sanitize($initialData);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Make sure that external references get sanitized correctly
+     */
+    public function testSanitizeExternal()
+    {
+        $initialData = file_get_contents('tests/data/externalTest.svg');
+        $expected = file_get_contents('tests/data/externalClean.svg');
+
+        $this->class->removeRemoteReferences(true);
+        $cleanData = $this->class->sanitize($initialData);
+        $this->class->removeRemoteReferences(false);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Test that minification of an SVG works
+     */
+    public function testSanitizeAndMinifiySVGDoc()
+    {
+        $initialData = file_get_contents('tests/data/svgTestOne.svg');
+        $expected = file_get_contents('tests/data/svgCleanOneMinified.svg');
+
+        $this->class->minify(true);
+        $cleanData = $this->class->sanitize($initialData);
+        $this->class->minify(false);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Test that ARIA and Data Attributes are allowed
+     */
+    public function testThatAriaAndDataAttributesAreAllowed()
+    {
+        $initialData = file_get_contents('tests/data/ariaDataTest.svg');
+        $expected = file_get_contents('tests/data/ariaDataClean.svg');
+
+        $this->class->minify(false);
+        $cleanData = $this->class->sanitize($initialData);
+        $this->class->minify(false);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+
+    /**
+     * Test that ARIA and Data Attributes are allowed
+     */
+    public function testThatExternalUseElementsAreStripped()
+    {
+        $initialData = file_get_contents('tests/data/useTest.svg');
+        $expected = file_get_contents('tests/data/useClean.svg');
+
+        $this->class->minify(false);
+        $cleanData = $this->class->sanitize($initialData);
+        $this->class->minify(false);
+
+        $this->assertXmlStringEqualsXmlString($expected, $cleanData);
+    }
+}
