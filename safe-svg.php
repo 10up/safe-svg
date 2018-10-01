@@ -3,7 +3,7 @@
 Plugin Name: Safe SVG
 Plugin URI:  https://wpsvg.com/
 Description: Allows SVG uploads into WordPress and sanitizes the SVG before saving it
-Version:     1.6.1
+Version:     1.7.0
 Author:      Daryll Doyle
 Author URI:  http://enshrined.co.uk
 Text Domain: safe-svg
@@ -13,6 +13,8 @@ Domain Path: /languages
 defined( 'ABSPATH' ) or die( 'Really?' );
 
 require 'lib/vendor/autoload.php';
+require 'includes/safe-svg-tags.php';
+require 'includes/safe-svg-attributes.php';
 
 if ( ! class_exists( 'safe_svg' ) ) {
 
@@ -129,6 +131,12 @@ if ( ! class_exists( 'safe_svg' ) ) {
 					return false;
 				}
 			}
+
+			/**
+			 * Load extra filters to allow devs to access the safe tags and attrs by themselves.
+			 */
+			$this->sanitizer->setAllowedTags(new safe_svg_tags());
+			$this->sanitizer->setAllowedAttrs(new safe_svg_attributes());
 
 			$clean = $this->sanitizer->sanitize( $dirty );
 
