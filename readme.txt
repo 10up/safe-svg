@@ -45,23 +45,20 @@ Install through the WordPress directory or download, unzip and upload the files 
 Yes, this can be done using the `svg_allowed_attributes` and `svg_allowed_tags` filters.
 They take one argument that must be returned. See below for examples:
 
-```
-add_filter( 'svg_allowed_attributes', function ( $attributes ) {
+    add_filter( 'svg_allowed_attributes', function ( $attributes ) {
 
-	// Do what you want here...
+        // Do what you want here...
 
-	return $attributes;
-} );
-```
+        return $attributes;
+    } );
 
-```
-add_filter( 'svg_allowed_tags', function ( $tags ) {
 
-	// Do what you want here...
+    add_filter( 'svg_allowed_tags', function ( $tags ) {
 
-	return $tags;
-} );
-```
+	    // Do what you want here...
+
+        return $tags;
+    } );
 
 == Changelog ==
 
