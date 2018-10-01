@@ -8,21 +8,21 @@
     "packages": [
         {
             "name": "enshrined/svg-sanitize",
-            "version": "0.9.1",
+            "version": "0.9.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/darylldoyle/svg-sanitizer.git",
-                "reference": "aa6475a8a4cbe3af9b63da910e04dc9ec308ec7f"
+                "reference": "e0cb5ad3abea5459e0962cf79a92d34714c74dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/darylldoyle/svg-sanitizer/zipball/aa6475a8a4cbe3af9b63da910e04dc9ec308ec7f",
-                "reference": "aa6475a8a4cbe3af9b63da910e04dc9ec308ec7f",
+                "url": "https://api.github.com/repos/darylldoyle/svg-sanitizer/zipball/e0cb5ad3abea5459e0962cf79a92d34714c74dfa",
+                "reference": "e0cb5ad3abea5459e0962cf79a92d34714c74dfa",
                 "shasum": ""
             },
             "require-dev": {
                 "codeclimate/php-test-reporter": "^0.1.2",
-                "phpunit/phpunit": "^4.7"
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "autoload": {
@@ -41,7 +41,7 @@
                 }
             ],
             "description": "An SVG sanitizer for PHP",
-            "time": "2018-10-01T12:12:20+00:00"
+            "time": "2018-10-01T17:11:02+00:00"
         }
     ],
     "packages-dev": [],
