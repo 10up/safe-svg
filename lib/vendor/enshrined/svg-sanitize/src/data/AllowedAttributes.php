@@ -237,6 +237,7 @@ class AllowedAttributes implements AttributeInterface
             'scale',
             'seed',
             'shape-rendering',
+            'slope',
             'specularconstant',
             'specularexponent',
             'spreadmethod',
