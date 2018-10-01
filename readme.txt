@@ -4,7 +4,8 @@ Donate link: https://wpsvg.com/
 Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.0
 Tested up to: 4.9.1
-Stable tag: 1.6.1
+Requires PHP: 5.6
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,7 +38,35 @@ SVG Sanitization is done through the following library: [https://github.com/dary
 
 Install through the WordPress directory or download, unzip and upload the files to your `/wp-content/plugins/` directory
 
+== Frequently Asked Questions ==
+
+= Can we change the allowed attributes and tags? =
+
+Yes, this can be done using the `svg_allowed_attributes` and `svg_allowed_tags` filters.
+They take one argument that must be returned. See below for examples:
+
+```
+add_filter( 'svg_allowed_attributes', function ( $attributes ) {
+
+	// Do what you want here...
+
+	return $attributes;
+} );
+```
+
+```
+add_filter( 'svg_allowed_tags', function ( $tags ) {
+
+	// Do what you want here...
+
+	return $tags;
+} );
+```
+
 == Changelog ==
+
+= 1.7.1 =
+* Updated underlying lib and added new filters for filtering allowed tags and attributes
 
 = 1.6.1 =
 * Images will now use the size chosen when inserted into the page rather than default to 2000px everytime.
