@@ -5,7 +5,7 @@ Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file
 Requires at least: 4.0
 Tested up to: 4.9.1
 Requires PHP: 5.6
-Stable tag: 1.8.0
+Stable tag: 1.8.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 1.8.1 =
+* Don't let errors break upload if uploading an empty file
+* Fix featured image display in Gutenberg. Props @hendridm :)
 
 = 1.8.0 =
 * Pull SVG dimensions from the width/height or viewbox attributes of the SVG.
