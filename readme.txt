@@ -5,7 +5,7 @@ Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file
 Requires at least: 4.0
 Tested up to: 4.9.1
 Requires PHP: 5.6
-Stable tag: 1.7.1
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,10 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 1.8.0 =
+* Pull SVG dimensions from the width/height or viewbox attributes of the SVG.
+* Add the role="img" attribute to SVGs
 
 = 1.7.1 =
 * Updated underlying lib and added new filters for filtering allowed tags and attributes
