@@ -184,6 +184,9 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		public function fix_admin_preview( $response, $attachment, $meta ) {
 
 			if ( $response['mime'] == 'image/svg+xml' ) {
+                        	$dimensions = $this->svg_dimensions( get_attached_file( $attachment->ID ) );
+				$response = array_merge($response, $dimensions);
+
 				$possible_sizes = apply_filters( 'image_size_names_choose', array(
                     'full'      => __( 'Full Size' ),
 					'thumbnail' => __( 'Thumbnail' ),
@@ -197,13 +200,9 @@ if ( ! class_exists( 'safe_svg' ) ) {
                     $default_height = 2000;
                     $default_width = 2000;
 
-                    if ( 'full' === $size ) {
-                        $dimensions = $this->svg_dimensions( get_attached_file( $attachment->ID ) );
-
-                        if ( $dimensions ) {
-                            $default_height = $dimensions['height'];
-                            $default_width  = $dimensions['width'];
-                        }
+                    if ( 'full' === $size && $dimensions ) {
+			    $default_height = $dimensions['height'];
+			    $default_width  = $dimensions['width'];
                     }
 
 					$sizes[ $size ] = array(
@@ -386,7 +385,11 @@ if ( ! class_exists( 'safe_svg' ) ) {
                 }
             }
 
-            return array( 'width' => $width, 'height' => $height );
+            return array(
+		'width' => $width,
+		'height' => $height,
+		'orientation' => ($width >= $height) ? 'landscape' : 'portrait'
+	    );
         }
 
         /**
