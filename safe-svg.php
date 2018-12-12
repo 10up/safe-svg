@@ -388,7 +388,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             return array(
 		'width' => $width,
 		'height' => $height,
-		'orientation' => ($width >= $height) ? 'landscape' : 'portrait'
+		'orientation' => ($width > $height) ? 'landscape' : 'portrait'
 	    );
         }
 
