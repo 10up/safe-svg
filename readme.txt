@@ -3,9 +3,9 @@ Contributors: enshrined
 Donate link: https://wpsvg.com/
 Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.0
-Tested up to: 4.9.1
+Tested up to: 5.0.2
 Requires PHP: 5.6
-Stable tag: 1.8.1
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 1.9.0 =
+* If an image is the correct ratio, allow skipping of the crop popup when setting header/logo images with SVGs.
 
 = 1.8.1 =
 * Don't let errors break upload if uploading an empty file
