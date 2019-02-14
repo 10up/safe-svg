@@ -3,7 +3,7 @@
 Plugin Name: Safe SVG
 Plugin URI:  https://wpsvg.com/
 Description: Allows SVG uploads into WordPress and sanitizes the SVG before saving it
-Version:     1.9.1
+Version:     1.9.2
 Author:      Daryll Doyle
 Author URI:  http://enshrined.co.uk
 Text Domain: safe-svg
@@ -321,8 +321,56 @@ if ( ! class_exists( 'safe_svg' ) ) {
          * @return mixed Metadata for attachment.
          */
         function skip_svg_regeneration( $metadata, $attachment_id ) {
-            if ( 'image/svg+xml' === get_post_mime_type( $attachment_id ) ) {
-//				return new WP_Error( 'skip_svg_generate', __( 'Skipping SVG file.', 'safe-svg' ) );
+            $mime = get_post_mime_type( $attachment_id );
+            if ( 'image/svg+xml' === $mime ) {
+                $additional_image_sizes = wp_get_additional_image_sizes();
+                $svg_path               = get_attached_file( $attachment_id );
+                $upload_dir             = wp_upload_dir();
+                // get the path relative to /uploads/ - found no better way:
+                $relative_path = str_replace( $upload_dir['basedir'], '', $svg_path );
+                $filename      = basename( $svg_path );
+
+                $dimensions = $this->svg_dimensions( $svg_path );
+
+                $metadata = array(
+                    'width'  => intval( $dimensions->width ),
+                    'height' => intval( $dimensions->height ),
+                    'file'   => $relative_path
+                );
+
+                // Might come handy to create the sizes array too - But it's not needed for this workaround! Always links to original svg-file => Hey, it's a vector graphic! ;)
+                $sizes = array();
+                foreach ( get_intermediate_image_sizes() as $s ) {
+                    $sizes[ $s ] = array( 'width' => '', 'height' => '', 'crop' => false );
+
+                    if ( isset( $additional_image_sizes[ $s ]['width'] ) ) {
+                        // For theme-added sizes
+                        $sizes[ $s ]['width'] = intval( $additional_image_sizes[ $s ]['width'] );
+                    } else {
+                        // For default sizes set in options
+                        $sizes[ $s ]['width'] = get_option( "{$s}_size_w" );
+                    }
+
+                    if ( isset( $additional_image_sizes[ $s ]['height'] ) ) {
+                        // For theme-added sizes
+                        $sizes[ $s ]['height'] = intval( $additional_image_sizes[ $s ]['height'] );
+                    } else {
+                        // For default sizes set in options
+                        $sizes[ $s ]['height'] = get_option( "{$s}_size_h" );
+                    }
+
+                    if ( isset( $additional_image_sizes[ $s ]['crop'] ) ) {
+                        // For theme-added sizes
+                        $sizes[ $s ]['crop'] = intval( $additional_image_sizes[ $s ]['crop'] );
+                    } else {
+                        // For default sizes set in options
+                        $sizes[ $s ]['crop'] = get_option( "{$s}_crop" );
+                    }
+
+                    $sizes[ $s ]['file']      = $filename;
+                    $sizes[ $s ]['mime-type'] = $mime;
+                }
+                $metadata['sizes'] = $sizes;
             }
 
             return $metadata;
