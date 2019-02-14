@@ -404,6 +404,13 @@ if ( ! class_exists( 'safe_svg' ) ) {
          *                                 (in that order). Default 'thumbnail'.
          */
         public function fix_direct_image_output( $attr, $attachment, $size ) {
+
+            // If we're not getting a WP_Post object, bail early.
+            // @see https://wordpress.org/support/topic/notice-trying-to-get-property-id/
+            if ( ! $attachment instanceof WP_Post ) {
+                return $attr;
+            }
+
             $mime = get_post_mime_type( $attachment->ID );
             if ( 'image/svg+xml' === $mime ) {
                 $default_height = 100;
