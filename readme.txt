@@ -3,9 +3,9 @@ Contributors: enshrined
 Donate link: https://wpsvg.com/
 Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.0
-Tested up to: 5.0.2
+Tested up to: 5.1
 Requires PHP: 5.6
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,6 +61,9 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 1.9.3 =
+* Fixed a bug cusing 0 height and width SVGs
 
 = 1.9.2 =
 * Fixed a warning about an Illegal string offset
