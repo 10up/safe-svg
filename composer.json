@@ -8,5 +8,8 @@
 			"name": "Daryll Doyle",
 			"homepage": "https://wpsvg.com/"
 		}
-	]
+	],
+	"require": {
+		"php": "^5.6 || ^7.0"
+	}
 }
