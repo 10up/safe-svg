@@ -5,7 +5,7 @@ Tags: svg, sanitize, upload, sanitise, security, svg upload, image, vector, file
 Requires at least: 4.0
 Tested up to: 5.2.2
 Requires PHP: 5.6
-Stable tag: 1.9.4
+Stable tag: 1.9.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,6 +71,9 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 1.9.5 =
+* Underlying library update that fixes some security issues
 
 = 1.9.4 =
 * Fixed a bug causing lots of error log output to do with `safe_svg::fix_direct_image_output()`
