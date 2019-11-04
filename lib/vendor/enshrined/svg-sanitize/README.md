@@ -48,6 +48,14 @@ This defaults to false, set to true to remove references.
 
 `$sanitizer->removeRemoteReferences(true);`
 
+## Viewing Sanitisation Issues
+
+You may use the `getXmlIssues()` method to return an array of issues that occurred during sanitisation.
+
+This may be useful for logging or providing feedback to the user on why an SVG was refused.
+
+`$issues = $sanitizer->getXmlIssues();`
+
 ## Minification
 
 You can minify the XML output by calling `$sanitiser->minify(true);`.
@@ -63,9 +71,21 @@ I've just released a WordPress plugin containing this code so you can sanitize y
 
 [Michael Potter](https://github.com/heyMP) has kindly created a Drupal module for this library which is available at: [https://www.drupal.org/project/svg_sanitizer](https://www.drupal.org/project/svg_sanitizer)
 
+## TYPO3
+
+An integration for TYPO3 CMS of this library is available as composer package `t3g/svg-sanitizer` at [https://bitbucket.typo3.com/projects/EXT/repos/svg_sanitizer/](https://bitbucket.typo3.com/projects/EXT/repos/svg_sanitizer/)
+
 ## Tests
 
-You can run these by running `phpunit`
+You can run these by running `vendor/bin/phpunit` from the base directory of this package.
+
+## Standalone scanning of files via CLI
+
+Thanks to the work by [gudmdharalds](https://github.com/gudmdharalds) there's now a standalone scanner that can be used via the CLI.
+
+Any errors will be output in JSON format. See [the PR](https://github.com/darylldoyle/svg-sanitizer/pull/25) for an example.
+
+Use it as follows: `php svg-scanner.php ~/svgs/myfile.svg`
 
 ## To-Do
 
