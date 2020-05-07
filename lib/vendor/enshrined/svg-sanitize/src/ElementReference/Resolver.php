@@ -2,6 +2,7 @@
 namespace enshrined\svgSanitize\ElementReference;
 
 use enshrined\svgSanitize\data\XPath;
+use enshrined\svgSanitize\Exceptions\NestingException;
 use enshrined\svgSanitize\Helper;
 
 class Resolver
@@ -16,9 +17,20 @@ class Resolver
      */
     protected $subjects = [];
 
-    public function __construct(XPath $xPath)
+    /**
+     * @var array DOMElement[]
+     */
+    protected $elementsToRemove = [];
+
+    /**
+     * @var int
+     */
+    protected $useNestingLimit;
+
+    public function __construct(XPath $xPath, $useNestingLimit)
     {
         $this->xPath = $xPath;
+        $this->useNestingLimit = $useNestingLimit;
     }
 
     public function collect()
@@ -74,7 +86,7 @@ class Resolver
         /** @var \DOMNodeList|\DOMElement[] $elements */
         $elements = $this->xPath->query('//*[@id]');
         foreach ($elements as $element) {
-            $this->subjects[$element->getAttribute('id')] = new Subject($element);
+            $this->subjects[$element->getAttribute('id')] = new Subject($element, $this->useNestingLimit);
         }
     }
 
@@ -90,6 +102,7 @@ class Resolver
                 $useNodeName . '[@href or @xlink:href]',
                 $subject->getElement()
             );
+
             /** @var \DOMElement $useElement */
             foreach ($useElements as $useElement) {
                 $useId = Helper::extractIdReferenceFromHref(
@@ -104,20 +117,53 @@ class Resolver
         }
     }
 
-    /***
+    /**
      * Determines and tags infinite loops.
      */
     protected function determineInvalidSubjects()
     {
         foreach ($this->subjects as $subject) {
+
+            if (in_array($subject->getElement(), $this->elementsToRemove)) {
+                continue;
+            }
+
             $useId = Helper::extractIdReferenceFromHref(
                 Helper::getElementHref($subject->getElement())
             );
-            if ($useId === $subject->getElementId()) {
-                $subject->addTags([Subject::TAG_INVALID, Subject::TAG_SELF_REFERENCE]);
-            } elseif ($subject->hasInfiniteLoop()) {
-                $subject->addTags([Subject::TAG_INVALID, Subject::TAG_INFINITE_LOOP]);
+
+            try {
+                if ($useId === $subject->getElementId()) {
+                    $this->markSubjectAsInvalid($subject);
+                } elseif ($subject->hasInfiniteLoop()) {
+                    $this->markSubjectAsInvalid($subject);
+                }
+            } catch (NestingException $e) {
+                $this->elementsToRemove[] = $e->getElement();
+                $this->markSubjectAsInvalid($subject);
             }
         }
+    }
+
+    /**
+     * Get all the elements that caused a nesting exception.
+     *
+     * @return array
+     */
+    public function getElementsToRemove() {
+        return $this->elementsToRemove;
+    }
+
+    /**
+     * The Subject is invalid for some reason, therefore we should
+     * remove it and all it's child usages.
+     *
+     * @param Subject $subject
+     */
+    protected function markSubjectAsInvalid(Subject $subject) {
+        $this->elementsToRemove = array_merge(
+            $this->elementsToRemove,
+            $subject->clearInternalAndGetAffectedElements()
+        );
     }
 }

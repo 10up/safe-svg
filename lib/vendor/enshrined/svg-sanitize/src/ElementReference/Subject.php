@@ -3,10 +3,6 @@ namespace enshrined\svgSanitize\ElementReference;
 
 class Subject
 {
-    const TAG_INVALID = 1;
-    const TAG_SELF_REFERENCE = 2;
-    const TAG_INFINITE_LOOP = 3;
-
     /**
      * @var \DOMElement
      */
@@ -23,16 +19,20 @@ class Subject
     protected $usedInCollection = [];
 
     /**
-     * @var int[]
+     * @var int
      */
-    protected $tags = [];
+    protected $useNestingLimit;
 
     /**
+     * Subject constructor.
+     *
      * @param \DOMElement $element
+     * @param int         $useNestingLimit
      */
-    public function __construct(\DOMElement $element)
+    public function __construct(\DOMElement $element, $useNestingLimit)
     {
         $this->element = $element;
+        $this->useNestingLimit = $useNestingLimit;
     }
 
     /**
@@ -52,40 +52,27 @@ class Subject
     }
 
     /**
-     * @param array $subjects Previously processed subjects
+     * @param array $subjects   Previously processed subjects
+     * @param int   $level      The current level of nesting.
      * @return bool
+     * @throws \enshrined\svgSanitize\Exceptions\NestingException
      */
-    public function hasInfiniteLoop(array $subjects = [])
+    public function hasInfiniteLoop(array $subjects = [], $level = 1)
     {
+        if ($level > $this->useNestingLimit) {
+            throw new \enshrined\svgSanitize\Exceptions\NestingException('Nesting level too high, aborting', 1570713498, null, $this->getElement());
+        }
+
         if (in_array($this, $subjects, true)) {
             return true;
         }
         $subjects[] = $this;
         foreach ($this->useCollection as $usage) {
-            if ($usage->getSubject()->hasInfiniteLoop($subjects)) {
+            if ($usage->getSubject()->hasInfiniteLoop($subjects, $level + 1)) {
                 return true;
             }
         }
         return false;
-    }
-
-    /**
-     * @param int[] $tags (see Subject constants)
-     */
-    public function addTags(array $tags)
-    {
-        $tags = array_map('intval', $tags);
-        $this->tags = array_merge($this->tags, array_diff($tags, $this->tags));
-    }
-
-    /**
-     * @param int[] $tags (see Subject constants)
-     * @return bool
-     */
-    public function matchesTags(array $tags)
-    {
-        $amount = count($tags);
-        return $amount > 0 && count(array_intersect($this->tags, $tags)) === $amount;
     }
 
     /**
@@ -144,5 +131,23 @@ class Subject
             $count += $usedIn->getCount() * max(1, $usedIn->getSubject()->countUsedIn());
         }
         return $count;
+    }
+
+    /**
+     * Clear the internal arrays (to free up memory as they can get big)
+     * and return all the child usages DOMElement's
+     *
+     * @return array
+     */
+    public function clearInternalAndGetAffectedElements()
+    {
+        $elements = array_map(function(Usage $usage) {
+            return $usage->getSubject()->getElement();
+        }, $this->useCollection);
+
+        $this->usedInCollection = [];
+        $this->useCollection = [];
+
+        return $elements;
     }
 }

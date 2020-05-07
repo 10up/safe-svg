@@ -42,15 +42,15 @@ These methods require that you implement the `enshrined\svgSanitize\data\TagInte
 
 ## Remove remote references 
 
-You have the option to remove attributes that reference remote files, this will stop HTTP leaks but will add an overhead to the sanitiser.
+You have the option to remove attributes that reference remote files, this will stop HTTP leaks but will add an overhead to the sanitizer.
 
 This defaults to false, set to true to remove references.
 
 `$sanitizer->removeRemoteReferences(true);`
 
-## Viewing Sanitisation Issues
+## Viewing Sanitization Issues
 
-You may use the `getXmlIssues()` method to return an array of issues that occurred during sanitisation.
+You may use the `getXmlIssues()` method to return an array of issues that occurred during sanitization.
 
 This may be useful for logging or providing feedback to the user on why an SVG was refused.
 
@@ -58,7 +58,7 @@ This may be useful for logging or providing feedback to the user on why an SVG w
 
 ## Minification
 
-You can minify the XML output by calling `$sanitiser->minify(true);`.
+You can minify the XML output by calling `$sanitizer->minify(true);`.
 
 ## Demo
 There is a demo available at: [http://svg.enshrined.co.uk/](http://svg.enshrined.co.uk/)
@@ -73,7 +73,7 @@ I've just released a WordPress plugin containing this code so you can sanitize y
 
 ## TYPO3
 
-An integration for TYPO3 CMS of this library is available as composer package `t3g/svg-sanitizer` at [https://bitbucket.typo3.com/projects/EXT/repos/svg_sanitizer/](https://bitbucket.typo3.com/projects/EXT/repos/svg_sanitizer/)
+An integration for TYPO3 CMS of this library is available as composer package `t3g/svg-sanitizer` at [https://github.com/TYPO3GmbH/svg_sanitizer](https://github.com/TYPO3GmbH/svg_sanitizer)
 
 ## Tests
 
