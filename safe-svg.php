@@ -426,7 +426,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             $height = 0;
             if ( $svg ) {
                 $attributes = $svg->attributes();
-                if ( isset( $attributes->width, $attributes->height ) ) {
+                if ( isset( $attributes->width, $attributes->height ) && is_numeric( $attributes->width ) && is_numeric( $attributes->height ) ) {
                     $width  = floatval( $attributes->width );
                     $height = floatval( $attributes->height );
                 } elseif ( isset( $attributes->viewBox ) ) {
