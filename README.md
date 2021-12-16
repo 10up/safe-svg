@@ -15,7 +15,7 @@ It also gives you the ability to preview your uploaded SVGs in the media library
 * **Sanitised SVGs** - Don't open up security holes in your WordPress site by allowing uploads of unsanitised files.
 * **View SVGs in the Media Library** - Gone are the days of guessing which SVG is the correct one, we'll enable SVG previews in the WordPress media library.
 
-### Coming Soon Features
+### Features on the Roadmap
 * **SVGO Optimisation** - You'll have the option to run your SVGs through our SVGO server on upload to save you space.
 * **Choose Who Can Upload** - Restrict SVG uploads to certain users on your WordPress site or allow anyone to upload.
 
