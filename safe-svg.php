@@ -327,7 +327,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
                 $svg_path               = get_attached_file( $attachment_id );
                 $upload_dir             = wp_upload_dir();
                 // get the path relative to /uploads/ - found no better way:
-                $relative_path = str_replace( $upload_dir['basedir'], '', $svg_path );
+                $relative_path = str_replace( trailingslashit( $upload_dir['basedir'] ), '', $svg_path );
                 $filename      = basename( $svg_path );
 
                 $dimensions = $this->svg_dimensions( $svg_path );
