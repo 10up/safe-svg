@@ -2,7 +2,7 @@
 
 > Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/safe-svg.svg)](https://github.com/10up/safe-svg/releases/latest) ![WordPress tested up to version](https://img.shields.io/badge/WordPress-v5.8%20tested-success.svg) [![GPLv2 License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
+[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level) [![Release Version](https://img.shields.io/github/release/10up/safe-svg.svg)](https://github.com/10up/safe-svg/releases/latest) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/safe-svg?label=WordPress) [![GPLv2 License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
 
 ## Overview
 
