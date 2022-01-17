@@ -225,7 +225,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
         /**
          * Filters the image src result.
-         * Here we're gonna spoof the image size and set it to 100 width and height
+         * If the image size doesn't exist, set a default size off 100 for width and height
          *
          * @param array|false $image Either array with src, width & height, icon src, or false.
          * @param int $attachment_id Image attachment ID.
@@ -236,9 +236,14 @@ if ( ! class_exists( 'safe_svg' ) ) {
          * @return array
          */
         public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
-            if ( get_post_mime_type( $attachment_id ) == 'image/svg+xml' ) {
-                $image['1'] = false;
-                $image['2'] = false;
+            if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
+                if ( empty( $image[1] ) ) {
+                    $image[1] = 100;
+                }
+
+                if ( empty( $image[2] ) ) {
+                    $image[2] = 100;
+                }
             }
 
             return $image;
