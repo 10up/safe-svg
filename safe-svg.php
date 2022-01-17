@@ -225,7 +225,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
         /**
          * Filters the image src result.
-         * If the image size doesn't exist, set a default size off 100 for width and height
+         * If the image size doesn't exist, set a default size of 100 for width and height
          *
          * @param array|false $image Either array with src, width & height, icon src, or false.
          * @param int $attachment_id Image attachment ID.
