@@ -49,7 +49,6 @@ if ( ! class_exists( 'safe_svg' ) ) {
             add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_upgrade_link' ) );
             add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
             add_filter( 'wp_get_attachment_image_attributes', array( $this, 'fix_direct_image_output' ), 10, 3 );
-			add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'fix_svg_image_meta' ), 10 );
         }
 
         /**
@@ -482,21 +481,6 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
             return $attr;
         }
-
-	    /**
-	     * Fix svg file path in attachment meta for old uploads.
-	     *
-	     * @param array $image_meta Attachment meta.
-	     *
-	     * @return array Attachment meta.
-	     */
-		public function fix_svg_image_meta( $image_meta ) {
-			if ( ! empty( $image_meta['file'] ) && '.svg' === substr( $image_meta['file'], -4 ) && false !== strpos( $image_meta['file'], '/', 1 ) ) {
-				$image_meta['file'] = substr( $image_meta['file'], 1 );
-			}
-			return $image_meta;
-		}
-
     }
 }
 
