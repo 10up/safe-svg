@@ -184,3 +184,6 @@ They take one argument that must be returned. See below for examples:
 
 = 1.0.0 =
 * Initial Release
+
+== Upgrade Notice ==
+* Important: Bumped minimum PHP version to 7.0
