@@ -4,7 +4,7 @@ Donate link:       https://wpsvg.com/
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.0
 Tested up to:      5.8
-Requires PHP:      5.6
+Requires PHP:      7.0
 Stable tag:        1.9.9
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -184,3 +184,6 @@ They take one argument that must be returned. See below for examples:
 
 = 1.0.0 =
 * Initial Release
+
+== Upgrade Notice ==
+* Important: Bumped minimum PHP version to 7.0

@@ -1,13 +1,15 @@
 <?php
 /*
-Plugin Name: Safe SVG
-Plugin URI:  https://wpsvg.com/
-Description: Allows SVG uploads into WordPress and sanitizes the SVG before saving it
-Version:     1.9.9
-Author:      Daryll Doyle
-Author URI:  http://enshrined.co.uk
-Text Domain: safe-svg
-Domain Path: /languages
+Plugin Name:       Safe SVG
+Plugin URI:        https://wpsvg.com/
+Description:       Allows SVG uploads into WordPress and sanitizes the SVG before saving it
+Version:           1.9.9
+Requires at least: 4.0
+Requires PHP:      7.0
+Author:            Daryll Doyle
+Author URI:        http://enshrined.co.uk
+Text Domain:       safe-svg
+Domain Path:       /languages
  */
 
 defined( 'ABSPATH' ) or die( 'Really?' );
