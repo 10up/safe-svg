@@ -105,7 +105,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
          */
         public function check_for_svg( $file ) {
 
-            if ( $file['type'] === 'image/svg+xml' ) {
+            $wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+            $type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
+
+            if ( $type === 'image/svg+xml' ) {
                 if ( ! $this->sanitize( $file['tmp_name'] ) ) {
                     $file['error'] = __( "Sorry, this file couldn't be sanitized so for security reasons wasn't uploaded",
                         'safe-svg' );
