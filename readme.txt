@@ -72,6 +72,19 @@ They take one argument that must be returned. See below for examples:
 
 == Changelog ==
 
+= 1.9.10 - 2022-02-21 =
+**Note that this release bumps the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.**
+
+* **Changed:** Bump WordPress minimum version from 4.0 to 4.7 (props [@cadic](https://github.com/cadic)).
+* **Changed:** Bump PHP minimum version from 5.6 to 7.0 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul)).
+* **Changed:** Update `enshrined/svg-sanitize` from 0.13.3 to 0.5.2 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic)).
+* **Changed:** Bump WordPress version "tested up to" 5.9 (props [@BBerg10up](https://github.com/BBerg10up), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic)).
+* **Changed:** Updated plugin assets and added docs and repo management workflows via GitHub Actions (props [Brooke Campbell](https://www.linkedin.com/in/brookecampbelldesign/), [@jeffpaul](https://github.com/jeffpaul)).
+* **Fixed:** Double slash being added in SVG file URL for newer uploads (props [@mehulkaklotar](https://github.com/mehulkaklotar), [@smerriman](https://github.com/smerriman)).
+* **Fixed:** Float value casting for SVGs when fetching width and height (props [@mehulkaklotar](https://github.com/mehulkaklotar), [@smerriman](https://github.com/smerriman)).
+* **Fixed:** Use calculated size for SVGs instead of using `false` (props [@dkotter](https://github.com/dkotter), [@darylldoyle](https://github.com/darylldoyle), [@fritteli](https://github.com/fritteli)).
+* **Fixed:** Add better file type checking when looking for SVG files (props [@davidhamann](https://github.com/davidhamann), [@dkotter](https://github.com/dkotter), [@darylldoyle](https://github.com/darylldoyle)).
+
 = 1.9.9 =
 * Fixed issue where 100% width is accidentally converted to 100px width. Props @joehoyle
 
@@ -186,4 +199,5 @@ They take one argument that must be returned. See below for examples:
 * Initial Release
 
 == Upgrade Notice ==
-* Important: Bumped minimum PHP version to 7.0
+= 1.9.10 =
+* Important: bumped the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.
