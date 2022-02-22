@@ -14,7 +14,7 @@ Domain Path:       /languages
 
 defined( 'ABSPATH' ) or die( 'Really?' );
 
-require 'lib/vendor/autoload.php';
+require 'vendor/autoload.php';
 require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
 
