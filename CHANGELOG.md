@@ -66,7 +66,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Don't let errors break upload if uploading an empty file.
 
 ### Fixed
-- Fix featured image display in Gutenberg. Props [@dmhendricks](https://github.com/dmhendricks) :)
+- Featured image display in Gutenberg. Props [@dmhendricks](https://github.com/dmhendricks) :)
 
 ## [1.8.0] - 2018-11-04
 ### Added
