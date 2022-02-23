@@ -13,8 +13,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Build
       run: |
-        npm install
-        npm run build
+        composer install
     - name: WordPress.org plugin asset/readme update
       uses: 10up/action-wordpress-plugin-asset-update@stable
       env:

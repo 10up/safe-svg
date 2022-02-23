@@ -14,7 +14,33 @@ Domain Path:       /languages
 
 defined( 'ABSPATH' ) or die( 'Really?' );
 
-require 'lib/vendor/autoload.php';
+// Try and include our autoloader.
+if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+	require __DIR__ . '/vendor/autoload.php';
+} else {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %1$s is the command that needs to be run. */
+							__( 'You appear to be running a development version of Safe SVG. Please run %1$s in order for things to work properly.', 'safe-svg' ),
+							'<code>composer install</code>'
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+}
+
 require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
 
