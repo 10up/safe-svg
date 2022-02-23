@@ -4,9 +4,26 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [1.9.10] - 2022-02-21
+**Note that this release bumps the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.**
+
+### Changed
+- Bump WordPress minimum version from 4.0 to 4.7 (props [@cadic](https://github.com/cadic) via [#32](https://github.com/10up/safe-svg/pull/32)).
+- Bump PHP minimum version from 5.6 to 7.0 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [#20](https://github.com/10up/safe-svg/pull/20)).
+- Update `enshrined/svg-sanitize` from 0.13.3 to 0.5.2 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic) via [#20](https://github.com/10up/safe-svg/pull/20), [#29](https://github.com/10up/safe-svg/pull/29)).
+- Bump WordPress version "tested up to" 5.9 (props [@BBerg10up](https://github.com/BBerg10up), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic) via [#14](https://github.com/10up/safe-svg/pull/14), [#27](https://github.com/10up/safe-svg/pull/27)).
+- Updated library location and added a new build step (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter) via [#35](https://github.com/10up/safe-svg/pull/35)).
+- Updated plugin assets and added docs and repo management workflows via GitHub Actions (props [Brooke Campbell](https://www.linkedin.com/in/brookecampbelldesign/), [@jeffpaul](https://github.com/jeffpaul) via [#16](https://github.com/10up/safe-svg/pull/16), [#26](https://github.com/10up/safe-svg/pull/26)).
+
+### Fixed
+- Double slash being added in SVG file URL for newer uploads (props [@mehulkaklotar](https://github.com/mehulkaklotar), [@smerriman](https://github.com/smerriman) via [#19](https://github.com/10up/safe-svg/pull/19)).
+- Float value casting for SVGs when fetching width and height (props [@mehulkaklotar](https://github.com/mehulkaklotar), [@smerriman](https://github.com/smerriman) via [#19](https://github.com/10up/safe-svg/pull/19)).
+- Use calculated size for SVGs instead of using `false` (props [@dkotter](https://github.com/dkotter), [@darylldoyle](https://github.com/darylldoyle), [@fritteli](https://github.com/fritteli) via [#23](https://github.com/10up/safe-svg/pull/23)).
+- Add better file type checking when looking for SVG files (props [@davidhamann](https://github.com/davidhamann), [@dkotter](https://github.com/dkotter), [@darylldoyle](https://github.com/darylldoyle) via [#28](https://github.com/10up/safe-svg/pull/28)).
+
 ## [1.9.9] - 2020-05-07
 ### Fixed
-- Issue where 100% width is accidentally converted to 100px width (props @joehoyle).
+- Issue where 100% width is accidentally converted to 100px width (props [@joehoyle](https://github.com/joehoyle)).
 
 ## [1.9.8] - 2020-05-07
 ### Chaged
@@ -50,7 +67,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Don't let errors break upload if uploading an empty file.
 
 ### Fixed
-- Fix featured image display in Gutenberg. Props @hendridm :)
+- Featured image display in Gutenberg. Props [@dmhendricks](https://github.com/dmhendricks) :)
 
 ## [1.8.0] - 2018-11-04
 ### Added
@@ -139,7 +156,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [1.3.2] - 2017-01-27
 ### Fixed
-- Mime type issue in 4.7.1. Mad props to @lewiscowles.
+- Mime type issue in 4.7.1. Mad props to [@LewisCowles1986](https://github.com/LewisCowles1986).
 
 ## [1.3.1] - 2016-12-01
 ### Changed
@@ -169,6 +186,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[1.9.10]: https://github.com/10up/safe-svg/compare/1.9.9...1.9.10
 [1.9.9]: https://github.com/10up/safe-svg/compare/1.9.8...1.9.9
 [1.9.8]: https://github.com/10up/safe-svg/compare/1.9.7...1.9.8
 [1.9.7]: https://github.com/10up/safe-svg/compare/1.9.6...1.9.7
