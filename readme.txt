@@ -66,7 +66,7 @@ They take one argument that must be returned. See below for examples:
 
 == Changelog ==
 
-= 1.9.10 - 2022-02-21 =
+= 1.9.10 - 2022-02-23 =
 **Note that this release bumps the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.**
 
 * **Changed:** Bump WordPress minimum version from 4.0 to 4.7 (props [@cadic](https://github.com/cadic)).
