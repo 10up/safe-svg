@@ -1,0 +1,21 @@
+name: Update asset/readme on WordPress.org
+
+on:
+  push:
+    branches:
+    - trunk
+
+jobs:
+  master:
+    name: Push to trunk
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Build
+      run: |
+        composer install
+    - name: WordPress.org plugin asset/readme update
+      uses: 10up/action-wordpress-plugin-asset-update@stable
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}

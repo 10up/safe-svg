@@ -1,0 +1,16 @@
+# Directories
+/.git
+/.github
+/.wordpress-org
+
+# Files
+.distignore
+.gitignore
+CHANGELOG.md
+CODE_OF_CONDUCT.md
+composer.json
+composer.lock
+CONTRIBUTING.md
+CREDITS.md
+LICENSE.md
+README.md

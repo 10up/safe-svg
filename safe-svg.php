@@ -1,18 +1,48 @@
 <?php
 /*
-Plugin Name: Safe SVG
-Plugin URI:  https://wpsvg.com/
-Description: Allows SVG uploads into WordPress and sanitizes the SVG before saving it
-Version:     1.9.9
-Author:      Daryll Doyle
-Author URI:  http://enshrined.co.uk
-Text Domain: safe-svg
-Domain Path: /languages
+ * Plugin Name:       Safe SVG
+ * Plugin URI:        https://wpsvg.com/
+ * Description:       Allows SVG uploads into WordPress and sanitizes the SVG before saving it
+ * Version:           1.9.10
+ * Requires at least: 4.7
+ * Requires PHP:      7.0
+ * Author:            10up
+ * Author URI:        https://10up.com
+ * License:           GPL v2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       safe-svg
+ * Domain Path:       /languages
  */
 
 defined( 'ABSPATH' ) or die( 'Really?' );
 
-require 'lib/vendor/autoload.php';
+// Try and include our autoloader.
+if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+	require __DIR__ . '/vendor/autoload.php';
+} else {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %1$s is the command that needs to be run. */
+							__( 'You appear to be running a development version of Safe SVG. Please run %1$s in order for things to work properly.', 'safe-svg' ),
+							'<code>composer install</code>'
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+}
+
 require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
 
@@ -103,7 +133,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
          */
         public function check_for_svg( $file ) {
 
-            if ( $file['type'] === 'image/svg+xml' ) {
+            $wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+            $type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
+
+            if ( $type === 'image/svg+xml' ) {
                 if ( ! $this->sanitize( $file['tmp_name'] ) ) {
                     $file['error'] = __( "Sorry, this file couldn't be sanitized so for security reasons wasn't uploaded",
                         'safe-svg' );
@@ -225,7 +258,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
         /**
          * Filters the image src result.
-         * Here we're gonna spoof the image size and set it to 100 width and height
+         * If the image size doesn't exist, set a default size of 100 for width and height
          *
          * @param array|false $image Either array with src, width & height, icon src, or false.
          * @param int $attachment_id Image attachment ID.
@@ -236,9 +269,14 @@ if ( ! class_exists( 'safe_svg' ) ) {
          * @return array
          */
         public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
-            if ( get_post_mime_type( $attachment_id ) == 'image/svg+xml' ) {
-                $image['1'] = false;
-                $image['2'] = false;
+            if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
+                if ( empty( $image[1] ) ) {
+                    $image[1] = 100;
+                }
+
+                if ( empty( $image[2] ) ) {
+                    $image[2] = 100;
+                }
             }
 
             return $image;
@@ -327,7 +365,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
                 $svg_path               = get_attached_file( $attachment_id );
                 $upload_dir             = wp_upload_dir();
                 // get the path relative to /uploads/ - found no better way:
-                $relative_path = str_replace( $upload_dir['basedir'], '', $svg_path );
+                $relative_path = str_replace( trailingslashit( $upload_dir['basedir'] ), '', $svg_path );
                 $filename      = basename( $svg_path );
 
                 $dimensions = $this->svg_dimensions( $svg_path );
@@ -426,7 +464,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             $height = 0;
             if ( $svg ) {
                 $attributes = $svg->attributes();
-                if ( isset( $attributes->width, $attributes->height ) && is_numeric( $attributes->width ) && is_numeric( $attributes->height ) ) {
+                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float)$attributes->width ) && is_numeric( (float)$attributes->height ) ) {
                     $width  = floatval( $attributes->width );
                     $height = floatval( $attributes->height );
                 } elseif ( isset( $attributes->viewBox ) ) {
@@ -481,7 +519,6 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
             return $attr;
         }
-
     }
 }
 
