@@ -79,6 +79,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_upgrade_link' ) );
             add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
             add_filter( 'wp_get_attachment_image_attributes', array( $this, 'fix_direct_image_output' ), 10, 3 );
+            add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'disable_srcset' ), 10, 4 );
         }
 
         /**
@@ -519,6 +520,28 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
             return $attr;
         }
+
+        /**
+         * Disable the creation of srcset on SVG images.
+         *
+         * @param array $image_meta The image meta data.
+         * @param int[]  $size_array    {
+         *     An array of requested width and height values.
+         *
+         *     @type int $0 The width in pixels.
+         *     @type int $1 The height in pixels.
+         * }
+         * @param string $image_src     The 'src' of the image.
+         * @param int    $attachment_id The image attachment ID.
+         */
+        public function disable_srcset( $image_meta, $size_array, $image_src, $attachment_id ) {
+            if ( $attachment_id && 'image/svg+xml' === get_post_mime_type( $attachment_id ) ) {
+                $image_meta['sizes'] = array();
+            }
+
+            return $image_meta;
+        }
+
     }
 }
 
