@@ -257,8 +257,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
         }
 
         /**
-         * Filters the image src result.
-         * If the image size doesn't exist, set a default size of 100 for width and height
+         * Filters the image size results.
          *
          * @param array|false $image Either array with src, width & height, icon src, or false.
          * @param int $attachment_id Image attachment ID.
@@ -270,13 +269,8 @@ if ( ! class_exists( 'safe_svg' ) ) {
          */
         public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
             if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-                if ( empty( $image[1] ) ) {
-                    $image[1] = 100;
-                }
-
-                if ( empty( $image[2] ) ) {
-                    $image[2] = 100;
-                }
+                $image['1'] = false;
+                $image['2'] = false;
             }
 
             return $image;
@@ -464,7 +458,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             $height = 0;
             if ( $svg ) {
                 $attributes = $svg->attributes();
-                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float)$attributes->width ) && is_numeric( (float)$attributes->height ) ) {
+                if ( isset( $attributes->width, $attributes->height ) && is_numeric( $attributes->width ) && is_numeric( $attributes->height ) ) {
                     $width  = floatval( $attributes->width );
                     $height = floatval( $attributes->height );
                 } elseif ( isset( $attributes->viewBox ) ) {
