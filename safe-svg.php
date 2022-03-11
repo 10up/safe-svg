@@ -473,7 +473,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
                     }
                 }
 
-                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float) $attributes->width ) && is_numeric( (float) $attributes->height ) ) {
+                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float) $attributes->width ) && is_numeric( (float) $attributes->height ) && ! $this->str_ends_with( (string) $attributes->width, '%' ) && ! $this->str_ends_with( (string) $attributes->height, '%' ) ) {
                     $attr_width  = floatval( $attributes->width );
                     $attr_height = floatval( $attributes->height );
                 }
@@ -546,6 +546,30 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
             return $attr;
         }
+
+        /**
+         * Polyfill for `str_ends_with()` function added in PHP 8.0.
+         *
+         * Performs a case-sensitive check indicating if
+         * the haystack ends with needle.
+         *
+         * @param string $haystack The string to search in.
+         * @param string $needle   The substring to search for in the `$haystack`.
+         * @return bool True if `$haystack` ends with `$needle`, otherwise false.
+         */
+        protected function str_ends_with( $haystack, $needle ) {
+            if ( function_exists( 'str_ends_with' ) ) {
+                return str_ends_with( $haystack, $needle );
+            }
+
+            if ( '' === $haystack && '' !== $needle ) {
+                return false;
+            }
+
+            $len = strlen( $needle );
+            return 0 === substr_compare( $haystack, $needle, -$len, $len );
+        }
+
     }
 }
 
