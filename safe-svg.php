@@ -479,7 +479,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
                 }
 
                 /**
-                 * Use the width and height attributes of the SVG for the image tag dimensions.
+                 * Decide which attributes of the SVG we use first for image tag dimensions.
                  *
                  * We default to using the parameters in the viewbox attribute but
                  * that can be overridden using this filter if you'd prefer to use
