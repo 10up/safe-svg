@@ -78,7 +78,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
             add_filter( 'wp_generate_attachment_metadata', array( $this, 'skip_svg_regeneration' ), 10, 2 );
             add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_upgrade_link' ) );
             add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
-            add_filter( 'wp_get_attachment_image_attributes', array( $this, 'fix_direct_image_output' ), 10, 3 );
+            add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'disable_srcset' ), 10, 4 );
         }
 
         /**
@@ -270,11 +270,13 @@ if ( ! class_exists( 'safe_svg' ) ) {
          */
         public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
             if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-                if ( empty( $image[1] ) ) {
-                    $image[1] = 100;
-                }
+                $dimensions = $this->svg_dimensions( get_attached_file( $attachment_id ) );
 
-                if ( empty( $image[2] ) ) {
+                if ( $dimensions ) {
+                    $image[1] = $dimensions['width'];
+                    $image[2] = $dimensions['height'];
+                } else {
+                    $image[1] = 100;
                     $image[2] = 100;
                 }
             }
@@ -486,39 +488,26 @@ if ( ! class_exists( 'safe_svg' ) ) {
         }
 
         /**
-         * Fix the output of images using wp_get_attachment_image
+         * Disable the creation of srcset on SVG images.
          *
-         * @param array $attr Attributes for the image markup.
-         * @param WP_Post $attachment Image attachment post.
-         * @param string|array $size Requested size. Image size or array of width and height values
-         *                                 (in that order). Default 'thumbnail'.
+         * @param array $image_meta The image meta data.
+         * @param int[]  $size_array    {
+         *     An array of requested width and height values.
+         *
+         *     @type int $0 The width in pixels.
+         *     @type int $1 The height in pixels.
+         * }
+         * @param string $image_src     The 'src' of the image.
+         * @param int    $attachment_id The image attachment ID.
          */
-        public function fix_direct_image_output( $attr, $attachment, $size = 'thumbnail' ) {
-
-            // If we're not getting a WP_Post object, bail early.
-            // @see https://wordpress.org/support/topic/notice-trying-to-get-property-id/
-            if ( ! $attachment instanceof WP_Post ) {
-                return $attr;
+        public function disable_srcset( $image_meta, $size_array, $image_src, $attachment_id ) {
+            if ( $attachment_id && 'image/svg+xml' === get_post_mime_type( $attachment_id ) ) {
+                $image_meta['sizes'] = array();
             }
 
-            $mime = get_post_mime_type( $attachment->ID );
-            if ( 'image/svg+xml' === $mime ) {
-                $default_height = 100;
-                $default_width  = 100;
-
-                $dimensions = $this->svg_dimensions( get_attached_file( $attachment->ID ) );
-
-                if ( $dimensions ) {
-                    $default_height = $dimensions['height'];
-                    $default_width  = $dimensions['width'];
-                }
-
-                $attr['height'] = $default_height;
-                $attr['width']  = $default_width;
-            }
-
-            return $attr;
+            return $image_meta;
         }
+
     }
 }
 
