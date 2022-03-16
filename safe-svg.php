@@ -487,10 +487,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
                  *
                  * @hook safe_svg_use_width_height_attributes
                  *
-                 * @param bool $false If the width & height attributes should be used first. Default false.
-                 * @param string $svg The file path to the SVG.
+                 * @param {bool} $false If the width & height attributes should be used first. Default false.
+                 * @param {string} $svg The file path to the SVG.
                  *
-                 * @return bool If we should use the width & height attributes first or not.
+                 * @return {bool} If we should use the width & height attributes first or not.
                  */
                 if ( (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg ) ) {
                     $width  = $attr_width;
