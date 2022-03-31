@@ -456,7 +456,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
         /**
          * Get SVG size from the width/height or viewport.
          *
-         * @param $svg
+         * @param string|false $svg The file path to where the SVG file should be, false otherwise.
          *
          * @return array|bool
          */
@@ -466,16 +466,43 @@ if ( ! class_exists( 'safe_svg' ) ) {
             $height = 0;
             if ( $svg ) {
                 $attributes = $svg->attributes();
-                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float)$attributes->width ) && is_numeric( (float)$attributes->height ) ) {
-                    $width  = floatval( $attributes->width );
-                    $height = floatval( $attributes->height );
-                } elseif ( isset( $attributes->viewBox ) ) {
+
+                if ( isset( $attributes->viewBox ) ) {
                     $sizes = explode( ' ', $attributes->viewBox );
                     if ( isset( $sizes[2], $sizes[3] ) ) {
-                        $width  = floatval( $sizes[2] );
-                        $height = floatval( $sizes[3] );
+                        $viewbox_width  = floatval( $sizes[2] );
+                        $viewbox_height = floatval( $sizes[3] );
                     }
+                }
+
+                if ( isset( $attributes->width, $attributes->height ) && is_numeric( (float) $attributes->width ) && is_numeric( (float) $attributes->height ) && ! $this->str_ends_with( (string) $attributes->width, '%' ) && ! $this->str_ends_with( (string) $attributes->height, '%' ) ) {
+                    $attr_width  = floatval( $attributes->width );
+                    $attr_height = floatval( $attributes->height );
+                }
+
+                /**
+                 * Decide which attributes of the SVG we use first for image tag dimensions.
+                 *
+                 * We default to using the parameters in the viewbox attribute but
+                 * that can be overridden using this filter if you'd prefer to use
+                 * the width and height attributes.
+                 *
+                 * @hook safe_svg_use_width_height_attributes
+                 *
+                 * @param {bool} $false If the width & height attributes should be used first. Default false.
+                 * @param {string} $svg The file path to the SVG.
+                 *
+                 * @return {bool} If we should use the width & height attributes first or not.
+                 */
+                if ( (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg ) ) {
+                    $width  = $attr_width;
+                    $height = $attr_height;
                 } else {
+                    $width  = $viewbox_width;
+                    $height = $viewbox_height;
+                }
+
+                if ( ! $width && ! $height ) {
                     return false;
                 }
             }
@@ -506,6 +533,29 @@ if ( ! class_exists( 'safe_svg' ) ) {
             }
 
             return $image_meta;
+        }
+
+        /**
+         * Polyfill for `str_ends_with()` function added in PHP 8.0.
+         *
+         * Performs a case-sensitive check indicating if
+         * the haystack ends with needle.
+         *
+         * @param string $haystack The string to search in.
+         * @param string $needle   The substring to search for in the `$haystack`.
+         * @return bool True if `$haystack` ends with `$needle`, otherwise false.
+         */
+        protected function str_ends_with( $haystack, $needle ) {
+            if ( function_exists( 'str_ends_with' ) ) {
+                return str_ends_with( $haystack, $needle );
+            }
+
+            if ( '' === $haystack && '' !== $needle ) {
+                return false;
+            }
+
+            $len = strlen( $needle );
+            return 0 === substr_compare( $haystack, $needle, -$len, $len );
         }
 
     }
