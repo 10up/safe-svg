@@ -133,7 +133,13 @@ if ( ! class_exists( 'safe_svg' ) ) {
          */
         public function check_for_svg( $file ) {
 
-            $wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+            // Ensure we have a proper file path before processing
+            if ( ! isset( $file['tmp_name'] ) ) {
+                return $file;
+            }
+
+            $file_name   = isset( $file['name'] ) ? $file['name'] : '';
+            $wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file_name );
             $type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
             if ( $type === 'image/svg+xml' ) {
