@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.0.0] - 2022-04-06
+### Added
+- New filter, `safe_svg_use_width_height_attributes`, that can be used to change the order of attributes we use to determine the SVG dimensions (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#43](https://github.com/10up/safe-svg/pull/43)).
+
+### Changed
+- Documentation updates (props [@j-hoffmann](https://github.com/j-hoffmann), [@jeffpaul](https://github.com/jeffpaul), [@Zodiac1978](https://github.com/Zodiac1978) via [#39](https://github.com/10up/safe-svg/pull/39), [#42](https://github.com/10up/safe-svg/pull/42)).
+
+### Fixed
+- Use the `viewBox` attributes first for image dimensions. Ensure we don't use image dimensions that end with percent signs (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#43](https://github.com/10up/safe-svg/pull/43)).
+- Make sure we use the full size SVG dimensions rather than the requested size, to avoid wrong sizes being used and duplicate height and width attributes (props [@dkotter](https://github.com/dkotter), [@cadic](https://github.com/cadic) via [#44](https://github.com/10up/safe-svg/pull/44)).
+- Ensure the `tmp_name` and `name` properties exist before we use them (props [@dkotter](https://github.com/dkotter), [@aksld](https://github.com/aksld) via [#46](https://github.com/10up/safe-svg/pull/46)).
+
 ## [1.9.10] - 2022-02-23
 **Note that this release bumps the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.**
 
@@ -186,6 +198,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.0.0]: https://github.com/10up/safe-svg/compare/1.9.10...2.0.0
 [1.9.10]: https://github.com/10up/safe-svg/compare/1.9.9...1.9.10
 [1.9.9]: https://github.com/10up/safe-svg/compare/1.9.8...1.9.9
 [1.9.8]: https://github.com/10up/safe-svg/compare/1.9.7...1.9.8
