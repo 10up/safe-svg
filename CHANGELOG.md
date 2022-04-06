@@ -4,13 +4,25 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.0.0] - 2022-04-06
+### Added
+- New filter, `safe_svg_use_width_height_attributes`, that can be used to change the order of attributes we use to determine the SVG dimensions (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#43](https://github.com/10up/safe-svg/pull/43)).
+
+### Changed
+- Documentation updates (props [@j-hoffmann](https://github.com/j-hoffmann), [@jeffpaul](https://github.com/jeffpaul), [@Zodiac1978](https://github.com/Zodiac1978) via [#39](https://github.com/10up/safe-svg/pull/39), [#42](https://github.com/10up/safe-svg/pull/42)).
+
+### Fixed
+- Use the `viewBox` attributes first for image dimensions. Ensure we don't use image dimensions that end with percent signs (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#43](https://github.com/10up/safe-svg/pull/43)).
+- Make sure we use the full size SVG dimensions rather than the requested size, to avoid wrong sizes being used and duplicate height and width attributes (props [@dkotter](https://github.com/dkotter), [@cadic](https://github.com/cadic) via [#44](https://github.com/10up/safe-svg/pull/44)).
+- Ensure the `tmp_name` and `name` properties exist before we use them (props [@dkotter](https://github.com/dkotter), [@aksld](https://github.com/aksld) via [#46](https://github.com/10up/safe-svg/pull/46)).
+
 ## [1.9.10] - 2022-02-23
 **Note that this release bumps the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.**
 
 ### Changed
 - Bump WordPress minimum version from 4.0 to 4.7 (props [@cadic](https://github.com/cadic) via [#32](https://github.com/10up/safe-svg/pull/32)).
 - Bump PHP minimum version from 5.6 to 7.0 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [#20](https://github.com/10up/safe-svg/pull/20)).
-- Update `enshrined/svg-sanitize` from 0.13.3 to 0.5.2 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic) via [#20](https://github.com/10up/safe-svg/pull/20), [#29](https://github.com/10up/safe-svg/pull/29)).
+- Update `enshrined/svg-sanitize` from 0.13.3 to 0.15.2 (props [@mehidi258](https://github.com/mehidi258), [@iamdharmesh](https://github.com/iamdharmesh), [@amdd-tim](https://github.com/amdd-tim), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic) via [#20](https://github.com/10up/safe-svg/pull/20), [#29](https://github.com/10up/safe-svg/pull/29)).
 - Bump WordPress version "tested up to" 5.9 (props [@BBerg10up](https://github.com/BBerg10up), [@jeffpaul](https://github.com/jeffpaul), [@cadic](https://github.com/cadic) via [#14](https://github.com/10up/safe-svg/pull/14), [#27](https://github.com/10up/safe-svg/pull/27)).
 - Updated library location and added a new build step (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter) via [#35](https://github.com/10up/safe-svg/pull/35), [#36](https://github.com/10up/safe-svg/pull/36)).
 - Updated plugin assets and added docs and repo management workflows via GitHub Actions (props [Brooke Campbell](https://www.linkedin.com/in/brookecampbelldesign/), [@jeffpaul](https://github.com/jeffpaul) via [#16](https://github.com/10up/safe-svg/pull/16), [#26](https://github.com/10up/safe-svg/pull/26)).
@@ -186,6 +198,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.0.0]: https://github.com/10up/safe-svg/compare/1.9.10...2.0.0
 [1.9.10]: https://github.com/10up/safe-svg/compare/1.9.9...1.9.10
 [1.9.9]: https://github.com/10up/safe-svg/compare/1.9.8...1.9.9
 [1.9.8]: https://github.com/10up/safe-svg/compare/1.9.7...1.9.8
