@@ -2,11 +2,21 @@
 	"name": "darylldoyle/safe-svg",
 	"description": "Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website",
 	"type": "wordpress-plugin",
+	"homepage": "https://github.com/10up/safe-svg",
+	"readme": "https://github.com/10up/safe-svg/blob/develop/README.md",
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
+			"name": "10up",
+			"email": "opensource@10up.com",
+			"homepage": "https://10up.com/",
+			"role": "Developer"
+		},		
+		{
 			"name": "Daryll Doyle",
-			"homepage": "https://wpsvg.com/"
+			"email": "daryll@enshrined.co.uk",
+			"homepage": "http://enshrined.co.uk/",
+			"role": "Developer"
 		}
 	],
 	"require": {

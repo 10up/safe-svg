@@ -1,9 +1,9 @@
 <?php
 /*
  * Plugin Name:       Safe SVG
- * Plugin URI:        https://wpsvg.com/
- * Description:       Allows SVG uploads into WordPress and sanitizes the SVG before saving it
- * Version:           1.9.10
+ * Plugin URI:        https://wordpress.org/plugins/safe-svg/
+ * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
+ * Version:           2.0.0
  * Requires at least: 4.7
  * Requires PHP:      7.0
  * Author:            10up
