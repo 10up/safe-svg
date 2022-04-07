@@ -501,11 +501,11 @@ if ( ! class_exists( 'safe_svg' ) ) {
                  * @return {bool} If we should use the width & height attributes first or not.
                  */
                 if ( (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg ) ) {
-                    $width  = $attr_width;
-                    $height = $attr_height;
+                    $width  = $attr_width ?? 0;
+                    $height = $attr_height ?? 0;
                 } else {
-                    $width  = $viewbox_width;
-                    $height = $viewbox_height;
+                    $width  = $viewbox_width ?? 0;
+                    $height = $viewbox_height ?? 0;
                 }
 
                 if ( ! $width && ! $height ) {
