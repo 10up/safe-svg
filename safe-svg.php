@@ -503,7 +503,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
                 if ( (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg ) ) {
                     $width  = $attr_width;
                     $height = $attr_height;
-                } else {
+                } elseif ( isset( $viewbox_width, $viewbox_height ) ) {
                     $width  = $viewbox_width;
                     $height = $viewbox_height;
                 }
