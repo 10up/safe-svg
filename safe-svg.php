@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) or die( 'Really?' );
 // Try and include our autoloader.
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
-} else {
+} elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
 	add_action(
 		'admin_notices',
 		function() {
