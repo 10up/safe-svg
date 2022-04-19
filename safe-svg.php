@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.0.0
+ * Version:           2.0.1
  * Requires at least: 4.7
  * Requires PHP:      7.0
  * Author:            10up
@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) or die( 'Really?' );
 // Try and include our autoloader.
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
-} else {
+} elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
 	add_action(
 		'admin_notices',
 		function() {
@@ -500,12 +500,24 @@ if ( ! class_exists( 'safe_svg' ) ) {
                  *
                  * @return {bool} If we should use the width & height attributes first or not.
                  */
-                if ( (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg ) ) {
-                    $width  = $attr_width;
-                    $height = $attr_height;
+                $use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg );
+
+                if ( $use_width_height ) {
+                    if ( isset( $attr_width, $attr_height ) ) {
+                        $width  = $attr_width;
+                        $height = $attr_height;
+                    } elseif ( isset( $viewbox_width, $viewbox_height ) ) {
+                        $width  = $viewbox_width;
+                        $height = $viewbox_height;
+                    }
                 } else {
-                    $width  = $viewbox_width;
-                    $height = $viewbox_height;
+                    if ( isset( $viewbox_width, $viewbox_height ) ) {
+                        $width  = $viewbox_width;
+                        $height = $viewbox_height;
+                    } elseif ( isset( $attr_width, $attr_height ) ) {
+                        $width  = $attr_width;
+                        $height = $attr_height;
+                    }
                 }
 
                 if ( ! $width && ! $height ) {

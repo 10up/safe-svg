@@ -3,7 +3,7 @@ Contributors:      10up, enshrined
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.7
 Tested up to:      5.9
-Stable tag:        2.0.0
+Stable tag:        2.0.1
 Requires PHP:      7.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,11 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.0.1 - 2022-04-19 =
+* **Changed:** Documentation updates (props [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc)).
+* **Fixed:** Ensure our height and width attributes are set before using them (props [@dkotter](https://github.com/dkotter), [@r8r](https://github.com/r8r), [@jerturowetz](https://github.com/jerturowetz), [@cadic](https://github.com/cadic)).
+* **Fixed:** Support for installing via packagist.org (props [@roborourke](https://github.com/roborourke), [@peterwilsoncc](https://github.com/peterwilsoncc)).
 
 = 2.0.0 - 2022-04-06 =
 * **Added:** New filter, `safe_svg_use_width_height_attributes`, that can be used to change the order of attributes we use to determine the SVG dimensions (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc)).

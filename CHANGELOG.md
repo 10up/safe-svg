@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.0.1] - 2022-04-19
+
+### Changed
+
+- Documentation updates (props [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#50](https://github.com/10up/safe-svg/pull/50)).
+
+### Fixed
+
+- Ensure our height and width attributes are set before using them (props [@dkotter](https://github.com/dkotter), [@r8r](https://github.com/r8r), [@jerturowetz](https://github.com/jerturowetz), [@cadic](https://github.com/cadic) via [#51](https://github.com/10up/safe-svg/pull/51))
+- Support for installing via packagist.org (props [@roborourke](https://github.com/roborourke), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#52](https://github.com/10up/safe-svg/pull/52)).
+
 ## [2.0.0] - 2022-04-06
 ### Added
 - New filter, `safe_svg_use_width_height_attributes`, that can be used to change the order of attributes we use to determine the SVG dimensions (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#43](https://github.com/10up/safe-svg/pull/43)).
@@ -198,6 +209,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.0.1]: https://github.com/10up/safe-svg/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/10up/safe-svg/compare/1.9.10...2.0.0
 [1.9.10]: https://github.com/10up/safe-svg/compare/1.9.9...1.9.10
 [1.9.9]: https://github.com/10up/safe-svg/compare/1.9.8...1.9.9
