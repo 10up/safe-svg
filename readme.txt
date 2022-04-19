@@ -66,7 +66,7 @@ They take one argument that must be returned. See below for examples:
 
 == Changelog ==
 
-= 2.0.1 - 2022-04-18 =
+= 2.0.1 - 2022-04-19 =
 * **Changed:** Documentation updates (props [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc)).
 * **Fixed:** Ensure our height and width attributes are set before using them (props [@dkotter](https://github.com/dkotter), [@r8r](https://github.com/r8r), [@jerturowetz](https://github.com/jerturowetz), [@cadic](https://github.com/cadic)).
 * **Fixed:** Support for installing via packagist.org (props [@roborourke](https://github.com/roborourke), [@peterwilsoncc](https://github.com/peterwilsoncc)).
