@@ -4,10 +4,3 @@
 #postimagediv .inside .svg img {
     width: 100%;
 }
-
-/**
- * Fix for Gutenberg not showing featured images correctly.
- */
-img.components-responsive-wrapper__content[src$=".svg"] {
-    position: relative;
-}
