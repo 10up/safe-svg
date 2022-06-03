@@ -1,0 +1,33 @@
+{
+  "name": "@10up/safe-svg",
+  "version": "2.0.1",
+  "description": "Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website",
+  "homepage": "https://github.com/10up/safe-svg#readme",
+  "license": "GPL-2.0-or-later",
+  "author": {
+    "name": "10up",
+    "email": "opensource@10up.com",
+    "url": "https://10up.com",
+    "role": "developer"
+  },
+  "bugs": {
+    "url": "https://github.com/10up/safe-svg/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/10up/safe-svg.git"
+  },
+  "keywords": [
+    "svg",
+    "sanitize",
+    "upload",
+    "security",
+    "image",
+    "vector",
+    "file",
+    "graphic",
+    "media",
+    "mime"
+  ],
+  "scripts": {}
+}
