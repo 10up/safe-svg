@@ -2,10 +2,13 @@
 /.git
 /.github
 /.wordpress-org
+/node_modules
+/tests
 
 # Files
 .distignore
 .gitignore
+.wp-env.json
 CHANGELOG.md
 CODE_OF_CONDUCT.md
 composer.json
@@ -13,4 +16,6 @@ composer.lock
 CONTRIBUTING.md
 CREDITS.md
 LICENSE.md
+package-lock.json
+package.json
 README.md
