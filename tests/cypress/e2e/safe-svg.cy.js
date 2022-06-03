@@ -63,7 +63,7 @@ describe('Safe SVG Tests', () => {
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
   });
 
-  it('Bad formatted SVG should\'t upload and give error.', () => {
+  it('Bad formatted SVG shouldn\'t upload and give an error.', () => {
     cy.fixture('badXmlTestOne.svg').as('badXmlTestOne');
     cy.uploadMedia('@badXmlTestOne');
 
