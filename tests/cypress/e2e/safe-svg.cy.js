@@ -4,11 +4,7 @@ describe('Safe SVG Tests', () => {
   });
 
   it('Admin can upload SVG image', () => {
-    cy.visit('/wp-admin/media-new.php');
-    cy.get('.drag-drop').should('exist');
-    cy.get('#drag-drop-area').should('exist');
-    cy.get('#drag-drop-area').selectFile('.wordpress-org/icon.svg', { action: 'drag-drop' });
-
+    cy.uploadMedia('.wordpress-org/icon.svg');
     cy.get('.media-item .media-list-title').should('exist').contains('icon');
     cy.get('.media-item a.edit-attachment').should('exist').contains('Edit');
   });
@@ -27,11 +23,7 @@ describe('Safe SVG Tests', () => {
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
 
     // Test
-    cy.fixture('custom.svg').as('customFile');
-    cy.visit('/wp-admin/media-new.php');
-    cy.get('.drag-drop').should('exist');
-    cy.get('#drag-drop-area').should('exist');
-    cy.get('#drag-drop-area').selectFile('@customFile', { action: 'drag-drop' });
+    cy.uploadMedia('tests/cypress/fixtures/custom.svg');
 
     cy.get('.media-item a.edit-attachment').should('exist').click();
     cy.get('input#attachment_url').invoke('val')
@@ -54,11 +46,7 @@ describe('Safe SVG Tests', () => {
     cy.activatePlugin('safe-svg-cypress-test-plugin');
 
     // Test
-    cy.fixture('custom.svg').as('customSVGFile');
-    cy.visit('/wp-admin/media-new.php');
-    cy.get('.drag-drop').should('exist');
-    cy.get('#drag-drop-area').should('exist');
-    cy.get('#drag-drop-area').selectFile('@customSVGFile', { action: 'drag-drop' });
+    cy.uploadMedia('tests/cypress/fixtures/custom.svg');
 
     cy.get('.media-item a.edit-attachment').should('exist').click();
     cy.get('input#attachment_url').invoke('val')
@@ -76,12 +64,8 @@ describe('Safe SVG Tests', () => {
   });
 
   it('Bad formatted SVG should\'t upload and give error.', () => {
-    cy.visit('/wp-admin/media-new.php');
-    cy.get('.drag-drop').should('exist');
-    cy.get('#drag-drop-area').should('exist');
-    
     cy.fixture('badXmlTestOne.svg').as('badXmlTestOne');
-    cy.get('#drag-drop-area').selectFile('@badXmlTestOne', { action: 'drag-drop' });
+    cy.uploadMedia('@badXmlTestOne');
 
     cy.get('.media-item .error-div.error').should('exist').contains('has failed to upload');
   });

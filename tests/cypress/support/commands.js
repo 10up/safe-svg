@@ -23,3 +23,10 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('uploadMedia', (filePath) => {
+    cy.visit('/wp-admin/media-new.php');
+    cy.get('.drag-drop').should('exist');
+    cy.get('#drag-drop-area').should('exist');
+    cy.get('#drag-drop-area').selectFile(filePath, { action: 'drag-drop' });
+});
