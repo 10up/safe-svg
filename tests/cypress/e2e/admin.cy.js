@@ -4,11 +4,12 @@ describe('Admin can login and make sure plugin is activated', () => {
   });
 
   it('Open dashboard', () => {
-    cy.visit(`/wp-admin`);
-    cy.get("h1").should("contain", "Dashboard");
+    cy.visit('/wp-admin');
+    cy.get('h1').should('contain', 'Dashboard');
   });
 
   it('Can activate plugin if it is deactivated', () => {
 		cy.activatePlugin('safe-svg');
+    cy.deactivatePlugin('safe-svg-cypress-test-plugin');
 	});
 });
