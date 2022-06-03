@@ -29,5 +29,17 @@
     "media",
     "mime"
   ],
-  "scripts": {}
+  "scripts": {
+    "cypress:open": "cypress open --config-file tests/cypress/config.json",
+    "cypress:run": "cypress run --config-file tests/cypress/config.json",
+    "env": "wp-env",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "postenv:start": "./tests/bin/initialize.sh"
+  },
+  "devDependencies": {
+    "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
+    "@wordpress/env": "^4.8.0",
+    "cypress": "^10.0.2"
+  }
 }
