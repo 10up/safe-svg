@@ -9,7 +9,7 @@ describe('Admin can login and make sure plugin is activated', () => {
   });
 
   it('Can activate plugin if it is deactivated', () => {
-		cy.activatePlugin('safe-svg');
+    cy.activatePlugin('safe-svg');
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
-	});
+  });
 });
