@@ -5,7 +5,7 @@ describe('Safe SVG Tests', () => {
 
   it('Admin can upload SVG image', () => {
     cy.uploadMedia('.wordpress-org/icon.svg');
-    cy.get('.media-item .media-list-title').should('exist').contains('icon');
+    cy.get('.media-item .media-list-title, .media-item .title').should('exist').contains('icon');
     cy.get('.media-item a.edit-attachment').should('exist').contains('Edit');
   });
 
@@ -24,17 +24,18 @@ describe('Safe SVG Tests', () => {
 
     // Test
     cy.uploadMedia('tests/cypress/fixtures/custom.svg');
-
-    cy.get('.media-item a.edit-attachment').should('exist').click();
+    cy.get('#media-items .media-item a.edit-attachment').invoke('attr', 'href').then(editLink => {
+			cy.visit(editLink);
+		} );
     cy.get('input#attachment_url').invoke('val')
-    .then(url => {
-      cy.request(url)
-        .then((response) => {
-          cy.wrap(response?.body)
-            .should('not.contain', 'customTestTag')
-            .should('not.contain', 'customTestAttribute');
-        });
-    });
+      .then(url => {
+        cy.request(url)
+          .then((response) => {
+            cy.wrap(response?.body)
+              .should('not.contain', 'customTestTag')
+              .should('not.contain', 'customTestAttribute');
+          });
+      });
   });
 
   /**
@@ -48,16 +49,18 @@ describe('Safe SVG Tests', () => {
     // Test
     cy.uploadMedia('tests/cypress/fixtures/custom.svg');
 
-    cy.get('.media-item a.edit-attachment').should('exist').click();
+    cy.get('#media-items .media-item a.edit-attachment').invoke('attr', 'href').then(editLink => {
+			cy.visit( editLink );
+		});
     cy.get('input#attachment_url').invoke('val')
-    .then(url => {
-      cy.request(url)
-        .then((response) => {
-          cy.wrap(response?.body)
-            .should('contain', 'customTestTag')
-            .should('contain', 'customTestAttribute');
-        });
-    });
+      .then(url => {
+        cy.request(url)
+          .then((response) => {
+            cy.wrap(response?.body)
+              .should('contain', 'customTestTag')
+              .should('contain', 'customTestAttribute');
+          });
+      });
 
     // Deactivate Test Plugin
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
