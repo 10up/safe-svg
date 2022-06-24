@@ -2,7 +2,7 @@
 Contributors:      10up, enshrined
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.7
-Tested up to:      5.9
+Tested up to:      6.0
 Stable tag:        2.0.1
 Requires PHP:      7.0
 License:           GPLv2 or later
