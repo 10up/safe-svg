@@ -2,8 +2,8 @@
 Contributors:      10up, enshrined
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.7
-Tested up to:      5.9
-Stable tag:        2.0.1
+Tested up to:      6.0
+Stable tag:        2.0.2
 Requires PHP:      7.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,13 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.0.2 - 2022-06-27 =
+* **Added:** Dependency security scanning (props [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/safe-svg/pull/60)).
+* **Added:** End-to-end testing with Cypress (props [@iamdharmesh](https://github.com/iamdharmesh) via [#64](https://github.com/10up/safe-svg/pull/64)).
+* **Changed:** Bump WordPress version "tested up to" 6.0 (props [@dkotter](https://github.com/dkotter) via [#65](https://github.com/10up/Ad-Refresh-Control/issues/65)).
+* **Removed:** Redundant premium version upgrade link (props [@ocean90](https://github.com/ocean90), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#61](https://github.com/10up/safe-svg/pull/61)).
+* **Removed:** Unneeded admin CSS fix for featured images (props [@AdamWills](https://github.com/AdamWills), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#63](https://github.com/10up/safe-svg/pull/63)).
 
 = 2.0.1 - 2022-04-19 =
 * **Changed:** Documentation updates (props [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc)).

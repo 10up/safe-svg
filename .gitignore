@@ -1,2 +1,6 @@
 vendor
 .DS_Store
+node_modules
+tests/cypress/downloads
+tests/cypress/screenshots
+tests/cypress/videos

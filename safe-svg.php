@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.0.1
+ * Version:           2.0.2
  * Requires at least: 4.7
  * Requires PHP:      7.0
  * Author:            10up
@@ -76,7 +76,6 @@ if ( ! class_exists( 'safe_svg' ) ) {
             add_action( 'admin_enqueue_scripts', array( $this, 'load_custom_admin_style' ) );
             add_action( 'get_image_tag', array( $this, 'get_image_tag_override' ), 10, 6 );
             add_filter( 'wp_generate_attachment_metadata', array( $this, 'skip_svg_regeneration' ), 10, 2 );
-            add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'add_upgrade_link' ) );
             add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
             add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'disable_srcset' ), 10, 4 );
         }
@@ -424,21 +423,6 @@ if ( ! class_exists( 'safe_svg' ) ) {
             }
 
             return $metadata;
-        }
-
-        /**
-         * Add in an upgrade link for Safe SVG
-         *
-         * @param $links
-         *
-         * @return array
-         */
-        function add_upgrade_link( $links ) {
-            $mylinks = array(
-                '<a target="_blank" style="color:#3db634;" href="https://wpsvg.com/?utm_source=plugin-list&utm_medium=upgrade-link&utm_campaign=plugin-list&utm_content=action-link">Upgrade</a>',
-            );
-
-            return array_merge( $links, $mylinks );
         }
 
         /**

@@ -4,14 +4,23 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.0.1] - 2022-04-19
+## [2.0.2] - 2022-06-27
+### Added
+- Dependency security scanning (props [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/safe-svg/pull/60)).
+- End-to-end testing with Cypress (props [@iamdharmesh](https://github.com/iamdharmesh) via [#64](https://github.com/10up/safe-svg/pull/64)).
 
 ### Changed
+- Bump WordPress version "tested up to" 6.0 (props [@dkotter](https://github.com/dkotter) via [#65](https://github.com/10up/safe-svg/issues/65)).
 
+### Removed
+- Redundant premium version upgrade link (props [@ocean90](https://github.com/ocean90), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#61](https://github.com/10up/safe-svg/pull/61)).
+- Unneeded admin CSS fix for featured images (props [@AdamWills](https://github.com/AdamWills), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#63](https://github.com/10up/safe-svg/pull/63)).
+
+## [2.0.1] - 2022-04-19
+### Changed
 - Documentation updates (props [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#50](https://github.com/10up/safe-svg/pull/50)).
 
 ### Fixed
-
 - Ensure our height and width attributes are set before using them (props [@dkotter](https://github.com/dkotter), [@r8r](https://github.com/r8r), [@jerturowetz](https://github.com/jerturowetz), [@cadic](https://github.com/cadic) via [#51](https://github.com/10up/safe-svg/pull/51))
 - Support for installing via packagist.org (props [@roborourke](https://github.com/roborourke), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#52](https://github.com/10up/safe-svg/pull/52)).
 
@@ -49,11 +58,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Issue where 100% width is accidentally converted to 100px width (props [@joehoyle](https://github.com/joehoyle)).
 
 ## [1.9.8] - 2020-05-07
-### Chaged
+### Changed
 - Underlying library update.
 
 ## [1.9.7] - 2019-12-10
-### Chaged
+### Changed
 - Underlying library update.
 
 ## [1.9.6] - 2019-11-07
@@ -209,6 +218,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.0.2]: https://github.com/10up/safe-svg/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/10up/safe-svg/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/10up/safe-svg/compare/1.9.10...2.0.0
 [1.9.10]: https://github.com/10up/safe-svg/compare/1.9.9...1.9.10
