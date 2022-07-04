@@ -24,7 +24,8 @@
 		"enshrined/svg-sanitize": "^0.15.2"
 	},
 	"require-dev": {
-		"10up/wp_mock": "^0.4.2"
+		"10up/wp_mock": "^0.4.2",
+		"yoast/phpunit-polyfills": "^1.0"
 	},
 	"scripts": {
 		"test:unit": "./vendor/bin/phpunit"

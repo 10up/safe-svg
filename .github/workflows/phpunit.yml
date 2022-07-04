@@ -31,6 +31,7 @@ jobs:
     - name: Set standard 10up cache directories
       run: |
         composer config -g cache-dir "${{ env.COMPOSER_CACHE }}"
+
     - name: Prepare composer cache
       uses: actions/cache@v2
       with:
@@ -38,8 +39,9 @@ jobs:
         key: composer-${{ env.COMPOSER_VERSION }}-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           composer-${{ env.COMPOSER_VERSION }}-
+
     - name: Set PHP version
-      uses: shivammathur/setup-php@2.17.0
+      uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php }}
         coverage: none
