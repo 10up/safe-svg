@@ -121,4 +121,39 @@ class SafeSvgTest extends TestCase {
         $result = $this->instance->check_for_svg( $file );
         $this->assertArrayHasKey( 'error', $result );
     }
+
+    /**
+     * Test `one_pixel_fix` function.
+     * This function tests svg_dimensions() as well. 
+     *
+     * @return void
+     */
+    public function test_one_pixel_fix() {
+        \WP_Mock::userFunction( 'get_post_mime_type', array(
+            'args'   => 1,
+			'return' => 'image/svg+xml'
+		) );
+
+        \WP_Mock::userFunction( 'get_attached_file', array(
+            'args'   => 1,
+			'return_in_order' => array(
+                __DIR__ . '/files/svgCleanOne.svg',
+                __DIR__ . '/files/svgNoDimensions.svg'
+            )
+		) );
+
+        // Test SVG Dimensions
+        $image_sizes = $this->instance->one_pixel_fix( array(), 1, 'thumbnail', false );
+        if ( ! empty( $image_sizes ) ) {
+            $image_sizes = array_map( 'intval', $image_sizes );
+        }
+        $this->assertSame( array( 1 => 600, 2 => 600), $image_sizes );
+
+        // Test Default Dimensions
+        $image_sizes = $this->instance->one_pixel_fix( array(), 1, 'thumbnail', false );
+        if ( ! empty( $image_sizes ) ) {
+            $image_sizes = array_map( 'intval', $image_sizes );
+        }
+        $this->assertSame( array( 1 => 100, 2 => 100), $image_sizes );
+    }
 }
