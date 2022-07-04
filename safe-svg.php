@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
@@ -12,9 +12,13 @@
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       safe-svg
  * Domain Path:       /languages
+ *
+ * @package safe-svg
  */
 
-defined( 'ABSPATH' ) or die( 'Really?' );
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
 // Try and include our autoloader.
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
@@ -63,7 +67,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Set up the class
 		 */
-		function __construct() {
+		public function __construct() {
 			$this->sanitizer = new enshrined\svgSanitize\Sanitizer();
 			$this->sanitizer->minify( true );
 
@@ -83,7 +87,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Allow SVG Uploads
 		 *
-		 * @param $mimes
+		 * @param array $mimes Mime types keyed by the file extension regex corresponding to those types.
 		 *
 		 * @return mixed
 		 */
@@ -99,10 +103,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 *
 		 * @thanks @lewiscowles
 		 *
-		 * @param null $data
-		 * @param null $file
-		 * @param null $filename
-		 * @param null $mimes
+		 * @param array    $data     Values for the extension, mime type, and corrected filename.
+		 * @param string   $file     Full path to the file.
+		 * @param string   $filename The name of the file.
+		 * @param string[] $mimes    Array of mime types keyed by their file extension regex.
 		 *
 		 * @return null
 		 */
@@ -126,7 +130,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Check if the file is an SVG, if so handle appropriately
 		 *
-		 * @param $file
+		 * @param array $file An array of data for a single file.
 		 *
 		 * @return mixed
 		 */
@@ -156,15 +160,16 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Sanitize the SVG
 		 *
-		 * @param $file
+		 * @param string $file Temp file path.
 		 *
 		 * @return bool|int
 		 */
 		protected function sanitize( $file ) {
-			$dirty = file_get_contents( $file );
+			$dirty = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
 			// Is the SVG gzipped? If so we try and decode the string
-			if ( $is_zipped = $this->is_gzipped( $dirty ) ) {
+			$is_zipped = $this->is_gzipped( $dirty );
+			if ( $is_zipped ) {
 				$dirty = gzdecode( $dirty );
 
 				// If decoding fails, bail as we're not secure
@@ -190,7 +195,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				$clean = gzencode( $clean );
 			}
 
-			file_put_contents( $file, $clean );
+			file_put_contents( $file, $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 
 			return true;
 		}
@@ -200,7 +205,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 *
 		 * @see http://www.gzip.org/zlib/rfc-gzip.html#member-format
 		 *
-		 * @param $contents
+		 * @param string $contents Content to check.
 		 *
 		 * @return bool
 		 */
@@ -316,7 +321,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Load our custom CSS sheet.
 		 */
-		function load_custom_admin_style() {
+		public function load_custom_admin_style() {
 			wp_enqueue_style( 'safe-svg-css', plugins_url( 'assets/safe-svg.css', __FILE__ ), array() );
 		}
 
@@ -333,7 +338,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 *
 		 * @return mixed
 		 */
-		function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
+		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
 
 			if ( 'image/svg+xml' === $mime ) {
@@ -365,12 +370,12 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		/**
 		 * Skip regenerating SVGs
 		 *
-		 * @param int    $attachment_id Attachment Id to process.
-		 * @param string $file Filepath of the Attached image.
+		 * @param array $metadata      An array of attachment meta data.
+		 * @param int   $attachment_id Attachment Id to process.
 		 *
 		 * @return mixed Metadata for attachment.
 		 */
-		function skip_svg_regeneration( $metadata, $attachment_id ) {
+		public function skip_svg_regeneration( $metadata, $attachment_id ) {
 			$mime = get_post_mime_type( $attachment_id );
 			if ( 'image/svg+xml' === $mime ) {
 				$additional_image_sizes = wp_get_additional_image_sizes();
@@ -441,7 +446,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 *                            if the object does not exist.
 		 * @param int        $post_id Attachment ID.
 		 */
-		function metadata_error_fix( $data, $post_id ) {
+		public function metadata_error_fix( $data, $post_id ) {
 
 			// If it's a WP_Error regenerate metadata and save it
 			if ( is_wp_error( $data ) ) {
@@ -460,14 +465,14 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * @return array|bool
 		 */
 		protected function svg_dimensions( $svg ) {
-			$svg    = @simplexml_load_file( $svg );
+			$svg    = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$width  = 0;
 			$height = 0;
 			if ( $svg ) {
 				$attributes = $svg->attributes();
 
-				if ( isset( $attributes->viewBox ) ) {
-					$sizes = explode( ' ', $attributes->viewBox );
+				if ( isset( $attributes->viewBox ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+					$sizes = explode( ' ', $attributes->viewBox ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					if ( isset( $sizes[2], $sizes[3] ) ) {
 						$viewbox_width  = floatval( $sizes[2] );
 						$viewbox_height = floatval( $sizes[3] );

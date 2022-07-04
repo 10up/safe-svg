@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <ruleset name="Project Rules">
 	<rule ref="10up-Default">
+        <exclude name="PEAR.NamingConventions.ValidClassName.StartWithCapital" />
+		<exclude name="PEAR.NamingConventions.ValidClassName.Invalid" />
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
     <!-- Files to check -->
