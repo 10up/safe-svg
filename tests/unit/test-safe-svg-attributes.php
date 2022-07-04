@@ -39,6 +39,6 @@ class SafeSvgAttributesTest extends TestCase {
 
 		$svg_attributes = safe_svg_attributes::getAttributes();
 		$this->assertContains( 'customAttribute', $svg_attributes );
-		$this->assertEquals( $svg_attributes, $filtered_svg_attributes );
+		$this->assertSame( $svg_attributes, $filtered_svg_attributes );
     }
 }

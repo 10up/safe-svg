@@ -39,6 +39,6 @@ class SafeSvgTagsTest extends TestCase {
 
 		$svg_tags = safe_svg_tags::getTags();
 		$this->assertContains( 'customTag', $svg_tags );
-		$this->assertEquals( $svg_tags, $filtered_svg_tags );
+		$this->assertSame( $svg_tags, $filtered_svg_tags );
     }
 }

@@ -156,4 +156,42 @@ class SafeSvgTest extends TestCase {
         }
         $this->assertSame( array( 1 => 100, 2 => 100), $image_sizes );
     }
+
+    /**
+     * Test `fix_admin_preview` function.
+     *
+     * @return void
+     */
+    public function test_fix_admin_preview() {
+        \WP_Mock::userFunction( 'get_attached_file', array(
+            'args'   => 1,
+			'return' => __DIR__ . '/files/svgCleanOne.svg'
+		) );
+        \WP_Mock::passthruFunction( 'get_option' );
+
+        $response = $this->instance->fix_admin_preview(
+            array( 'mime' => 'image/svg+xml', 'url' => '' ),
+            (object) array( 'ID' => 1 ),
+            array()
+        );
+        
+        $this->assertIsArray( $response );
+        $this->assertSame( 600, intval( $response['width'] ) );
+        $this->assertSame( 600, intval( $response['height'] ) );
+    }
+
+    /**
+     * Test `featured_image_fix` function.
+     *
+     * @return void
+     */
+    public function test_featured_image_fix() {
+        \WP_Mock::userFunction( 'get_post_mime_type', array(
+            'args'   => 1,
+			'return' => 'image/svg+xml'
+		) );
+        
+        $response = $this->instance->featured_image_fix( 'test', 1, 1 );
+        $this->assertSame( '<span class="svg">test</span>', $response );
+    }
 }
