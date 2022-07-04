@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<ruleset name="Project Rules">
+	<rule ref="10up-Default">
+	</rule>
+
+    <!-- Files to check -->
+	<arg name="extensions" value="php"/>
+	<file>.</file>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
+	<!-- ensure we are using language features according to supported PHP versions -->
+	<config name="testVersion" value="7.0-"/>
+	<rule ref="PHPCompatibilityWP" />
+</ruleset>
