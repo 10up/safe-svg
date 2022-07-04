@@ -22,5 +22,11 @@
 	"require": {
 		"php": ">=7.0",
 		"enshrined/svg-sanitize": "^0.15.2"
+	},
+	"require-dev": {
+		"10up/wp_mock": "^0.4.2"
+	},
+	"scripts": {
+		"test:unit": "./vendor/bin/phpunit"
 	}
 }
