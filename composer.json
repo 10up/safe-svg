@@ -22,5 +22,13 @@
 	"require": {
 		"php": ">=7.0",
 		"enshrined/svg-sanitize": "^0.15.2"
+	},
+	"require-dev": {
+		"10up/phpcs-composer": "dev-master"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }
