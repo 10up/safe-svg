@@ -20,6 +20,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+define( 'SAFE_SVG_VERSION', '2.0.2' );
+
 // Try and include our autoloader.
 if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
@@ -116,10 +118,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				$exploded = explode( '.', $filename );
 				$ext      = strtolower( end( $exploded ) );
 			}
-			if ( $ext === 'svg' ) {
+			if ( 'svg' === $ext ) {
 				$data['type'] = 'image/svg+xml';
 				$data['ext']  = 'svg';
-			} elseif ( $ext === 'svgz' ) {
+			} elseif ( 'svgz' === $ext ) {
 				$data['type'] = 'image/svg+xml';
 				$data['ext']  = 'svgz';
 			}
@@ -145,7 +147,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			$wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file_name );
 			$type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
-			if ( $type === 'image/svg+xml' ) {
+			if ( 'image/svg+xml' === $type ) {
 				if ( ! $this->sanitize( $file['tmp_name'] ) ) {
 					$file['error'] = __(
 						"Sorry, this file couldn't be sanitized so for security reasons wasn't uploaded",
@@ -173,7 +175,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				$dirty = gzdecode( $dirty );
 
 				// If decoding fails, bail as we're not secure
-				if ( $dirty === false ) {
+				if ( false === $dirty ) {
 					return false;
 				}
 			}
@@ -186,7 +188,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 
 			$clean = $this->sanitizer->sanitize( $dirty );
 
-			if ( $clean === false ) {
+			if ( false === $clean ) {
 				return false;
 			}
 
@@ -210,11 +212,13 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * @return bool
 		 */
 		protected function is_gzipped( $contents ) {
+			// phpcs:disable Generic.Strings.UnnecessaryStringConcat.Found
 			if ( function_exists( 'mb_strpos' ) ) {
 				return 0 === mb_strpos( $contents, "\x1f" . "\x8b" . "\x08" );
 			} else {
 				return 0 === strpos( $contents, "\x1f" . "\x8b" . "\x08" );
 			}
+			// phpcs:enable
 		}
 
 		/**
@@ -228,7 +232,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 */
 		public function fix_admin_preview( $response, $attachment, $meta ) {
 
-			if ( $response['mime'] == 'image/svg+xml' ) {
+			if ( 'image/svg+xml' === $response['mime'] ) {
 				$dimensions = $this->svg_dimensions( get_attached_file( $attachment->ID ) );
 
 				if ( $dimensions ) {
@@ -322,7 +326,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * Load our custom CSS sheet.
 		 */
 		public function load_custom_admin_style() {
-			wp_enqueue_style( 'safe-svg-css', plugins_url( 'assets/safe-svg.css', __FILE__ ), array() );
+			wp_enqueue_style( 'safe-svg-css', plugins_url( 'assets/safe-svg.css', __FILE__ ), array(), SAFE_SVG_VERSION );
 		}
 
 		/**
@@ -345,7 +349,8 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				if ( is_array( $size ) ) {
 					$width  = $size[0];
 					$height = $size[1];
-				} elseif ( 'full' == $size && $dimensions = $this->svg_dimensions( get_attached_file( $id ) ) ) {
+				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( get_attached_file( $id ) ) ) {
 					$width  = $dimensions['width'];
 					$height = $dimensions['height'];
 				} else {
