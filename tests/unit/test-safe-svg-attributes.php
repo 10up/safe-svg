@@ -1,11 +1,17 @@
-<?php 
+<?php
+/**
+ * Test safe_svg_attributes class
+ *
+ * @package safe-svg
+ */
+
 use \WP_Mock\Tools\TestCase;
 
 /**
  * SafeSvgAttributesTest class tests the safe_svg_attributes class and functions.
  */
 class SafeSvgAttributesTest extends TestCase {
-    /**
+	/**
 	 * Set up our mocked WP functions. Rather than setting up a database we can mock the returns of core WordPress functions.
 	 *
 	 * @return void
@@ -14,7 +20,7 @@ class SafeSvgAttributesTest extends TestCase {
 		\WP_Mock::setUp();
 	}
 
-    /**
+	/**
 	 * Tear down WP Mock.
 	 *
 	 * @return void
@@ -28,7 +34,7 @@ class SafeSvgAttributesTest extends TestCase {
 	 *
 	 * @return void
 	 */
-    public function test_get_attributes(){
+	public function test_get_attributes() {
 		$svg_attributes = safe_svg_attributes::getAttributes();
 		$this->assertIsArray( $svg_attributes );
 
@@ -40,5 +46,5 @@ class SafeSvgAttributesTest extends TestCase {
 		$svg_attributes = safe_svg_attributes::getAttributes();
 		$this->assertContains( 'customAttribute', $svg_attributes );
 		$this->assertSame( $svg_attributes, $filtered_svg_attributes );
-    }
+	}
 }
