@@ -27,9 +27,9 @@
 		"10up/phpcs-composer": "dev-master"
 	},
 	"scripts": {
-		"phpcs": "./vendor/bin/phpcs *.php includes -p -s",
-		"phpcbf": "./vendor/bin/phpcbf",
-		"phpcompatibility": "./vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.0-"
+		"phpcs": "./vendor/bin/phpcs . -p -s",
+		"phpcbf": "./vendor/bin/phpcbf .",
+		"phpcs:compat": "./vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.0-"
 	},
 	"config": {
 		"allow-plugins": {
