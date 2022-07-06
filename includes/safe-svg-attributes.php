@@ -1,6 +1,13 @@
 <?php
+/**
+ * Safe SVG allowed attributes.
+ *
+ * @package safe-svg
+ */
 
-
+/**
+ * SVG Allowed Attributes lass.
+ */
 class safe_svg_attributes extends \enshrined\svgSanitize\data\AllowedAttributes {
 
 	/**
