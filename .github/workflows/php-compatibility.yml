@@ -1,0 +1,32 @@
+name: PHP Compatibility
+
+on:
+  push:
+    branches:
+      - develop
+      - trunk
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  php_compatibility:
+    name: PHP minimum 7.0
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set PHP version
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          tools: composer:v2
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run PHP Compatibility
+        run: vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.0-
