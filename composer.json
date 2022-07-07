@@ -24,12 +24,15 @@
 		"enshrined/svg-sanitize": "^0.15.2"
 	},
 	"require-dev": {
-		"10up/phpcs-composer": "dev-master"
+		"10up/phpcs-composer": "dev-master",
+		"10up/wp_mock": "^0.4.2",
+		"yoast/phpunit-polyfills": "^1.0"
 	},
 	"scripts": {
 		"phpcs": "./vendor/bin/phpcs . -p -s",
 		"phpcbf": "./vendor/bin/phpcbf .",
-		"phpcs:compat": "./vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.0-"
+		"phpcs:compat": "./vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.0-",
+		"test:unit": "./vendor/bin/phpunit"
 	},
 	"config": {
 		"allow-plugins": {

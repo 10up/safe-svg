@@ -4,3 +4,4 @@ node_modules
 tests/cypress/downloads
 tests/cypress/screenshots
 tests/cypress/videos
+.phpunit.result.cache
