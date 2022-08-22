@@ -51,6 +51,7 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
+require_once 'includes/safe-svg-settings.php';
 
 if ( ! class_exists( 'safe_svg' ) ) {
 
@@ -84,6 +85,8 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			add_filter( 'wp_generate_attachment_metadata', array( $this, 'skip_svg_regeneration' ), 10, 2 );
 			add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
 			add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'disable_srcset' ), 10, 4 );
+
+			new safe_svg_settings();
 		}
 
 		/**
@@ -94,8 +97,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * @return mixed
 		 */
 		public function allow_svg( $mimes ) {
-			$mimes['svg']  = 'image/svg+xml';
-			$mimes['svgz'] = 'image/svg+xml';
+			if ( current_user_can( 'safe_svg_upload_svg' ) ) {
+				$mimes['svg']  = 'image/svg+xml';
+				$mimes['svgz'] = 'image/svg+xml';
+			}
 
 			return $mimes;
 		}
@@ -148,6 +153,15 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			$type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
 			if ( 'image/svg+xml' === $type ) {
+				if ( ! current_user_can( 'safe_svg_upload_svg' ) ) {
+					$file['error'] = __(
+						'Sorry, you are not allowed to upload SVG files.',
+						'safe-svg'
+					);
+
+					return $file;
+				}
+
 				if ( ! $this->sanitize( $file['tmp_name'] ) ) {
 					$file['error'] = __(
 						"Sorry, this file couldn't be sanitized so for security reasons wasn't uploaded",
