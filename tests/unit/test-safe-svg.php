@@ -63,9 +63,26 @@ class SafeSvgTest extends TestCase {
 	 * @return void
 	 */
 	public function test_allow_svg() {
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'safe_svg_upload_svg',
+				'return' => true,
+			)
+		);
 		$allowed_svg = $this->instance->allow_svg( array() );
 		$this->assertNotEmpty( $allowed_svg );
 		$this->assertContains( 'image/svg+xml', $allowed_svg );
+	}
+
+	/**
+	 * Test dont_allow_svg function.
+	 *
+	 * @return void
+	 */
+	public function test_dont_allow_svg() {
+		$allowed_svg = $this->instance->allow_svg( array() );
+		$this->assertEmpty( $allowed_svg );
 	}
 
 	/**
@@ -112,6 +129,14 @@ class SafeSvgTest extends TestCase {
 					'ext'  => 'svg',
 					'type' => 'image/svg+xml',
 				),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'safe_svg_upload_svg',
+				'return' => true,
 			)
 		);
 
