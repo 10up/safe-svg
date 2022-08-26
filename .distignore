@@ -18,5 +18,6 @@ CREDITS.md
 LICENSE.md
 package-lock.json
 package.json
-README.md
+phpcs.xml
 phpunit.xml.dist
+README.md
