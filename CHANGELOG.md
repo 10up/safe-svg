@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.0.3] - 2022-09-01
+
+### Added
+- More robust PHP testing (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#71](https://github.com/10up/safe-svg/pull/71), [#73](https://github.com/10up/safe-svg/pull/73)).
+
+### Fixed
+- Addressed PHPCS errors (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#73](https://github.com/10up/safe-svg/pull/73)).
+
 ## [2.0.2] - 2022-06-27
 ### Added
 - Dependency security scanning (props [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/safe-svg/pull/60)).
@@ -218,6 +226,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.0.3]: https://github.com/10up/safe-svg/compare/2.0.2...2.0.3
 [2.0.2]: https://github.com/10up/safe-svg/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/10up/safe-svg/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/10up/safe-svg/compare/1.9.10...2.0.0

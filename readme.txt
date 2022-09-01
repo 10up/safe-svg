@@ -3,7 +3,7 @@ Contributors:      10up, enshrined
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 4.7
 Tested up to:      6.0
-Stable tag:        2.0.2
+Stable tag:        2.0.3
 Requires PHP:      7.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,10 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.0.3 - 2022-09-01 =
+* **Added:** More robust PHP testing (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#71](https://github.com/10up/safe-svg/pull/71), [#73](https://github.com/10up/safe-svg/pull/73)).
+* **Fixed:** Addressed PHPCS errors (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#73](https://github.com/10up/safe-svg/pull/73)).
 
 = 2.0.2 - 2022-06-27 =
 * **Added:** Dependency security scanning (props [@jeffpaul](https://github.com/jeffpaul) via [#60](https://github.com/10up/safe-svg/pull/60)).
