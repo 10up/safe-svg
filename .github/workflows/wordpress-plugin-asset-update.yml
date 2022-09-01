@@ -6,14 +6,14 @@ on:
     - trunk
 
 jobs:
-  master:
+  trunk:
     name: Push to trunk
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - name: Build
       run: |
-        composer install
+        composer install --no-dev
     - name: WordPress.org plugin asset/readme update
       uses: 10up/action-wordpress-plugin-asset-update@stable
       env:
