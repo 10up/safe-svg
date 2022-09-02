@@ -48,7 +48,7 @@ class safe_svg_settings {
 	public function safe_svg_settings_callback( $args ) {
 		?>
 		<p id="<?php echo esc_attr( $args['id'] ); ?>">
-			<?php esc_html_e( 'Select user roles who can upload SVG files.', 'safe-svg' ); ?>
+			<?php esc_html_e( 'Select which user roles can upload SVG files.', 'safe-svg' ); ?>
 		</p>
 		<?php
 	}
