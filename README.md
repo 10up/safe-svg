@@ -8,7 +8,7 @@
 
 Safe SVG is the best way to Allow SVG Uploads in WordPress!
 
-It gives you the ability to allow SVG uploads whilst making sure that they're sanitized to stop SVG/XML vulnerabilities affecting your site.  It also gives you the ability to preview your uploaded SVGs in the media library in all views. It gives you the ability to select which user role can upload an SVG file.
+It gives you the ability to allow SVG uploads (and limit that by user role) whilst making sure that they're sanitized to stop SVG/XML vulnerabilities affecting your site.  It also gives you the ability to preview your uploaded SVGs in the media library in all views.
 
 ### Current Features
 * **Sanitised SVGs** - Don't open up security holes in your WordPress site by allowing uploads of unsanitised files.

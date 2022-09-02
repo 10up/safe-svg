@@ -1,6 +1,6 @@
 <?php
 /**
- * Safe SVG Plugin settings.
+ * Safe SVG plugin settings.
  *
  * @package safe-svg
  */
@@ -18,7 +18,7 @@ class safe_svg_settings {
 	}
 
 	/**
-	 * custom option and settings
+	 * Custom option and settings
 	 */
 	public function settings_init() {
 		register_setting( 'media', 'safe_svg_upload_roles' );
@@ -51,7 +51,7 @@ class safe_svg_settings {
 	}
 
 	/**
-	 * User role field callbakc function.
+	 * User role field callback function.
 	 *
 	 * @param array $args Field args.
 	 */
