@@ -6,9 +6,10 @@
  */
 
 /**
- * SVG settings.
+ * SVG settings class.
  */
 class safe_svg_settings {
+
 	/**
 	 * Set up the class
 	 */
@@ -46,18 +47,18 @@ class safe_svg_settings {
 	 */
 	public function safe_svg_settings_callback( $args ) {
 		?>
-		<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Select user roles who can upload SVG files.', 'safe-svg' ); ?></p>
+		<p id="<?php echo esc_attr( $args['id'] ); ?>">
+			<?php esc_html_e( 'Select user roles who can upload SVG files.', 'safe-svg' ); ?>
+		</p>
 		<?php
 	}
 
 	/**
 	 * User role field callback function.
-	 *
-	 * @param array $args Field args.
 	 */
-	public function safe_svg_roles_cb( $args ) {
+	public function safe_svg_roles_cb() {
 		$user_roles   = get_editable_roles();
-		$upload_roles = get_option( 'safe_svg_upload_roles' );
+		$upload_roles = (array) get_option( 'safe_svg_upload_roles', [] );
 
 		foreach ( $user_roles as $role => $info ) :
 			?>
@@ -98,4 +99,5 @@ class safe_svg_settings {
 
 		return $new_roles;
 	}
+
 }
