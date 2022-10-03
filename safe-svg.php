@@ -51,6 +51,8 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 
 require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
+require 'includes/optimize.php';
+new \SafeSVG\Optimize();
 
 if ( ! class_exists( 'safe_svg' ) ) {
 
