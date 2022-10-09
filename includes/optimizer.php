@@ -10,19 +10,22 @@ namespace SafeSVG;
 use enshrined\svgSanitize\Sanitizer;
 
 if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
-	
 	/**
 	 * Class \SafeSVG\Optimizer
 	 */
 	class Optimizer {
-		
+		/**
+		 * The name of the nonce to send with the AJAX call.
+		 *
+		 * @var string
+		 */
+		private $nonce_name = 'safe-svg-optimizer';
 		/**
 		 * The class constructor.
 		 */
 		public function __construct() {
 			add_action( 'init', [ $this, 'init' ] );
 		}
-		
 		/**
 		 * Initialize actions.
 		 *
@@ -35,7 +38,6 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			add_action( 'admin_enqueue_scripts', [ $this, 'enqueues' ] );
 			add_action( 'wp_ajax_safe_svg_optimize', [ $this, 'optimize' ] );
 		}
-		
 		/**
 		 * Checks if the Optimizer is enabled.
 		 *
@@ -43,10 +45,8 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 */
 		public function is_enabled(): bool {
 			$params = $this->svgo_params();
-			
 			return ( ! empty( $params ) && is_array( $params ) );
 		}
-		
 		/**
 		 * The SVGO parameters. Developers can use this filter to pass additional parameters or completely disable the optimizer by passing:
 		 * add_filter( 'safe_svg_svgo_params', '__return_false' );
@@ -54,15 +54,17 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 * @return mixed|null
 		 */
 		public function svgo_params() {
-			return apply_filters( 'safe_svg_svgo_params', [
-				'multipass' => true,
-			] );
+			return apply_filters(
+				'safe_svg_svgo_params',
+				[
+					'multipass' => true,
+				]
+			);
 		}
-		
 		/**
 		 * Enqueue the necessary scripts.
 		 *
-		 * @param $hook
+		 * @param string $hook The current admin page.
 		 *
 		 * @return void
 		 */
@@ -70,16 +72,14 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			if ( 'options-media.php' !== $hook && 'post.php' !== $hook && 'upload.php' !== $hook ) {
 				return;
 			}
-			
 			wp_enqueue_script( 'safe-svg-scripts', plugins_url( '/dist/js/admin.js', dirname( __FILE__ ) ), [], SAFE_SVG_VERSION, true );
-			
 			$params = wp_json_encode(
 				[
 					'ajaxUrl'    => esc_url( admin_url( 'admin-ajax.php' ) ),
 					'svgoParams' => wp_json_encode( $this->svgo_params() ),
+					'nonce'      => wp_create_nonce( $this->nonce_name ),
 				]
 			);
-			
 			wp_add_inline_script(
 				'safe-svg-scripts',
 				sprintf(
@@ -88,23 +88,21 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 				),
 				'before'
 			);
-			
 		}
-		
 		/**
 		 * Optimize the SVG file.
 		 *
 		 * @return void
 		 */
 		public function optimize() {
+			check_ajax_referer( $this->nonce_name, 'svg_nonce' );
 			$svg_url  = filter_input( INPUT_GET, 'svg_url', FILTER_SANITIZE_URL );
 			$svg_path = $this->url_to_path( $svg_url );
 			if ( empty( $svg_path ) ) {
 				return;
 			}
 			$maybe_dirty = $_GET['optimized_svg'];
-			
-			$sanitizer = new Sanitizer();
+			$sanitizer   = new Sanitizer();
 			$sanitizer->minify( true );
 			$sanitized = $sanitizer->sanitize(
 				sprintf(
@@ -112,20 +110,17 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 					stripcslashes( $maybe_dirty )
 				)
 			);
-			
 			$optimized = trim(
 				stripcslashes(
 					preg_replace( '/<\?xml(.*?)\?>/', '', $sanitized ) // Remove the XML tag.
 				)
 			);
-			
 			if ( empty( $optimized ) ) {
 				return;
 			}
-			file_put_contents( $svg_path, $optimized );
+			file_put_contents( $svg_path, $optimized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 			wp_die();
 		}
-		
 		/**
 		 * A helper method to get the file path from its URL.
 		 *
@@ -137,7 +132,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			if ( empty( $url ) ) {
 				return '';
 			}
-			$parsed_url = parse_url( $url );
+			$parsed_url = wp_parse_url( $url );
 			if ( empty( $parsed_url['path'] ) ) {
 				return false;
 			}
@@ -145,7 +140,6 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			if ( file_exists( $file ) ) {
 				return $file;
 			}
-			
 			return false;
 		}
 	}

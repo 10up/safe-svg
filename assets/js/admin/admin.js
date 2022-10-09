@@ -39,6 +39,7 @@ import {optimize} from "svgo/lib/svgo";
                             action: 'safe_svg_optimize',
                             svg_url: svgUrl,
                             optimized_svg: optimizedString,
+                            svg_nonce: safeSvgParams.nonce
                         });
                         fetch(ajaxUrl, {method: 'GET'})
                             .then((ajaxResponse) => ajaxResponse)
