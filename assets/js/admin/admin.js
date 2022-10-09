@@ -14,11 +14,14 @@ import {optimize} from "svgo/lib/svgo";
     Object.assign(
         wp.Uploader.prototype, {
             // Run on a successful upload.
-            success: function (file_attachment) {
-                const svgUrl = file_attachment?.attributes?.url;
-                if (!svgUrl) {
+            success: function (attachment) {
+
+                const svgUrl = attachment?.attributes?.url;
+
+                if (!svgUrl || 'svg+xml' !== attachment?.attributes?.subtype) {
                     return;
                 }
+
                 // Get the SVG data from its URL and optimize.
                 fetch(svgUrl, {method: 'GET'})
                     .then((response) => response.text())
