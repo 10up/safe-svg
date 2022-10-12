@@ -12,7 +12,7 @@ namespace SafeSvg\Blocks\SafeSvgBlock;
  */
 function register() {
 	// Register the block.
-	register_block_type_from_metadata(
+	\register_block_type_from_metadata(
 		SAFE_SVG_PLUGIN_DIR . '/includes/blocks/safe-svg'
 	);
 }

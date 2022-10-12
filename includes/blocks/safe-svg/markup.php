@@ -12,4 +12,3 @@
 
 $attr_key = md5( maybe_serialize( $attributes ) );
 $block_id = 'safe-svg-recommended-block-' . $attr_key;
-?>
