@@ -17,8 +17,8 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
-import {editPropsShape} from "../../../../sophi-for-wordpress/includes/blocks/site-automation-block/props-shape";
-import SiteAutomationBlockEdit from "../../../../sophi-for-wordpress/includes/blocks/site-automation-block/edit";
+import PropTypes from 'prop-types';
+
 /**
  * Edit component.
  * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#edit
@@ -89,6 +89,14 @@ const SafeSvgBlockEdit = ( props ) => {
 	);
 };
 // Set the propTypes
-SafeSvgBlockEdit.propTypes = editPropsShape;
+SafeSvgBlockEdit.propTypes = {
+	attributes: PropTypes.shape({
+		svgURL: PropTypes.string,
+		alignment: PropTypes.string,
+	}).isRequired,
+	className: PropTypes.string,
+	clientId: PropTypes.string,
+	setAttributes: PropTypes.func.isRequired,
+};
 
 export default SafeSvgBlockEdit;

@@ -25,7 +25,7 @@ class SafeSvgTest extends TestCase {
 	 */
 	public function setUp(): void {
 		\WP_Mock::setUp();
-		$this->instance = new safe_svg();
+		$this->instance = new SafeSvg\safe_svg();
 	}
 
 	/**

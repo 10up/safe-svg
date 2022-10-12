@@ -197,8 +197,8 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			/**
 			 * Load extra filters to allow devs to access the safe tags and attrs by themselves.
 			 */
-			$this->sanitizer->setAllowedTags( new safe_svg_tags() );
-			$this->sanitizer->setAllowedAttrs( new safe_svg_attributes() );
+			$this->sanitizer->setAllowedTags( new SafeSvgTags\safe_svg_tags() );
+			$this->sanitizer->setAllowedAttrs( new SafeSvgAttr\safe_svg_attributes() );
 
 			$clean = $this->sanitizer->sanitize( $dirty );
 
