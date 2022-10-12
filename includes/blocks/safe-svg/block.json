@@ -7,12 +7,12 @@
   "name": "safe-svg/svg-icon",
   "category": "safe-svg-blocks",
   "attributes": {
-    "alignment": {
-      "type": "string"
-    },
     "svgURL": {
       "type": "string",
       "default": ""
+    },
+    "alignment": {
+      "type": "string"
     }
   },
   "supports": {

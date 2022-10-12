@@ -2,7 +2,7 @@
 /**
  * SafeSvg Block setup
  *
- * @package SafeSvg\Blocks\RecommendedContentBlock
+ * @package SafeSvg\Blocks\SafeSvgBlock
  */
 
 namespace SafeSvg\Blocks\SafeSvgBlock;

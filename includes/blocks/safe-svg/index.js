@@ -24,7 +24,7 @@ import block from './block.json';
 registerBlockType( block.name, {
 	title: __( 'Safe SVG Icon', 'safe-svg' ),
 	description: __(
-		'Display content recommended by Azure Personalizer',
+		'Display an SVG icon',
 		'safe-svg'
 	),
 	edit,

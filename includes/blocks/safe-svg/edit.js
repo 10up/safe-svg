@@ -17,6 +17,8 @@ import {
 } from '@wordpress/block-editor';
 import { useSelect } from '@wordpress/data';
 import { useState } from '@wordpress/element';
+import {editPropsShape} from "../../../../sophi-for-wordpress/includes/blocks/site-automation-block/props-shape";
+import SiteAutomationBlockEdit from "../../../../sophi-for-wordpress/includes/blocks/site-automation-block/edit";
 /**
  * Edit component.
  * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#edit
@@ -29,7 +31,7 @@ import { useState } from '@wordpress/element';
  * @param {Function} props.setAttributes        Sets the value for block attributes.
  * @return {Function} Render the edit screen
  */
-const RecommendedContentBlockEdit = ( props ) => {
+const SafeSvgBlockEdit = ( props ) => {
 	const { attributes, setAttributes } = props;
 	const {
 		contentPostType,
@@ -77,7 +79,7 @@ const RecommendedContentBlockEdit = ( props ) => {
 				>
 					<p>
 						{ __(
-							'Please select Post type for this Recommended Content block on the sidebar settings.',
+							'Please select the SVG icon.',
 							'safe-svg'
 						) }
 					</p>
@@ -86,4 +88,7 @@ const RecommendedContentBlockEdit = ( props ) => {
 		</div>
 	);
 };
-export default RecommendedContentBlockEdit;
+// Set the propTypes
+SafeSvgBlockEdit.propTypes = editPropsShape;
+
+export default SafeSvgBlockEdit;
