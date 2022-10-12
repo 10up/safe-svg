@@ -24,7 +24,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'SAFE_SVG_VERSION', '2.0.3' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
-define( 'SAFE_SVG_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 // Try and include our autoloader.
