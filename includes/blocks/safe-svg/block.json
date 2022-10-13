@@ -13,6 +13,26 @@
     },
     "alignment": {
       "type": "string"
+    },
+    "image": {
+      "type": "number",
+      "default": 0
+    },
+    "imageWidth": {
+      "type": "number",
+      "default": 200
+    },
+    "imageHeight": {
+      "type": "number",
+      "default": 200
+    },
+    "dimensionWidth": {
+      "type": "number",
+      "default": 200
+    },
+    "dimensionHeight": {
+      "type": "number",
+      "default": 200
     }
   },
   "supports": {

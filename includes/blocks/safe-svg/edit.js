@@ -6,7 +6,10 @@ import { __ } from '@wordpress/i18n';
 import {
 	Placeholder,
 	Button,
-	__experimentalAlignmentMatrixControl as AlignmentMatrixControl,
+	PanelBody,
+	Dropdown,
+	MenuItem,
+	ToolbarButton,
 } from '@wordpress/components';
 import {
 	useBlockProps,
@@ -14,9 +17,11 @@ import {
 	BlockControls,
 	AlignmentToolbar,
 	InspectorControls,
+	__experimentalImageSizeControl as ImageSizeControl,
 } from '@wordpress/block-editor';
-import { useSelect } from '@wordpress/data';
-import { useState } from '@wordpress/element';
+import { createRef } from '@wordpress/element';
+import { media as mediaIcon } from '@wordpress/icons';
+import { DOWN } from '@wordpress/keycodes';
 import PropTypes from 'prop-types';
 
 /**
@@ -36,20 +41,111 @@ const SafeSvgBlockEdit = ( props ) => {
 	const {
 		contentPostType,
 		svgURL,
-		alignment
+		image,
+		alignment,
+		imageWidth,
+		imageHeight,
+		dimensionWidth,
+		dimensionHeight
 	} = attributes;
+
 	const blockProps = useBlockProps();
 
 	const onSelectImage = media => {
 		setAttributes( { svgURL: media.url } );
 	};
 
+	const onKeyDown = ( event ) => {
+		if ( event.keyCode === DOWN ) {
+			event.preventDefault();
+			event.stopPropagation();
+			event.target.click();
+		}
+	};
+
+	const mediaLibraryButton = ( { open } ) => (
+		<MenuItem icon={ mediaIcon } onClick={ open }>
+			{ __( 'Open Media Library' ) }
+		</MenuItem>
+	);
+
+	const dropdownToggle = ( { isOpen, onToggle } ) => (
+		<ToolbarButton
+			ref={ createRef() }
+			aria-expanded={ isOpen }
+			aria-haspopup="true"
+			onClick={ onToggle }
+			onKeyDown={ onKeyDown }
+		>
+			{ __( 'Replace' ) }
+		</ToolbarButton>
+	);
+
+	const onError = ( message ) => {
+		alert( __(`Something went wrong, please try again. Message: ${message}`, 'safe-svg') );
+	}
+
+	const dropdownContent = ( { onClose } ) => (
+		<MediaUpload
+			title={ __( 'Select an image' ) }
+			onSelect={ onSelectImage }
+			onClick={ onClose }
+			onError={ onError }
+			allowedTypes={ 'image/svg+xml' }
+			value={ image }
+			render={ mediaLibraryButton }
+		/>
+	);
+
 	return (
 		<div { ...blockProps } style={{textAlign: alignment}}>
+			<InspectorControls>
+				<PanelBody
+					title={ __(
+						'Image settings',
+						'safe-svg'
+					) }
+				>
+					<ImageSizeControl
+						width={ dimensionWidth }
+						height={ dimensionHeight }
+						imageWidth={ imageWidth }
+						imageHeight={ imageHeight }
+						imageSizeOptions={ [
+							{ value: '{"width":"200","height":"200"}', label: '200/200' },
+							{ value: '{"width":"100","height":"300"}', label: '100/300' },
+							{ value: '{"width":"400","height":"800"}', label: '400/800' },
+						] }
+						slug={ JSON.stringify({
+							width: imageWidth.toString(),
+							height: imageHeight.toString()
+						}) }
+						onChange={ (dimensionSizes) => setAttributes({
+							dimensionWidth: dimensionSizes.width ?? dimensionWidth,
+							dimensionHeight: dimensionSizes.height ?? dimensionHeight
+						}) }
+						onChangeImage={ (imageSizes) => setAttributes({
+							imageWidth: parseFloat(JSON.parse(imageSizes).width),
+							imageHeight: parseFloat(JSON.parse(imageSizes).height),
+							dimensionWidth: parseFloat(JSON.parse(imageSizes).width),
+							dimensionHeight: parseFloat(JSON.parse(imageSizes).height)
+						}) }
+					/>
+				</PanelBody>
+			</InspectorControls>
 			<BlockControls>
 				<AlignmentToolbar
 					value={alignment}
 					onChange={(newVal) => setAttributes({alignment: newVal})} />
+			</BlockControls>
+			<BlockControls>
+				{ svgURL && (
+					<Dropdown
+						contentClassName="block-editor-media-add__options"
+						renderToggle={ dropdownToggle }
+						renderContent={ dropdownContent }
+					/>
+				) }
 			</BlockControls>
 			<MediaUpload
 				onSelect={onSelectImage}
@@ -61,12 +157,20 @@ const SafeSvgBlockEdit = ( props ) => {
 						<>
 							{!svgURL &&
 								<Button variant="tertiary" onClick={open}>
-									{__('Media Library', 'newspack-blocks')}
+									{__('Media Library', 'safe-svg')}
 								</Button>
 							}
 							{svgURL &&
-								<svg width="90" height="90" onClick={onSelectImage}>
-									<image xlinkHref={svgURL} src={svgURL} width="90" height="90"/>
+								<svg
+									width={dimensionWidth}
+									height={dimensionHeight}
+								>
+									<image
+										xlinkHref={svgURL}
+										src={svgURL}
+										width={imageWidth}
+										height={imageHeight}
+									/>
 								</svg>
 							}
 						</>

@@ -44,6 +44,8 @@
   "devDependencies": {
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "@wordpress/env": "^4.8.0",
+    "@wordpress/scripts": "^19.2.2",
+    "@wordpress/icons": "^6.1.1",
     "cypress": "^10.0.2"
   }
 }
