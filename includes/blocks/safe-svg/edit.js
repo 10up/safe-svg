@@ -77,8 +77,8 @@ const SafeSvgBlockEdit = ( props ) => {
 
 	const onChange = (dimensionSizes) => {
 		if( !dimensionSizes.width && !dimensionSizes.height ) {
-			dimensionSizes.width = imageSizes[type].width;
-			dimensionSizes.height = imageSizes[type].height;
+			dimensionSizes.width = parseInt( imageSizes[type].width );
+			dimensionSizes.height = parseInt( imageSizes[type].height );
 		}
 		setAttributes({
 			dimensionWidth: dimensionSizes.width ?? dimensionWidth,
