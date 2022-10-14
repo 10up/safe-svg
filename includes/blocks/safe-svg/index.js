@@ -29,4 +29,5 @@ registerBlockType( block.name, {
 	),
 	edit,
 	save,
+	icon: 'format-image'
 } );

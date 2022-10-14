@@ -16,7 +16,6 @@ const SafeSVGBlockSave = ( { attributes } ) => {
     return (
         <div { ...blockProps }
              style={{
-                 maxWidth: '100%',
                  textAlign: alignment
              }}
         >
