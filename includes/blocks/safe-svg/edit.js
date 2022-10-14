@@ -41,18 +41,27 @@ const SafeSvgBlockEdit = ( props ) => {
 	const {
 		contentPostType,
 		svgURL,
-		image,
+		type,
+		imageID,
+		imageSizes,
 		alignment,
 		imageWidth,
 		imageHeight,
 		dimensionWidth,
 		dimensionHeight
 	} = attributes;
-
 	const blockProps = useBlockProps();
 
 	const onSelectImage = media => {
-		setAttributes( { svgURL: media.url } );
+		setAttributes( {
+			imageSizes: {
+				full: media.sizes.full,
+				medium: media.sizes.medium,
+				thumbnail: media.sizes.thumbnail,
+			},
+			svgURL: media.sizes.full.url,
+			type: 'full',
+		} );
 	};
 
 	const onKeyDown = ( event ) => {
@@ -92,10 +101,27 @@ const SafeSvgBlockEdit = ( props ) => {
 			onClick={ onClose }
 			onError={ onError }
 			allowedTypes={ 'image/svg+xml' }
-			value={ image }
+			value={ imageID }
 			render={ mediaLibraryButton }
 		/>
 	);
+
+	const onChangeImage = (type) => {
+		setAttributes({
+			svgURL: imageSizes[type].url,
+			imageWidth: parseInt( imageSizes[type].width ),
+			imageHeight: parseInt( imageSizes[type].height ),
+			dimensionWidth: parseInt( imageSizes[type].width ),
+			dimensionHeight: parseInt( imageSizes[type].height ),
+			type
+		})
+	}
+
+	const imageSizeOptions = [
+		{ value: 'full', label: 'Full Size' },
+		{ value: 'medium', label: 'Medium' },
+		{ value: 'thumbnail', label: 'Thumbnail' },
+	];
 
 	return (
 		<div { ...blockProps } style={{textAlign: alignment}}>
@@ -111,32 +137,21 @@ const SafeSvgBlockEdit = ( props ) => {
 						height={ dimensionHeight }
 						imageWidth={ imageWidth }
 						imageHeight={ imageHeight }
-						imageSizeOptions={ [
-							{ value: '{"width":"200","height":"200"}', label: '200/200' },
-							{ value: '{"width":"100","height":"300"}', label: '100/300' },
-							{ value: '{"width":"400","height":"800"}', label: '400/800' },
-						] }
-						slug={ JSON.stringify({
-							width: imageWidth.toString(),
-							height: imageHeight.toString()
-						}) }
+						imageSizeOptions={imageSizeOptions}
+						slug={type}
 						onChange={ (dimensionSizes) => setAttributes({
 							dimensionWidth: dimensionSizes.width ?? dimensionWidth,
 							dimensionHeight: dimensionSizes.height ?? dimensionHeight
 						}) }
-						onChangeImage={ (imageSizes) => setAttributes({
-							imageWidth: parseFloat(JSON.parse(imageSizes).width),
-							imageHeight: parseFloat(JSON.parse(imageSizes).height),
-							dimensionWidth: parseFloat(JSON.parse(imageSizes).width),
-							dimensionHeight: parseFloat(JSON.parse(imageSizes).height)
-						}) }
+						onChangeImage={ onChangeImage }
 					/>
 				</PanelBody>
 			</InspectorControls>
 			<BlockControls>
 				<AlignmentToolbar
 					value={alignment}
-					onChange={(newVal) => setAttributes({alignment: newVal})} />
+					onChange={(newVal) => setAttributes({alignment: newVal})}
+				/>
 			</BlockControls>
 			<BlockControls>
 				{ svgURL && (
@@ -151,10 +166,16 @@ const SafeSvgBlockEdit = ( props ) => {
 				onSelect={onSelectImage}
 				allowedTypes="image/svg+xml"
 				accept="image/svg+xml"
-				/*value={svgURL}*/ /* @TODO: add id instead of URL */
+				value={imageID}
 				render={({open}) => {
 					return (
-						<>
+						<div
+							style={{
+								width: dimensionWidth,
+								height: dimensionHeight,
+								margin: 'auto'
+							}}
+						>
 							{!svgURL &&
 								<Button variant="tertiary" onClick={open}>
 									{__('Media Library', 'safe-svg')}
@@ -162,18 +183,17 @@ const SafeSvgBlockEdit = ( props ) => {
 							}
 							{svgURL &&
 								<svg
-									width={dimensionWidth}
-									height={dimensionHeight}
+									width="100%"
+									height={imageHeight}
 								>
 									<image
 										xlinkHref={svgURL}
 										src={svgURL}
-										width={imageWidth}
-										height={imageHeight}
+										width="100%"
 									/>
 								</svg>
 							}
-						</>
+						</div>
 					);
 				}}
 			/>
@@ -197,6 +217,12 @@ SafeSvgBlockEdit.propTypes = {
 	attributes: PropTypes.shape({
 		svgURL: PropTypes.string,
 		alignment: PropTypes.string,
+		imageID: PropTypes.number,
+		imageWidth: PropTypes.number,
+		imageHeight: PropTypes.number,
+		dimensionWidth: PropTypes.number,
+		dimensionHeight: PropTypes.number,
+		imageSizes: PropTypes.object,
 	}).isRequired,
 	className: PropTypes.string,
 	clientId: PropTypes.string,

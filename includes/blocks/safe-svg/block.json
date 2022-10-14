@@ -11,10 +11,14 @@
       "type": "string",
       "default": ""
     },
+    "type": {
+      "type": "string",
+      "default": "full"
+    },
     "alignment": {
       "type": "string"
     },
-    "image": {
+    "imageID": {
       "type": "number",
       "default": 0
     },
@@ -33,6 +37,9 @@
     "dimensionHeight": {
       "type": "number",
       "default": 200
+    },
+    "imageSizes": {
+      "type": "object"
     }
   },
   "supports": {
