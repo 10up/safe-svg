@@ -17,8 +17,6 @@ const SafeSVGBlockSave = ( { attributes } ) => {
         <div { ...blockProps }
              style={{
                  maxWidth: '100%',
-                 width: `${imageWidth}px`,
-                 height: `${imageHeight}px`,
                  textAlign: alignment
              }}
         >

@@ -75,15 +75,25 @@ const SafeSvgBlockEdit = ( props ) => {
 		console.log( __(`Something went wrong, please try again. Message: ${message}`, 'safe-svg') );
 	}
 
-	const onChangeImage = (type) => {
-		const newURL = imageSizes[type].url ?? imageSizes[type].source_url;
+	const onChange = (dimensionSizes) => {
 		setAttributes({
-			svgURL: newURL,
-			imageWidth: parseInt( imageSizes[type].width ),
-			imageHeight: parseInt( imageSizes[type].height ),
-			dimensionWidth: parseInt( imageSizes[type].width ),
-			dimensionHeight: parseInt( imageSizes[type].height ),
-			type
+			dimensionWidth: dimensionSizes.width ?? dimensionWidth,
+			dimensionHeight: dimensionSizes.height ?? dimensionHeight
+		})
+	}
+
+	const onChangeImage = (newSizeSlug) => {
+		const newUrl = imageSizes[newSizeSlug].url ?? imageSizes[newSizeSlug].source_url;
+		if( ! newUrl ) {
+			return null;
+		}
+		setAttributes({
+			svgURL: newUrl,
+			imageWidth: parseInt( imageSizes[newSizeSlug].width ),
+			imageHeight: parseInt( imageSizes[newSizeSlug].height ),
+			dimensionWidth: parseInt( imageSizes[newSizeSlug].width ),
+			dimensionHeight: parseInt( imageSizes[newSizeSlug].height ),
+			type: newSizeSlug
 		})
 	}
 
@@ -109,10 +119,7 @@ const SafeSvgBlockEdit = ( props ) => {
 						imageHeight={ imageHeight }
 						imageSizeOptions={imageSizeOptions}
 						slug={type}
-						onChange={ (dimensionSizes) => setAttributes({
-							dimensionWidth: dimensionSizes.width ?? dimensionWidth,
-							dimensionHeight: dimensionSizes.height ?? dimensionHeight
-						}) }
+						onChange={ onChange }
 						onChangeImage={ onChangeImage }
 					/>
 				</PanelBody>
@@ -143,8 +150,6 @@ const SafeSvgBlockEdit = ( props ) => {
 						<div
 							style={{
 								maxWidth: '100%',
-								width: {imageWidth},
-								height: {imageHeight},
 								textAlign: alignment
 							}}
 						>
@@ -164,7 +169,6 @@ const SafeSvgBlockEdit = ( props ) => {
 										xlinkHref={svgURL}
 										src={svgURL}
 										width="100%"
-										height={imageHeight}
 									/>
 								</svg>
 							}
