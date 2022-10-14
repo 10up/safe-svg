@@ -7,9 +7,6 @@ import {
 	Placeholder,
 	Button,
 	PanelBody,
-	Dropdown,
-	MenuItem,
-	ToolbarButton,
 } from '@wordpress/components';
 import {
 	useBlockProps,
@@ -18,10 +15,8 @@ import {
 	AlignmentToolbar,
 	InspectorControls,
 	__experimentalImageSizeControl as ImageSizeControl,
+	MediaReplaceFlow
 } from '@wordpress/block-editor';
-import { createRef } from '@wordpress/element';
-import { media as mediaIcon } from '@wordpress/icons';
-import { DOWN } from '@wordpress/keycodes';
 import PropTypes from 'prop-types';
 
 /**
@@ -52,63 +47,38 @@ const SafeSvgBlockEdit = ( props ) => {
 	} = attributes;
 	const blockProps = useBlockProps();
 
+	const ALLOWED_MEDIA_TYPES = [ 'image/svg+xml' ];
+
 	const onSelectImage = media => {
+		if ( !media.sizes && !media.media_details?.sizes ) {
+			return;
+		}
+
+		if( media.media_details ) {
+			media.sizes = media.media_details.sizes;
+		}
+
+		const newURL = media.sizes.full.url ?? media.sizes.full.source_url;
+
 		setAttributes( {
 			imageSizes: {
 				full: media.sizes.full,
 				medium: media.sizes.medium,
 				thumbnail: media.sizes.thumbnail,
 			},
-			svgURL: media.sizes.full.url,
+			svgURL: newURL,
 			type: 'full',
 		} );
 	};
 
-	const onKeyDown = ( event ) => {
-		if ( event.keyCode === DOWN ) {
-			event.preventDefault();
-			event.stopPropagation();
-			event.target.click();
-		}
-	};
-
-	const mediaLibraryButton = ( { open } ) => (
-		<MenuItem icon={ mediaIcon } onClick={ open }>
-			{ __( 'Open Media Library' ) }
-		</MenuItem>
-	);
-
-	const dropdownToggle = ( { isOpen, onToggle } ) => (
-		<ToolbarButton
-			ref={ createRef() }
-			aria-expanded={ isOpen }
-			aria-haspopup="true"
-			onClick={ onToggle }
-			onKeyDown={ onKeyDown }
-		>
-			{ __( 'Replace' ) }
-		</ToolbarButton>
-	);
-
 	const onError = ( message ) => {
-		alert( __(`Something went wrong, please try again. Message: ${message}`, 'safe-svg') );
+		console.log( __(`Something went wrong, please try again. Message: ${message}`, 'safe-svg') );
 	}
 
-	const dropdownContent = ( { onClose } ) => (
-		<MediaUpload
-			title={ __( 'Select an image' ) }
-			onSelect={ onSelectImage }
-			onClick={ onClose }
-			onError={ onError }
-			allowedTypes={ 'image/svg+xml' }
-			value={ imageID }
-			render={ mediaLibraryButton }
-		/>
-	);
-
 	const onChangeImage = (type) => {
+		const newURL = imageSizes[type].url ?? imageSizes[type].source_url;
 		setAttributes({
-			svgURL: imageSizes[type].url,
+			svgURL: newURL,
 			imageWidth: parseInt( imageSizes[type].width ),
 			imageHeight: parseInt( imageSizes[type].height ),
 			dimensionWidth: parseInt( imageSizes[type].width ),
@@ -124,7 +94,7 @@ const SafeSvgBlockEdit = ( props ) => {
 	];
 
 	return (
-		<div { ...blockProps } style={{textAlign: alignment}}>
+		<div { ...blockProps } style={{overflow: 'hidden'}}>
 			<InspectorControls>
 				<PanelBody
 					title={ __(
@@ -154,26 +124,28 @@ const SafeSvgBlockEdit = ( props ) => {
 				/>
 			</BlockControls>
 			<BlockControls>
-				{ svgURL && (
-					<Dropdown
-						contentClassName="block-editor-media-add__options"
-						renderToggle={ dropdownToggle }
-						renderContent={ dropdownContent }
-					/>
-				) }
+				<MediaReplaceFlow
+					mediaId={ imageID }
+					mediaURL={ svgURL }
+					allowedTypes={ALLOWED_MEDIA_TYPES}
+					accept={ALLOWED_MEDIA_TYPES}
+					onSelect={ onSelectImage }
+					onError={ onError }
+				/>
 			</BlockControls>
 			<MediaUpload
 				onSelect={onSelectImage}
-				allowedTypes="image/svg+xml"
-				accept="image/svg+xml"
+				allowedTypes={ALLOWED_MEDIA_TYPES}
+				accept={ALLOWED_MEDIA_TYPES}
 				value={imageID}
 				render={({open}) => {
 					return (
 						<div
 							style={{
-								width: dimensionWidth,
-								height: dimensionHeight,
-								margin: 'auto'
+								maxWidth: '100%',
+								width: {imageWidth},
+								height: {imageHeight},
+								textAlign: alignment
 							}}
 						>
 							{!svgURL &&
@@ -183,13 +155,16 @@ const SafeSvgBlockEdit = ( props ) => {
 							}
 							{svgURL &&
 								<svg
-									width="100%"
-									height={imageHeight}
+									style={{
+										width: dimensionWidth,
+										height: dimensionHeight,
+									}}
 								>
 									<image
 										xlinkHref={svgURL}
 										src={svgURL}
 										width="100%"
+										height={imageHeight}
 									/>
 								</svg>
 							}

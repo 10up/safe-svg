@@ -1,20 +1,41 @@
 import { useBlockProps } from '@wordpress/block-editor';
 
 /**
- * See https://wordpress.org/gutenberg/handbook/designers-developers/developers/block-api/block-edit-save/#save
- *
- * @return {null} Dynamic blocks do not save the HTML.
+ * @return string Dynamic SVG icon block HTML.
  */
 const SafeSVGBlockSave = ( { attributes } ) => {
-    // const blockProps = useBlockProps();
-    const { svgURL } = attributes;
-    console.log( svgURL );
+    const {
+        svgURL,
+        imageWidth,
+        imageHeight,
+        dimensionWidth,
+        dimensionHeight,
+        alignment
+    } = attributes;
+    const blockProps = useBlockProps.save();
     return (
-        <div >
-            okayyy
-            <svg width="90" height="90">
-                <image xlinkHref={svgURL} src={svgURL} width="90" height="90"/>
+        <div { ...blockProps }
+             style={{
+                 maxWidth: '100%',
+                 width: `${imageWidth}px`,
+                 height: `${imageHeight}px`,
+                 textAlign: alignment
+             }}
+        >
+            {svgURL &&
+            <svg
+                style={{
+                    width: dimensionWidth,
+                    height: dimensionHeight,
+                }}
+            >
+                <image
+                    xlinkHref={svgURL}
+                    src={svgURL}
+                    width="100%"
+                />
             </svg>
+            }
         </div>
     );
 };
