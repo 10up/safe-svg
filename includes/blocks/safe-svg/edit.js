@@ -159,7 +159,7 @@ const SafeSvgBlockEdit = ( props ) => {
 						>
 							{!svgURL &&
 								<Button variant="tertiary" onClick={open}>
-									{__('Media Library', 'safe-svg')}
+									{__('Select an SVG icon', 'safe-svg')}
 								</Button>
 							}
 							{svgURL &&
