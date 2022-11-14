@@ -66,6 +66,10 @@ const SafeSvgBlockEdit = ( props ) => {
 				medium: media.sizes.medium,
 				thumbnail: media.sizes.thumbnail,
 			},
+			imageWidth: media.sizes.full.width,
+			imageHeight: media.sizes.full.height,
+			dimensionWidth: media.sizes.full.width,
+			dimensionHeight: media.sizes.full.height,
 			imageID: media.id,
 			svgURL: newURL,
 			type: 'full',
@@ -83,7 +87,9 @@ const SafeSvgBlockEdit = ( props ) => {
 		}
 		setAttributes({
 			dimensionWidth: dimensionSizes.width ?? dimensionWidth,
-			dimensionHeight: dimensionSizes.height ?? dimensionHeight
+			dimensionHeight: dimensionSizes.height ?? dimensionHeight,
+			imageWidth: dimensionSizes.width ?? dimensionWidth,
+			imageHeight: dimensionSizes.height ?? dimensionHeight
 		})
 	}
 
@@ -92,12 +98,21 @@ const SafeSvgBlockEdit = ( props ) => {
 		if( ! newUrl ) {
 			return null;
 		}
+		let newWidth = parseInt( imageSizes[newSizeSlug].width );
+		let newHeight = parseInt( imageSizes[newSizeSlug].height );
+		if( 'full' !== newSizeSlug ) {
+			if(imageSizes[newSizeSlug].width >= imageSizes[newSizeSlug].height) {
+				newHeight = imageSizes[newSizeSlug].height * imageSizes['full'].height / imageSizes['full'].width;
+			} else {
+				newWidth = imageSizes[newSizeSlug].width * imageSizes['full'].width / imageSizes['full'].height;
+			}
+		}
 		setAttributes({
 			svgURL: newUrl,
-			imageWidth: parseInt( imageSizes[newSizeSlug].width ),
-			imageHeight: parseInt( imageSizes[newSizeSlug].height ),
-			dimensionWidth: parseInt( imageSizes[newSizeSlug].width ),
-			dimensionHeight: parseInt( imageSizes[newSizeSlug].height ),
+			imageWidth: newWidth,
+			imageHeight: newHeight,
+			dimensionWidth: newWidth,
+			dimensionHeight: newHeight,
 			type: newSizeSlug
 		})
 	}
@@ -173,7 +188,8 @@ const SafeSvgBlockEdit = ( props ) => {
 									<image
 										xlinkHref={svgURL}
 										src={svgURL}
-										width="100%"
+										width={ dimensionWidth < dimensionHeight ? dimensionWidth : '100%' }
+										height={ dimensionWidth > dimensionHeight ? dimensionHeight : 'auto' }
 									/>
 								</svg>
 							}

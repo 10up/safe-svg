@@ -23,20 +23,16 @@
       "default": 0
     },
     "imageWidth": {
-      "type": "number",
-      "default": 200
+      "type": "number"
     },
     "imageHeight": {
-      "type": "number",
-      "default": 200
+      "type": "number"
     },
     "dimensionWidth": {
-      "type": "number",
-      "default": 200
+      "type": "number"
     },
     "dimensionHeight": {
-      "type": "number",
-      "default": 200
+      "type": "number"
     },
     "imageSizes": {
       "type": "object"
