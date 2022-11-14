@@ -76,6 +76,6 @@ function render_block_callback( $attributes ) {
 		),
 		$contents,
 		$class_name,
-		$attributes['imageID'],
+		$attributes['imageID']
 	);
 }
