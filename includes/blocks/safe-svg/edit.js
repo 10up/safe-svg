@@ -66,6 +66,7 @@ const SafeSvgBlockEdit = ( props ) => {
 				medium: media.sizes.medium,
 				thumbnail: media.sizes.thumbnail,
 			},
+			imageID: media.id,
 			svgURL: newURL,
 			type: 'full',
 		} );
