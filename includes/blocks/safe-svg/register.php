@@ -74,6 +74,8 @@ function render_block_callback( $attributes ) {
 			$attributes['dimensionHeight'],
 			$contents
 		),
-		$contents, $class_name, $attributes['imageID']
+		$contents,
+		$class_name,
+		$attributes['imageID'],
 	);
 }
