@@ -88,8 +88,6 @@ const SafeSvgBlockEdit = ( props ) => {
 		setAttributes({
 			dimensionWidth: dimensionSizes.width ?? dimensionWidth,
 			dimensionHeight: dimensionSizes.height ?? dimensionHeight,
-			imageWidth: dimensionSizes.width ?? dimensionWidth,
-			imageHeight: dimensionSizes.height ?? dimensionHeight
 		})
 	}
 
@@ -182,7 +180,7 @@ const SafeSvgBlockEdit = ( props ) => {
 								<svg
 									style={{
 										width: dimensionWidth,
-										height: dimensionHeight,
+										height: dimensionHeight
 									}}
 								>
 									<image
