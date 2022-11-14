@@ -26,9 +26,7 @@ function register() {
 /**
  * Render callback method for the block.
  *
- * @param array  $attributes The blocks attributes
- * @param string $content    Data returned from InnerBlocks.Content
- * @param array  $block      Block information such as context.
+ * @param array $attributes The blocks attributes
  *
  * @return string|\WP_Post[] The rendered block markup.
  */
@@ -39,7 +37,7 @@ function render_block_callback( $attributes ) {
 	}
 
 	// If we couldn't get the contents of the file, empty string again
-	if ( ! $contents = file_get_contents( get_attached_file( $attributes['imageID'] ) ) ) {
+	if ( ! $contents = file_get_contents( get_attached_file( $attributes['imageID'] ) ) ) { // phpcs:ignore
 		return '';
 	}
 
@@ -51,7 +49,6 @@ function render_block_callback( $attributes ) {
 	 * @param string The class name.
 	 *
 	 * @since 2.1.0
-	 *
 	 */
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
@@ -66,19 +63,17 @@ function render_block_callback( $attributes ) {
 	 * @param int    $attachment_id The ID of the attachment.
 	 *
 	 * @since 2.1.0
-	 *
 	 */
-	return apply_filters( 'safe_svg_inline_markup',
-		sprintf( '<div
-					class="safe-svg-cover %s %s"
-					style="width: %spx; height: %spx;"
-				>
-				%s
-				</div>',
+	return apply_filters(
+		'safe_svg_inline_markup',
+		sprintf(
+			'<div class="safe-svg-cover %s %s" style="width: %spx; height: %spx;">%s</div>',
 			$class_name,
 			$attributes['className'],
 			$attributes['dimensionWidth'],
 			$attributes['dimensionHeight'],
 			$contents
-		), $contents, $class_name, $attributes['imageID'] );
+		),
+		$contents, $class_name, $attributes['imageID']
+	);
 }
