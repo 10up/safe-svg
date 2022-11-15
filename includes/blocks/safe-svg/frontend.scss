@@ -1,4 +1,8 @@
 .safe-svg-cover {
+    .safe-svg-inside {
+        max-width: 100%;
+        display: inline-block;
+    }
     svg {
         max-width: 100%;
         max-height: 100%;

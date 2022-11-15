@@ -67,9 +67,11 @@ function render_block_callback( $attributes ) {
 	return apply_filters(
 		'safe_svg_inline_markup',
 		sprintf(
-			'<div class="safe-svg-cover %s %s" style="width: %spx; height: %spx;">%s</div>',
+			'<div class="safe-svg-cover" style="text-align:%s">
+				<div class="safe-svg-inside %s" style="width: %spx; height: %spx;">%s</div>
+			</div>',
+			$attributes['alignment'],
 			$class_name,
-			$attributes['className'],
 			$attributes['dimensionWidth'],
 			$attributes['dimensionHeight'],
 			$contents
