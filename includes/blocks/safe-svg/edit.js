@@ -183,8 +183,10 @@ const SafeSvgBlockEdit = ( props ) => {
 									<image
 										xlinkHref={svgURL}
 										src={svgURL}
-										width={ dimensionWidth < dimensionHeight ? dimensionWidth : '100%' }
-										height={ dimensionWidth > dimensionHeight ? dimensionHeight : 'auto' }
+										style={{
+											width: dimensionWidth < dimensionHeight ? dimensionWidth : '100%',
+											height: dimensionWidth > dimensionHeight ? dimensionHeight : 'auto'
+										}}
 									/>
 								</svg>
 							}
