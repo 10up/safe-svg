@@ -177,7 +177,9 @@ const SafeSvgBlockEdit = ( props ) => {
 								<svg
 									style={{
 										width: dimensionWidth,
-										height: dimensionHeight
+										height: dimensionHeight,
+										maxWidth: '100%',
+										maxHeight: '100%'
 									}}
 								>
 									<image
