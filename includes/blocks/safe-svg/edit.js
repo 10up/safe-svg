@@ -123,41 +123,38 @@ const SafeSvgBlockEdit = ( props ) => {
 
 	return (
 		<div { ...blockProps } style={{overflow: 'hidden'}}>
-			<InspectorControls>
-				<PanelBody
-					title={ __(
-						'Image settings',
-						'safe-svg'
-					) }
-				>
-					<ImageSizeControl
-						width={ dimensionWidth }
-						height={ dimensionHeight }
-						imageWidth={ imageWidth }
-						imageHeight={ imageHeight }
-						imageSizeOptions={imageSizeOptions}
-						slug={type}
-						onChange={ onChange }
-						onChangeImage={ onChangeImage }
-					/>
-				</PanelBody>
-			</InspectorControls>
-			<BlockControls>
-				<AlignmentToolbar
-					value={alignment}
-					onChange={(newVal) => setAttributes({alignment: newVal})}
-				/>
-			</BlockControls>
-			<BlockControls>
-				<MediaReplaceFlow
-					mediaId={ imageID }
-					mediaURL={ svgURL }
-					allowedTypes={ALLOWED_MEDIA_TYPES}
-					accept={ALLOWED_MEDIA_TYPES}
-					onSelect={ onSelectImage }
-					onError={ onError }
-				/>
-			</BlockControls>
+			{svgURL &&
+				<><InspectorControls>
+					<PanelBody
+						title={__(
+							'Image settings',
+							'safe-svg'
+						)}
+					>
+						<ImageSizeControl
+							width={dimensionWidth}
+							height={dimensionHeight}
+							imageWidth={imageWidth}
+							imageHeight={imageHeight}
+							imageSizeOptions={imageSizeOptions}
+							slug={type}
+							onChange={onChange}
+							onChangeImage={onChangeImage} />
+					</PanelBody>
+				</InspectorControls><BlockControls>
+						<AlignmentToolbar
+							value={alignment}
+							onChange={(newVal) => setAttributes({ alignment: newVal })} />
+					</BlockControls><BlockControls>
+						<MediaReplaceFlow
+							mediaId={imageID}
+							mediaURL={svgURL}
+							allowedTypes={ALLOWED_MEDIA_TYPES}
+							accept={ALLOWED_MEDIA_TYPES}
+							onSelect={onSelectImage}
+							onError={onError} />
+					</BlockControls></>
+			}
 			<MediaUpload
 				onSelect={onSelectImage}
 				allowedTypes={ALLOWED_MEDIA_TYPES}
