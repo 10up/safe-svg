@@ -57,10 +57,13 @@ class safe_svg_settings {
 	 * User role field callback function.
 	 */
 	public function safe_svg_roles_cb() {
-		$user_roles   = get_editable_roles();
-		$upload_roles = (array) get_option( 'safe_svg_upload_roles', [] );
+		$user_roles     = get_editable_roles();
+		$upload_roles   = (array) get_option( 'safe_svg_upload_roles', [] );
+		$role_options   = array_filter( $user_roles, function( $_role ) {
+			return $_role['capabilities']['upload_files'] ?? false;
+		} );
 
-		foreach ( $user_roles as $role => $info ) :
+		foreach ( $role_options as $role => $info ) :
 			?>
 			<div>
 				<label>
