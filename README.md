@@ -23,8 +23,8 @@ SVG Sanitization is done through the following library: [https://github.com/dary
 
 ## Requirements
 
-* PHP 7.0+
-* [WordPress](http://wordpress.org/) 4.0+
+* PHP 7.4+
+* [WordPress](http://wordpress.org/) 5.7+
 
 ## Installation
 

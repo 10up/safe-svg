@@ -4,8 +4,8 @@
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
  * Version:           2.0.3
- * Requires at least: 4.7
- * Requires PHP:      7.0
+ * Requires at least: 5.7
+ * Requires PHP:      7.4
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPL v2 or later
