@@ -124,14 +124,20 @@ class safe_svg_settings {
 		if ( ! empty( $add_roles ) ) {
 			foreach ( $add_roles as $role ) {
 				$role = get_role( $role );
-				$role->add_cap( 'safe_svg_upload_svg' );
+
+				if ( $role instanceof \WP_Role ) {
+					$role->add_cap( 'safe_svg_upload_svg' );
+				}
 			}
 		}
 
 		if ( ! empty( $remove_roles ) ) {
 			foreach ( $remove_roles as $role ) {
 				$role = get_role( $role );
-				$role->remove_cap( 'safe_svg_upload_svg' );
+
+				if ( $role instanceof \WP_Role ) {
+					$role->remove_cap( 'safe_svg_upload_svg' );
+				}
 			}
 		}
 
