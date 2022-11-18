@@ -92,6 +92,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		public function current_user_can_upload_svg() {
 			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
 
+			// Fallback to upload_files check for backwards compatibility.
 			if ( empty( $upload_roles ) ) {
 				return current_user_can( 'upload_files' );
 			}
