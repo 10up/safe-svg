@@ -47,7 +47,7 @@ class safe_svg_settings {
 	 */
 	public function get_upload_capable_roles() {
 		$all_roles    = get_editable_roles();
-		$upload_roles = array_filter( $user_roles, function( $_role ) {
+		$upload_roles = array_filter( $all_roles, function( $_role ) {
 			return $_role['capabilities']['upload_files'] ?? false;
 		} );
 
@@ -71,11 +71,8 @@ class safe_svg_settings {
 	 * User role field callback function.
 	 */
 	public function safe_svg_roles_cb() {
-		$user_roles     = get_editable_roles();
 		$upload_roles   = (array) get_option( 'safe_svg_upload_roles', [] );
-		$role_options   = array_filter( $user_roles, function( $_role ) {
-			return $_role['capabilities']['upload_files'] ?? false;
-		} );
+		$role_options   = $this->get_upload_capable_roles();
 
 		foreach ( $role_options as $role => $info ) :
 			?>
