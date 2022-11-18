@@ -41,6 +41,20 @@ class safe_svg_settings {
 	}
 
 	/**
+	 * Get roles with with upload capabilities.
+	 *
+	 * @return array An array of roles with the upload_files capability.
+	 */
+	public function get_upload_capable_roles() {
+		$all_roles    = get_editable_roles();
+		$upload_roles = array_filter( $user_roles, function( $_role ) {
+			return $_role['capabilities']['upload_files'] ?? false;
+		} );
+
+		return apply_filters( 'safe_svg_upload_roles', $upload_roles, $all_roles, $this );
+	}
+
+	/**
 	 * Settings section callback function.
 	 *
 	 * @param array $args The settings array, defining title, id, callback.
