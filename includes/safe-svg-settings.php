@@ -98,6 +98,10 @@ class safe_svg_settings {
 		$upload_roles   = (array) get_option( 'safe_svg_upload_roles', [] );
 		$role_options   = $this->get_upload_capable_roles();
 
+		if ( empty( $upload_roles ) ) {
+			$upload_roles = array_keys( $role_options );
+		}
+
 		foreach ( $role_options as $role => $info ) :
 			?>
 			<div>
