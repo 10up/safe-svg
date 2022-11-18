@@ -54,9 +54,9 @@ class safe_svg_settings {
 
 		$valid_roles = $this->get_upload_capable_roles();
 		$valid_slugs = array_keys( $valid_roles );
+		$roles       = array_intersect( $valid_slugs, $roles );
 
-		$roles = array_intersect( $valid_slugs, $roles );
-
+		// Store a non empty/falsy value for easier handling.
 		if ( empty( $roles ) ) {
 			$roles = 'none';
 		}
