@@ -62,7 +62,7 @@ class SafeSvgTest extends TestCase {
 	 *
 	 * @return void
 	 */
-	public function test_allow_svg_editor() {
+	public function test_allow_svg() {
 		\WP_Mock::userFunction(
 			'get_option',
 			array(
