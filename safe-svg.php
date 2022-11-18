@@ -89,6 +89,12 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			new safe_svg_settings();
 		}
 
+		/**
+		 * Custom function to check if user can upload svg
+		 * Use core caps if setting hasn't every been updated
+		 *
+		 * @return Bool
+		 */
 		public function current_user_can_upload_svg() {
 			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
 
