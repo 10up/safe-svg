@@ -89,6 +89,16 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			new safe_svg_settings();
 		}
 
+		public function current_user_can_upload_svg() {
+			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
+
+			if ( empty( $upload_roles ) ) {
+				return current_user_can( 'upload_files' );
+			}
+
+			return current_user_can( 'safe_svg_upload_svg' );
+		}
+
 		/**
 		 * Allow SVG Uploads
 		 *
@@ -97,7 +107,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * @return mixed
 		 */
 		public function allow_svg( $mimes ) {
-			if ( current_user_can( 'safe_svg_upload_svg' ) ) {
+			if ( $this->current_user_can_upload_svg() ) {
 				$mimes['svg']  = 'image/svg+xml';
 				$mimes['svgz'] = 'image/svg+xml';
 			}
@@ -153,7 +163,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			$type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
 			if ( 'image/svg+xml' === $type ) {
-				if ( ! current_user_can( 'safe_svg_upload_svg' ) ) {
+				if ( ! $this->current_user_can_upload_svg() ) {
 					$file['error'] = __(
 						'Sorry, you are not allowed to upload SVG files.',
 						'safe-svg'
