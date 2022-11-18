@@ -22,7 +22,7 @@ class safe_svg_settings {
 	 * Custom option and settings
 	 */
 	public function settings_init() {
-		register_setting( 'media', 'safe_svg_upload_roles' );
+		register_setting( 'media', 'safe_svg_upload_roles', [ $this, 'sanitize_safe_svg_roles' ] );
 
 		add_settings_section(
 			'safe_svg_settings',
@@ -38,6 +38,30 @@ class safe_svg_settings {
 			'media',
 			'safe_svg_settings'
 		);
+	}
+
+	/**
+	 * Sanitizes roles before saving.
+	 *
+	 * @param array $roles The roles that we are attempting to save
+	 *
+	 * @return array The sanitized roles array.
+	 */
+	public function sanitize_safe_svg_roles( $roles ) {
+		if ( ! is_array( $roles ) ) {
+			$roles = [];
+		}
+
+		$valid_roles = $this->get_upload_capable_roles();
+		$valid_slugs = array_keys( $valid_roles );
+
+		$roles = array_intersect( $valid_slugs, $roles );
+
+		if ( empty( $roles ) ) {
+			$roles = 'none';
+		}
+
+		return $roles;
 	}
 
 	/**
