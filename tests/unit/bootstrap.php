@@ -14,4 +14,6 @@ require_once TEST_PLUGIN_DIR . '/vendor/autoload.php';
 // Now call the bootstrap method of WP Mock.
 WP_Mock::bootstrap();
 
+\WP_Mock::userFunction( 'plugin_dir_url' );
+
 require TEST_PLUGIN_DIR . '/safe-svg.php';

@@ -35,7 +35,7 @@ class SafeSvgAttributesTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_attributes() {
-		$svg_attributes = safe_svg_attributes::getAttributes();
+		$svg_attributes = SafeSvg\SafeSvgAttr\safe_svg_attributes::getAttributes();
 		$this->assertIsArray( $svg_attributes );
 
 		$filtered_svg_attributes = array_merge( $svg_attributes, array( 'customAttribute' ) );
@@ -43,7 +43,7 @@ class SafeSvgAttributesTest extends TestCase {
 			->with( $svg_attributes )
 			->reply( $filtered_svg_attributes );
 
-		$svg_attributes = safe_svg_attributes::getAttributes();
+		$svg_attributes = SafeSvg\SafeSvgAttr\safe_svg_attributes::getAttributes();
 		$this->assertContains( 'customAttribute', $svg_attributes );
 		$this->assertSame( $svg_attributes, $filtered_svg_attributes );
 	}

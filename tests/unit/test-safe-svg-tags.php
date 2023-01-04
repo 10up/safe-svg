@@ -35,7 +35,7 @@ class SafeSvgTagsTest extends TestCase {
 	 * @return void
 	 */
 	public function test_get_tags() {
-		$svg_tags = safe_svg_tags::getTags();
+		$svg_tags = SafeSvg\SafeSvgTags\safe_svg_tags::getTags();
 		$this->assertIsArray( $svg_tags );
 
 		$filtered_svg_tags = array_merge( $svg_tags, array( 'customTag' ) );
@@ -43,7 +43,7 @@ class SafeSvgTagsTest extends TestCase {
 			->with( $svg_tags )
 			->reply( $filtered_svg_tags );
 
-		$svg_tags = safe_svg_tags::getTags();
+		$svg_tags = SafeSvg\SafeSvgTags\safe_svg_tags::getTags();
 		$this->assertContains( 'customTag', $svg_tags );
 		$this->assertSame( $svg_tags, $filtered_svg_tags );
 	}

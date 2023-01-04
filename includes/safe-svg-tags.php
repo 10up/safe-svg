@@ -5,6 +5,8 @@
  * @package safe-svg
  */
 
+namespace SafeSvg\SafeSvgTags;
+
 /**
  * SVG Allowed Tags class.
  */

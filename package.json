@@ -30,16 +30,22 @@
     "mime"
   ],
   "scripts": {
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
     "cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
     "cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
     "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
-    "postenv:start": "./tests/bin/initialize.sh"
+    "postenv:start": "./tests/bin/initialize.sh",
+    "archive": "composer archive --file=safe-svg --format=zip",
+    "postarchive": "rm -rf safe-svg && unzip safe-svg.zip -d safe-svg && rm safe-svg.zip && zip -r safe-svg.zip safe-svg && rm -rf safe-svg"
   },
   "devDependencies": {
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "@wordpress/env": "^5.6.0",
+    "@wordpress/scripts": "^19.2.2",
+    "@wordpress/icons": "^6.1.1",
     "cypress": "^10.0.2"
   }
 }
