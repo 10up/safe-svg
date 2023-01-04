@@ -1,10 +1,10 @@
 === Safe SVG ===
 Contributors:      10up, enshrined
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
-Requires at least: 4.7
-Tested up to:      6.0
+Requires at least: 5.7
+Tested up to:      6.1
 Stable tag:        2.0.3
-Requires PHP:      7.0
+Requires PHP:      7.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
