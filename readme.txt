@@ -1,5 +1,5 @@
 === Safe SVG ===
-Contributors:      10up, enshrined
+Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 5.7
 Tested up to:      6.1
