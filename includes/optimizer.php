@@ -72,7 +72,13 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			if ( 'options-media.php' !== $hook && 'post.php' !== $hook && 'upload.php' !== $hook ) {
 				return;
 			}
-			wp_enqueue_script( 'safe-svg-scripts', plugins_url( '/dist/js/admin.js', dirname( __FILE__ ) ), [], SAFE_SVG_VERSION, true );
+			wp_enqueue_script(
+				'safe-svg-admin-scripts',
+				SAFE_SVG_PLUGIN_URL . '/dist/safe-svg-admin.js',
+				[],
+				SAFE_SVG_VERSION,
+				true
+			);
 			$params = wp_json_encode(
 				[
 					'ajaxUrl'    => esc_url( admin_url( 'admin-ajax.php' ) ),
@@ -81,7 +87,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 				]
 			);
 			wp_add_inline_script(
-				'safe-svg-scripts',
+				'safe-svg-admin-scripts',
 				sprintf(
 					'var safeSvgParams = %s;',
 					$params
