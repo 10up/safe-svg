@@ -30,37 +30,22 @@
     "mime"
   ],
   "scripts": {
-    "start": "10up-toolkit start",
-    "watch": "10up-toolkit watch",
-    "build": "10up-toolkit build",
-    "format-js": "10up-toolkit format-js",
-    "lint-js": "10up-toolkit lint-js",
-    "lint-style": "10up-toolkit lint-style",
-    "test": "10up-toolkit test-unit-jest",
-    "clean-dist": "rm -rf ./dist",
+    "start": "wp-scripts start",
+    "build": "wp-scripts build",
     "cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
     "cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
     "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
-    "postenv:start": "./tests/bin/initialize.sh"
+    "postenv:start": "./tests/bin/initialize.sh",
+    "archive": "composer archive --file=safe-svg --format=zip",
+    "postarchive": "rm -rf safe-svg && unzip safe-svg.zip -d safe-svg && rm safe-svg.zip && zip -r safe-svg.zip safe-svg && rm -rf safe-svg"
   },
   "devDependencies": {
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
-    "@wordpress/env": "^4.8.0",
-    "10up-toolkit": "^4.2.2",
-    "cypress": "^10.0.2",
-    "svgo": "^2.8.0"
-  },
-  "10up-toolkit": {
-    "devURL": "https://my-project.test",
-    "entry": {
-      "admin": "./assets/js/admin/admin.js",
-      "frontend": "./assets/js/frontend/frontend.js",
-      "shared": "./assets/js/shared/shared.js",
-      "admin-style": "./assets/css/admin/admin-style.css",
-      "shared-style": "./assets/css/shared/shared-style.css",
-      "style": "./assets/css/frontend/style.css"
-    }
+    "@wordpress/env": "^5.6.0",
+    "@wordpress/scripts": "^25.1.0",
+    "@wordpress/icons": "^6.1.1",
+    "cypress": "^10.0.2"
   }
 }

@@ -14,10 +14,11 @@ jobs:
     name: ${{ matrix.core.name }}
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         core:
           - {name: 'WP latest', version: 'latest'}
-          - {name: 'WP minimum', version: 'WordPress/WordPress#5.2'}
+          - {name: 'WP minimum', version: 'WordPress/WordPress#5.7'}
           - {name: 'WP trunk', version: 'WordPress/WordPress#master'}
 
     steps:

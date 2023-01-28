@@ -1,0 +1,33 @@
+name: Build release zip
+
+on:
+  workflow_dispatch:
+  push:
+   branches:
+    - trunk
+
+jobs:
+  build:
+    name: Build release zip
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache vendor
+        id: cache-composer
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-vendor
+        with:
+          path: |
+            vendor
+            ~/.composer/cache
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/composer.json') }}
+
+      - name: Install Composer dependencies
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: composer install --no-dev
+
+      - name: Generate ZIP file
+        uses: 10up/action-wordpress-plugin-build-zip@stable
