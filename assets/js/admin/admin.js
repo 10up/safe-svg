@@ -97,11 +97,11 @@ import { select, subscribe } from '@wordpress/data';
 	 * Optimize the SVGs inserted in the editor.
 	 * This takes care of SVGs uploaded via direct upload, without using the Media Library.
 	 */
-	const { isSavingPost, getPostEdits } = select('core/editor');
+	const editorStore = select('core/editor');
 	const validBlocks = ['core/image', 'core/media-text'];
 	subscribe(() => {
-		if (isSavingPost()) {
-			const changes = getPostEdits();
+		if (editorStore.isSavingPost()) {
+			const changes = editorStore.getPostEdits();
 			for (const changedBlock of changes.blocks) {
 				const blockName = changedBlock?.name ?? '';
 				const innerBlocks = changedBlock?.innerBlocks ?? [];
