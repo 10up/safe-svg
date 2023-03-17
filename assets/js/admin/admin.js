@@ -37,44 +37,48 @@ import { select, subscribe } from '@wordpress/data';
 	/**
 	 * Hook into the WordPress Uploader and optimize the SVG.
 	 */
-	Object.assign(wp.Uploader.prototype, {
-		// Run on a successful upload.
-		success(attachment) {
-			const svgUrl = attachment?.attributes?.url;
-			if (!svgUrl || attachment?.attributes?.subtype !== 'svg+xml') {
-				return;
-			}
+    if(wp.Uploader !== undefined) {
+        Object.assign(wp.Uploader.prototype, {
+            // Run on a successful upload.
+            success(attachment) {
+                const svgUrl = attachment?.attributes?.url;
+                if (!svgUrl || attachment?.attributes?.subtype !== 'svg+xml') {
+                    return;
+                }
 
-			// Get the SVG data from the file's URL and optimize.
-			fetch(svgUrl, { method: 'GET' })
-				.then((response) => response.text())
-				.then((response) => {
-					const params = ajaxUrlParams(svgUrl, response);
-					if (!params) {
-						return;
-					}
-					// Make an AJAX call to update the SVG file with the optimized contents.
-					ajaxUrl.search = new URLSearchParams(params);
-					fetch(ajaxUrl, { method: 'GET' })
-						.then((ajaxResponse) => ajaxResponse)
-						.then((ajaxResponse) => {
-							if (ajaxResponse?.status !== 200) {
-								return;
-							}
+                // Get the SVG data from the file's URL and optimize.
+                fetch(svgUrl, { method: 'GET' })
+                    .then((response) => response.text())
+                    .then((response) => {
+                        const params = ajaxUrlParams(svgUrl, response);
+                        if (!params) {
+                            return;
+                        }
+                        // Make an AJAX call to update the SVG file with the optimized contents.
+                        ajaxUrl.search = new URLSearchParams(params);
+                        fetch(ajaxUrl, { method: 'GET' })
+                            .then((ajaxResponse) => ajaxResponse)
+                            .then((ajaxResponse) => {
+                                if (ajaxResponse?.status !== 200) {
+                                    return;
+                                }
 
-							// Refresh the uploader window to update the file size.
-							if (wp.media.frame.content.get() !== null) {
-								wp.media.frame.content
-									.get()
-									.collection.props.set({ ignore: +new Date() });
-								wp.media.frame.content.get().options.selection.reset();
-							} else {
-								wp.media.frame.library.props.set({ ignore: +new Date() });
-							}
-						});
-				});
-		},
-	});
+                                // Refresh the uploader window to update the file size.
+                                if (wp.media.frame.content.get() !== null && wp.media.frame.content.get() !== undefined) {
+                                    wp.media.frame.content
+                                        .get()
+                                        .collection?.props?.set({ ignore: +new Date() });
+                                    if(wp.media.frame.content.get().options.selection !== undefined) {
+                                        wp.media.frame.content.get().options.selection.reset();
+                                    }
+                                } else {
+                                    wp.media.frame.library.props.set({ ignore: +new Date() });
+                                }
+                            });
+                    });
+            },
+        });
+    }
 
 	/**
 	 * Check if a given URL is an SVG which should be optimized.

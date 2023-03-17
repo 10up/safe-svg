@@ -69,7 +69,12 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 * @return void
 		 */
 		public function enqueues( $hook ) {
-			if ( 'options-media.php' !== $hook && 'post.php' !== $hook && 'upload.php' !== $hook ) {
+			$allowed_hooks = [
+				'options-media.php',
+				'post.php',
+				'upload.php',
+			];
+			if ( ! in_array( $hook, $allowed_hooks, true ) ) {
 				return;
 			}
 			wp_enqueue_script(
