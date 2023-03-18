@@ -72,6 +72,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			$allowed_hooks = [
 				'options-media.php',
 				'post.php',
+				'post-new.php',
 				'upload.php',
 			];
 			if ( ! in_array( $hook, $allowed_hooks, true ) ) {
