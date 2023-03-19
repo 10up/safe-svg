@@ -74,6 +74,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 				'post.php',
 				'post-new.php',
 				'upload.php',
+				'media-new.php',
 			];
 			if ( ! in_array( $hook, $allowed_hooks, true ) ) {
 				return;
@@ -90,6 +91,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 					'ajaxUrl'    => esc_url( admin_url( 'admin-ajax.php' ) ),
 					'svgoParams' => wp_json_encode( $this->svgo_params() ),
 					'nonce'      => wp_create_nonce( $this->nonce_name ),
+					'context'    => $hook,
 				]
 			);
 			wp_add_inline_script(
