@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.1.0] - 2023-03-16
+## [2.1.0] - 2023-03-22
 ### Added
 - An SVG Gutenberg Block (props [@faisal-alvi](https://github.com/faisal-alvi), [@Sidsector9](https://github.com/Sidsector9), [@cr0ybot](https://github.com/cr0ybot), [@darylldoyle](https://github.com/darylldoyle), [@cbirdsong](https://github.com/cbirdsong), [@jeffpaul](https://github.com/jeffpaul) via [#80](https://github.com/10up/safe-svg/pull/80)).
 - "Build release zip" GitHub Action (props [@iamdharmesh](https://github.com/iamdharmesh), [@dkotter](https://github.com/dkotter), [@faisal-alvi](https://github.com/faisal-alvi) via [#87](https://github.com/10up/safe-svg/pull/87)).
@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Bump WordPress "tested up to" version 6.1 (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#85](https://github.com/10up/safe-svg/pull/85)).
 
 ### Security
+- Updates the underlying sanitisation library to pull in a security fix (props [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi), [@Cyxow](https://github.com/Cyxow) via [#105](https://github.com/10up/safe-svg/pull/105)).
 - Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#83](https://github.com/10up/safe-svg/pull/83)).
 - Bump `@wordpress/env from` 4.9.0 to 5.6.0 (props [@dependabot](https://github.com/apps/dependabot) via [#83](https://github.com/10up/safe-svg/pull/83)).
 - Bump `simple-git` from 3.9.0 to 3.16.0 (props [@dependabot](https://github.com/apps/dependabot) via [#88](https://github.com/10up/safe-svg/pull/88), [#99](https://github.com/10up/safe-svg/pull/99)).
@@ -23,7 +24,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Bump `decode-uri-component` from 0.2.0 to 0.2.2 (props [@dependabot](https://github.com/apps/dependabot) via [#93](https://github.com/10up/safe-svg/pull/93)).
 - Bump `markdown-it` from 12.0.4 to 12.3.2 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#94](https://github.com/10up/safe-svg/pull/94)).
 - Bump `@wordpress/scripts` from 19.2.4 to 25.1.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#94](https://github.com/10up/safe-svg/pull/94)).
-- Bump http-cache-semantics from 4.1.0 to 4.1.1 [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#101](https://github.com/10up/safe-svg/pull/101)).
+- Bump `http-cache-semantics` from 4.1.0 to 4.1.1 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#101](https://github.com/10up/safe-svg/pull/101)).
+- Bump `webpack` from 5.75.0 to 5.76.1 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#103](https://github.com/10up/safe-svg/pull/103)).
+- Bump `svg-sanitizer` from 0.15.2 to 0.16.0 (props [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi), [@Cyxow](https://github.com/Cyxow) via [#105](https://github.com/10up/safe-svg/pull/105)).
 
 ## [2.0.3] - 2022-09-01
 ### Added
