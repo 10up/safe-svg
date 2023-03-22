@@ -4,8 +4,6 @@
 /.wordpress-org
 /node_modules
 /tests
-/vendor
-/node_modules
 
 # Files
 .distignore
