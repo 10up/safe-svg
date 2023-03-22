@@ -1,10 +1,10 @@
 === Safe SVG ===
-Contributors:      10up, enshrined
+Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
-Requires at least: 4.7
-Tested up to:      6.0
-Stable tag:        2.0.3
-Requires PHP:      7.0
+Requires at least: 5.7
+Tested up to:      6.1
+Stable tag:        2.1.0
+Requires PHP:      7.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,6 +65,25 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.1.0 - 2023-03-22 =
+* **Added:** An SVG Gutenberg Block (props [@faisal-alvi](https://github.com/faisal-alvi), [@Sidsector9](https://github.com/Sidsector9), [@cr0ybot](https://github.com/cr0ybot), [@darylldoyle](https://github.com/darylldoyle), [@cbirdsong](https://github.com/cbirdsong), [@jeffpaul](https://github.com/jeffpaul) via [#80](https://github.com/10up/safe-svg/pull/80)).
+* **Added:** "Build release zip" GitHub Action (props [@iamdharmesh](https://github.com/iamdharmesh), [@dkotter](https://github.com/dkotter), [@faisal-alvi](https://github.com/faisal-alvi) via [#87](https://github.com/10up/safe-svg/pull/87)).
+* **Changed:** Bump minimum PHP version from 7.0 to 7.4 (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1) via [#82](https://github.com/10up/safe-svg/pull/82)).
+* **Changed:** Bump minimum WordPress version from 4.7 to 5.7 (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc), [@vikrampm1](https://github.com/vikrampm1) via [#82](https://github.com/10up/safe-svg/pull/82)).
+* **Changed:** Bump WordPress "tested up to" version 6.1 (props [@iamdharmesh](https://github.com/iamdharmesh), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#85](https://github.com/10up/safe-svg/pull/85)).
+* **Security:** Updates the underlying sanitisation library to pull in a security fix (props [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi), [@Cyxow](https://github.com/Cyxow) via [#105](https://github.com/10up/safe-svg/pull/105)).
+* **Security:** Bump `got` from 10.7.0 to 11.8.5 (props [@dependabot](https://github.com/apps/dependabot) via [#83](https://github.com/10up/safe-svg/pull/83)).
+* **Security:** Bump `@wordpress/env from` 4.9.0 to 5.6.0 (props [@dependabot](https://github.com/apps/dependabot) via [#83](https://github.com/10up/safe-svg/pull/83)).
+* **Security:** Bump `simple-git` from 3.9.0 to 3.16.0 (props [@dependabot](https://github.com/apps/dependabot) via [#88](https://github.com/10up/safe-svg/pull/88), [#99](https://github.com/10up/safe-svg/pull/99)).
+* **Security:** Bump `loader-utils` from 2.0.2 to 2.0.4 (props [@dependabot](https://github.com/apps/dependabot) via [#92](https://github.com/10up/safe-svg/pull/92)).
+* **Security:** Bump `json5` from 1.0.1 to 1.0.2 (props [@dependabot](https://github.com/apps/dependabot) via [#91](https://github.com/10up/safe-svg/pull/91)).
+* **Security:** Bump `decode-uri-component` from 0.2.0 to 0.2.2 (props [@dependabot](https://github.com/apps/dependabot) via [#93](https://github.com/10up/safe-svg/pull/93)).
+* **Security:** Bump `markdown-it` from 12.0.4 to 12.3.2 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#94](https://github.com/10up/safe-svg/pull/94)).
+* **Security:** Bump `@wordpress/scripts` from 19.2.4 to 25.1.0 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#94](https://github.com/10up/safe-svg/pull/94)).
+* **Security:** Bump `http-cache-semantics` from 4.1.0 to 4.1.1 (props [@dependabot](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#101](https://github.com/10up/safe-svg/pull/101)).
+* **Security:** Bump `webpack` from 5.75.0 to 5.76.1 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#103](https://github.com/10up/safe-svg/pull/103)).
+* **Security:** Bump `svg-sanitizer` from 0.15.2 to 0.16.0 (props [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi), [@Cyxow](https://github.com/Cyxow) via [#105](https://github.com/10up/safe-svg/pull/105)).
 
 = 2.0.3 - 2022-09-01 =
 * **Added:** More robust PHP testing (props [@iamdharmesh](https://github.com/iamdharmesh), [@faisal-alvi](https://github.com/faisal-alvi) via [#71](https://github.com/10up/safe-svg/pull/71), [#73](https://github.com/10up/safe-svg/pull/73)).

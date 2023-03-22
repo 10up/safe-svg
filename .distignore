@@ -4,6 +4,8 @@
 /.wordpress-org
 /node_modules
 /tests
+/vendor
+/node_modules
 
 # Files
 .distignore
@@ -21,3 +23,4 @@ package.json
 phpcs.xml
 phpunit.xml.dist
 README.md
+webpack.config.js
