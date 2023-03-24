@@ -14,6 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Setup node version and npm cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+
       - name: Cache vendor
         id: cache-composer
         uses: actions/cache@v3
@@ -28,6 +34,12 @@ jobs:
       - name: Install Composer dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: composer install --no-dev
+
+      - name: Install Node dependencies
+        run: npm ci --no-optional
+
+      - name: Build plugin
+        run: npm run build
 
       - name: Generate ZIP file
         uses: 10up/action-wordpress-plugin-build-zip@stable
