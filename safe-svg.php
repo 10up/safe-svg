@@ -26,8 +26,48 @@ define( 'SAFE_SVG_VERSION', '2.1.0' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Try and include our autoloader.
-if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+/**
+ * Get the minimum version of PHP required by this plugin.
+ *
+ * @return string Minimum version required.
+ */
+function minimum_php_requirement() {
+	return '7.4';
+}
+
+/**
+ * Whether PHP installation meets the minimum requirements
+ *
+ * @return bool True if meets minimum requirements, false otherwise.
+ */
+function site_meets_php_requirements() {
+	return version_compare( phpversion(), minimum_php_requirement(), '>=' );
+}
+
+// Try and include our autoloader, ensuring our PHP version is met first.
+if ( ! site_meets_php_requirements() ) {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %s: Minimum required PHP version */
+							__( 'Safe SVG requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'safe-svg' ),
+							esc_html( minimum_php_requirement() )
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+} elseif ( site_meets_php_requirements() && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 } elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
 	add_action(
