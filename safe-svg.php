@@ -67,7 +67,7 @@ if ( ! site_meets_php_requirements() ) {
 		}
 	);
 	return;
-} elseif ( site_meets_php_requirements() && is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+} elseif ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 } elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
 	add_action(
