@@ -22,3 +22,4 @@ phpcs.xml
 phpunit.xml.dist
 README.md
 webpack.config.js
+/assets/js/admin/admin.js
