@@ -20,7 +20,7 @@ describe('Safe SVG Tests', () => {
    */ 
   it('SVG should be sanitized', () => {
     // Deactivate Test Plugin if it is active.
-    cy.deactivatePlugin('safe-svg');
+    cy.deactivatePlugin('safe-svg-cypress-test-plugin');
 
     // Test
     cy.uploadMedia('tests/cypress/fixtures/custom.svg');
@@ -44,7 +44,7 @@ describe('Safe SVG Tests', () => {
    */
   it('Plugin should allow modify allowed tags and attributes', () => {
     // Activate Test Plugin
-    cy.activatePlugin('safe-svg');
+    cy.activatePlugin('safe-svg-cypress-test-plugin');
 
     // Test
     cy.uploadMedia('tests/cypress/fixtures/custom.svg');
@@ -63,7 +63,7 @@ describe('Safe SVG Tests', () => {
       });
 
     // Deactivate Test Plugin
-    cy.deactivatePlugin('safe-svg');
+    cy.deactivatePlugin('safe-svg-cypress-test-plugin');
   });
 
   it('Bad formatted SVG shouldn\'t upload and give an error.', () => {
