@@ -42,5 +42,5 @@
     "html": false
   },
   "editorScript": "file:../../../dist/safe-svg-block.js",
-  "style": "safe-svg-block-frontend"
+  "style": "file:../../../dist/safe-svg-block-frontend.css"
 }

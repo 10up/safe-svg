@@ -42,13 +42,6 @@ function register_blocks() {
  * @return void
  */
 function blocks_styles() {
-	wp_enqueue_style(
-		'safe-svg-block-frontend',
-		SAFE_SVG_PLUGIN_URL . '/dist/safe-svg-block-frontend.css',
-		[],
-		SAFE_SVG_VERSION
-	);
-
 	$fe_file_name          = 'safe-svg-block-frontend';
 	$frontend_dependencies = ( include SAFE_SVG_PLUGIN_DIR . "/dist/$fe_file_name.asset.php" );
 	wp_enqueue_script(
