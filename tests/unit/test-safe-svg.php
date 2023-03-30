@@ -127,7 +127,9 @@ class SafeSvgTest extends TestCase {
 
 		$this->instance->check_for_svg( $file );
 
-		$expected  = str_replace( array( "\r", "\n" ), ' ', file_get_contents( $files_dir . '/svgCleanOne.svg' ) );
+		// @phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$expected = str_replace( array( "\r", "\n" ), ' ', file_get_contents( $files_dir . '/svgCleanOne.svg' ) );
+		// @phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$sanitized = file_get_contents( $temp );
 		$this->assertXmlStringEqualsXmlString( $expected, $sanitized );
 
