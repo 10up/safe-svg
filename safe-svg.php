@@ -29,6 +29,8 @@ define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 /**
  * Get the minimum version of PHP required by this plugin.
  *
+ * @since 2.1.1
+ *
  * @return string Minimum version required.
  */
 function minimum_php_requirement() {
@@ -37,6 +39,8 @@ function minimum_php_requirement() {
 
 /**
  * Whether PHP installation meets the minimum requirements
+ *
+ * @since 2.1.1
  *
  * @return bool True if meets minimum requirements, false otherwise.
  */
