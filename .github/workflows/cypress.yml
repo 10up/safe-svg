@@ -11,7 +11,7 @@ on:
 
 jobs:
   build: 
-    uses: 10up/safe-svg/.github/workflows/build-release-zip.yml@update/89 # TODO: Update this to develop branch.
+    uses: 10up/safe-svg/.github/workflows/build-release-zip.yml@develop
   cypress:
     needs: build
     name: ${{ matrix.core.name }}
