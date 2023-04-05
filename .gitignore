@@ -10,3 +10,4 @@ dist
 # Files
 safe-svg.zip
 .phpunit.result.cache
+.wp-env.override.json
