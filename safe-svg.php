@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.1.0
+ * Version:           2.1.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
@@ -22,12 +22,56 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.1.0' );
+define( 'SAFE_SVG_VERSION', '2.1.1' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Try and include our autoloader.
-if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+/**
+ * Get the minimum version of PHP required by this plugin.
+ *
+ * @since 2.1.1
+ *
+ * @return string Minimum version required.
+ */
+function minimum_php_requirement() {
+	return '7.4';
+}
+
+/**
+ * Whether PHP installation meets the minimum requirements
+ *
+ * @since 2.1.1
+ *
+ * @return bool True if meets minimum requirements, false otherwise.
+ */
+function site_meets_php_requirements() {
+	return version_compare( phpversion(), minimum_php_requirement(), '>=' );
+}
+
+// Try and include our autoloader, ensuring our PHP version is met first.
+if ( ! site_meets_php_requirements() ) {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %s: Minimum required PHP version */
+							__( 'Safe SVG requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'safe-svg' ),
+							esc_html( minimum_php_requirement() )
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+} elseif ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 } elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
 	add_action(
@@ -78,7 +122,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			$this->sanitizer = new \enshrined\svgSanitize\Sanitizer();
 			$this->sanitizer->minify( true );
 
-			add_filter( 'init', array( $this, 'setup_blocks' ) );
+			add_action( 'init', array( $this, 'setup_blocks' ) );
 			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
