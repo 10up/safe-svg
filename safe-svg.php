@@ -101,7 +101,7 @@ require 'includes/safe-svg-tags.php';
 require 'includes/safe-svg-attributes.php';
 require 'includes/blocks.php';
 
-if ( ! class_exists( 'safe_svg' ) ) {
+if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 	/**
 	 * Class safe_svg
