@@ -18,6 +18,8 @@
 
 namespace SafeSvg;
 
+use enshrined\svgSanitize\Sanitizer;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
@@ -73,7 +75,7 @@ if ( ! site_meets_php_requirements() ) {
 	return;
 } elseif ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
-} elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
+} elseif ( ! class_exists( Sanitizer::class ) ) {
 	add_action(
 		'admin_notices',
 		function() {
@@ -119,7 +121,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * Set up the class
 		 */
 		public function __construct() {
-			$this->sanitizer = new \enshrined\svgSanitize\Sanitizer();
+			$this->sanitizer = new Sanitizer();
 			$this->sanitizer->minify( true );
 
 			add_action( 'init', array( $this, 'setup_blocks' ) );
@@ -556,10 +558,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				 *
 				 * @hook safe_svg_use_width_height_attributes
 				 *
-				 * @param {bool} $false If the width & height attributes should be used first. Default false.
-				 * @param {string} $svg The file path to the SVG.
+				 * @param bool   $use_width_height_attributes If the width & height attributes should be used first. Default false.
+				 * @param string $svg                         The file path to the SVG.
 				 *
-				 * @return {bool} If we should use the width & height attributes first or not.
+				 * @return bool If we should use the width & height attributes first or not.
 				 */
 				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg );
 
@@ -597,7 +599,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * Disable the creation of srcset on SVG images.
 		 *
 		 * @param array  $image_meta The image meta data.
-		 * @param int[]  $size_array    {
+		 * @param int[]  $size_array {
 		 *     An array of requested width and height values.
 		 *
 		 *     @type int $0 The width in pixels.
