@@ -99,9 +99,9 @@ if ( ! site_meets_php_requirements() ) {
 	return;
 }
 
-require 'includes/safe-svg-tags.php';
-require 'includes/safe-svg-attributes.php';
-require 'includes/blocks.php';
+require __DIR__ . '/includes/safe-svg-tags.php';
+require __DIR__ . '/includes/safe-svg-attributes.php';
+require __DIR__ . '/includes/blocks.php';
 
 if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
