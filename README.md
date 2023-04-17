@@ -10,7 +10,7 @@
 [![PHPCS](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml)
 [![PHPUnit](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml)
 
-Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
+> Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
 
 ## Overview
 
