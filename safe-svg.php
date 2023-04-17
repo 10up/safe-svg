@@ -642,4 +642,4 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 	}
 }
 
-$safe_svg = new safe_svg();
+new safe_svg();
