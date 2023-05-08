@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "title": "Safe SVG",
+  "description": "Display the SVG icon",
+  "textdomain": "safe-svg",
+  "name": "safe-svg/svg-icon",
+  "category": "safe-svg-blocks",
+  "attributes": {
+    "svgURL": {
+      "type": "string",
+      "default": ""
+    },
+    "type": {
+      "type": "string",
+      "default": "full"
+    },
+    "alignment": {
+      "type": "string"
+    },
+    "imageID": {
+      "type": "number",
+      "default": 0
+    },
+    "imageWidth": {
+      "type": "number"
+    },
+    "imageHeight": {
+      "type": "number"
+    },
+    "dimensionWidth": {
+      "type": "number"
+    },
+    "dimensionHeight": {
+      "type": "number"
+    },
+    "imageSizes": {
+      "type": "object"
+    }
+  },
+  "supports": {
+    "html": false
+  },
+  "editorScript": "file:../../../dist/safe-svg-block.js",
+  "style": "file:../../../dist/safe-svg-block-frontend.css"
+}

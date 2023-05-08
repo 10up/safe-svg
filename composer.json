@@ -21,7 +21,7 @@
 	],
 	"require": {
 		"php": ">=7.4",
-		"enshrined/svg-sanitize": "^0.15.2"
+		"enshrined/svg-sanitize": "^0.16.0"
 	},
 	"require-dev": {
 		"10up/phpcs-composer": "dev-master",

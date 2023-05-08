@@ -1,7 +1,13 @@
+# Directories
 vendor
 .DS_Store
 node_modules
 tests/cypress/downloads
 tests/cypress/screenshots
 tests/cypress/videos
+dist
+
+# Files
+safe-svg.zip
 .phpunit.result.cache
+.wp-env.override.json

@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.0.3
+ * Version:           2.1.1
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
@@ -16,16 +16,66 @@
  * @package safe-svg
  */
 
+namespace SafeSvg;
+
+use enshrined\svgSanitize\Sanitizer;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.0.3' );
+define( 'SAFE_SVG_VERSION', '2.1.1' );
+define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
+define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-// Try and include our autoloader.
-if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
+/**
+ * Get the minimum version of PHP required by this plugin.
+ *
+ * @since 2.1.1
+ *
+ * @return string Minimum version required.
+ */
+function minimum_php_requirement() {
+	return '7.4';
+}
+
+/**
+ * Whether PHP installation meets the minimum requirements
+ *
+ * @since 2.1.1
+ *
+ * @return bool True if meets minimum requirements, false otherwise.
+ */
+function site_meets_php_requirements() {
+	return version_compare( phpversion(), minimum_php_requirement(), '>=' );
+}
+
+// Try and include our autoloader, ensuring our PHP version is met first.
+if ( ! site_meets_php_requirements() ) {
+	add_action(
+		'admin_notices',
+		function() {
+			?>
+			<div class="notice notice-error">
+				<p>
+					<?php
+					echo wp_kses_post(
+						sprintf(
+							/* translators: %s: Minimum required PHP version */
+							__( 'Safe SVG requires PHP version %s or later. Please upgrade PHP or disable the plugin.', 'safe-svg' ),
+							esc_html( minimum_php_requirement() )
+						)
+					);
+					?>
+				</p>
+			</div>
+			<?php
+		}
+	);
+	return;
+} elseif ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
-} elseif ( ! class_exists( 'enshrined\\svgSanitize\\Sanitizer' ) ) {
+} elseif ( ! class_exists( Sanitizer::class ) ) {
 	add_action(
 		'admin_notices',
 		function() {
@@ -49,11 +99,11 @@ if ( is_readable( __DIR__ . '/vendor/autoload.php' ) ) {
 	return;
 }
 
-require 'includes/safe-svg-tags.php';
-require 'includes/safe-svg-attributes.php';
-require_once 'includes/safe-svg-settings.php';
+require __DIR__ . '/includes/safe-svg-tags.php';
+require __DIR__ . '/includes/safe-svg-attributes.php';
+require __DIR__ . '/includes/blocks.php';
 
-if ( ! class_exists( 'safe_svg' ) ) {
+if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 	/**
 	 * Class safe_svg
@@ -71,9 +121,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * Set up the class
 		 */
 		public function __construct() {
-			$this->sanitizer = new enshrined\svgSanitize\Sanitizer();
+			$this->sanitizer = new Sanitizer();
 			$this->sanitizer->minify( true );
 
+			add_action( 'init', array( $this, 'setup_blocks' ) );
 			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
@@ -104,6 +155,14 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			}
 
 			return current_user_can( 'safe_svg_upload_svg' );
+		}
+
+		/**
+		 * Setup the blocks.
+		 */
+		public function setup_blocks() {
+			// Setup blocks.
+			Blocks\setup();
 		}
 
 		/**
@@ -214,8 +273,8 @@ if ( ! class_exists( 'safe_svg' ) ) {
 			/**
 			 * Load extra filters to allow devs to access the safe tags and attrs by themselves.
 			 */
-			$this->sanitizer->setAllowedTags( new safe_svg_tags() );
-			$this->sanitizer->setAllowedAttrs( new safe_svg_attributes() );
+			$this->sanitizer->setAllowedTags( new SafeSvgTags\safe_svg_tags() );
+			$this->sanitizer->setAllowedAttrs( new SafeSvgAttr\safe_svg_attributes() );
 
 			$clean = $this->sanitizer->sanitize( $dirty );
 
@@ -529,10 +588,10 @@ if ( ! class_exists( 'safe_svg' ) ) {
 				 *
 				 * @hook safe_svg_use_width_height_attributes
 				 *
-				 * @param {bool} $false If the width & height attributes should be used first. Default false.
-				 * @param {string} $svg The file path to the SVG.
+				 * @param bool   $use_width_height_attributes If the width & height attributes should be used first. Default false.
+				 * @param string $svg                         The file path to the SVG.
 				 *
-				 * @return {bool} If we should use the width & height attributes first or not.
+				 * @return bool If we should use the width & height attributes first or not.
 				 */
 				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg );
 
@@ -570,7 +629,7 @@ if ( ! class_exists( 'safe_svg' ) ) {
 		 * Disable the creation of srcset on SVG images.
 		 *
 		 * @param array  $image_meta The image meta data.
-		 * @param int[]  $size_array    {
+		 * @param int[]  $size_array {
 		 *     An array of requested width and height values.
 		 *
 		 *     @type int $0 The width in pixels.
@@ -613,4 +672,4 @@ if ( ! class_exists( 'safe_svg' ) ) {
 	}
 }
 
-$safe_svg = new safe_svg();
+new safe_svg();

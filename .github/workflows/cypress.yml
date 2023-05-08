@@ -10,7 +10,10 @@ on:
       - develop
 
 jobs:
+  build: 
+    uses: 10up/safe-svg/.github/workflows/build-release-zip.yml@develop
   cypress:
+    needs: build
     name: ${{ matrix.core.name }}
     runs-on: ubuntu-latest
     strategy:
@@ -24,19 +27,33 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-
+    - name: Download build zip
+      uses: actions/download-artifact@v3
+      with:
+        name: ${{ github.event.repository.name }}
+        path: ${{ github.event.repository.name }}
+    - name: Display structure of downloaded files
+      run: ls -R
+      working-directory: ${{ github.event.repository.name }}
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: |
+          node_modules
+          ~/.cache
+          ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
       run: npm install
-
     - name: Composer
       run: composer install
-
-    - name: Set the core version
-      run: ./tests/bin/set-core-version.js ${{ matrix.core.version }}
-
+    - name: Set the core version and plugins config 
+      run: ./tests/bin/set-wp-config.js --core=${{ matrix.core.version }} --plugins=./${{ github.event.repository.name }},./tests/cypress/test-plugin
     - name: Set up WP environment
       run: npm run env:start
-
     - name: Test
       run: npm run cypress:run
 
