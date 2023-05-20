@@ -44,6 +44,14 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 * @return bool
 		 */
 		public function is_enabled(): bool {
+			$has_svg_allowed_tags       = has_filter( 'svg_allowed_tags' );
+			$has_svg_allowed_attributes = has_filter( 'svg_allowed_attributes' );
+			/**
+			 * If a dev has added allowed tags or attributes, we should not optimize the SVGs, because the optimizer will not respect their exclusions.
+			 */
+			if ( $has_svg_allowed_tags || $has_svg_allowed_attributes ) {
+				return false;
+			}
 			$params = $this->svgo_params();
 			return ( ! empty( $params ) && is_array( $params ) );
 		}
@@ -121,21 +129,12 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			$maybe_dirty = $_GET['optimized_svg'];
 			$sanitizer   = new Sanitizer();
 			$sanitizer->minify( true );
-			$sanitized = $sanitizer->sanitize(
-				sprintf(
-					'<?xml version="1.0" encoding="UTF-8"?>%s', // Add the XML tag, or else the sanitizer will fail.
-					stripcslashes( $maybe_dirty )
-				)
-			);
-			$optimized = trim(
-				stripcslashes(
-					preg_replace( '/<\?xml(.*?)\?>/', '', $sanitized ) // Remove the XML tag.
-				)
-			);
-			if ( empty( $optimized ) ) {
+			$sanitized = $sanitizer->sanitize( stripcslashes( $maybe_dirty ) );
+
+			if ( empty( $sanitized ) ) {
 				return;
 			}
-			file_put_contents( $svg_path, $optimized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+			file_put_contents( $svg_path, $sanitized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 			wp_die();
 		}
 		/**
