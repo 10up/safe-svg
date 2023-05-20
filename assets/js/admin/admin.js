@@ -1,17 +1,17 @@
+/* global safeSvgParams */
 import {optimize} from 'svgo/lib/svgo';
 import {select, subscribe} from '@wordpress/data';
 
 (function () {
-    const ajaxUrl = new URL(safeSvgParams.ajaxUrl); // eslint-disable-line no-undef
-    const svgoParams = JSON.parse(safeSvgParams.svgoParams); // eslint-disable-line no-undef
+    const ajaxUrl = new URL(safeSvgParams.ajaxUrl);
+    const svgoParams = JSON.parse(safeSvgParams.svgoParams);
 
     if (!ajaxUrl || !svgoParams) {
         return;
     }
 
-    const context = safeSvgParams?.context; // eslint-disable-line no-undef
+    const context = safeSvgParams?.context;
     const safeSvgCookie = 'safesvg-optimize';
-    const safeSvgCookieAttr = 'Secure;SameSite=strict;path=/';
 
     /**
      * Optimizes the SVG and prepares the parameters for the AJAX call.
@@ -34,7 +34,7 @@ import {select, subscribe} from '@wordpress/data';
             action: 'safe_svg_optimize',
             svg_url: svgUrl,
             optimized_svg: optimizedString,
-            svg_nonce: safeSvgParams.nonce, // eslint-disable-line no-undef
+            svg_nonce: safeSvgParams.nonce,
         };
     };
 
@@ -80,10 +80,8 @@ import {select, subscribe} from '@wordpress/data';
      * If we are on the media library page, and the user has just uploaded an SVG file using the standard browser uploader, optimize it.
      */
     if ('upload.php' === context) {
-        const shouldOptimizeSvg = document.cookie
-            .split("; ")
-            .find((row) => row.startsWith(safeSvgCookie + '='))
-            ?.split("=")[1];
+        const shouldOptimizeSvg = wpCookies.get(safeSvgCookie);
+
         // Check if the cookie exists and is set to 1.
         if (shouldOptimizeSvg && '1' === shouldOptimizeSvg) {
             // Check selectors for both Grid and List view.
@@ -110,7 +108,7 @@ import {select, subscribe} from '@wordpress/data';
                                         return;
                                     }
                                     // Remove the cookie.
-                                    document.cookie = safeSvgCookie + '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;' + safeSvgCookieAttr;
+                                    wpCookies.remove(safeSvgCookie, '/', '', true);
                                     refreshMediaUploaderWindow();
                                 });
                         });
@@ -129,7 +127,7 @@ import {select, subscribe} from '@wordpress/data';
             form.addEventListener('submit', function (event) {
                 const fileInput = document.querySelector('#async-upload');
                 if (fileInput.files[0].type === 'image/svg+xml' || fileInput.files[0].name.endsWith('.svg')) {
-                    document.cookie = safeSvgCookie + '=1;' + safeSvgCookieAttr;
+                    wpCookies.set(safeSvgCookie, '1', 'Session', '/', '', true);
                 }
             });
         } else {
