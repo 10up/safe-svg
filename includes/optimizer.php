@@ -109,12 +109,10 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 * @return void
 		 */
 		public function optimize() {
-			$svg_url  = filter_input( INPUT_GET, 'svg_url', FILTER_SANITIZE_URL );
-			
+			$svg_url = filter_input( INPUT_GET, 'svg_url', FILTER_SANITIZE_URL );
 			if ( ! current_user_can( 'edit_posts', attachment_url_to_postid( $svg_url ) ) ) {
 				return;
 			}
-			
 			check_ajax_referer( $this->nonce_name, 'svg_nonce' );
 			$svg_path = $this->url_to_path( $svg_url );
 			if ( empty( $svg_path ) ) {
