@@ -125,6 +125,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			$this->sanitizer->minify( true );
 
 			add_action( 'init', array( $this, 'setup_blocks' ) );
+			add_action( 'init', array( $this, 'load_classes' ) );
 			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
@@ -144,6 +145,28 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function setup_blocks() {
 			// Setup blocks.
 			Blocks\setup();
+		}
+
+		/**
+		 * Load Classes.
+		 */
+		public function load_classes() {
+			// If the composer.json isn't found, trigger a warning.
+			if ( ! file_exists( SAFE_SVG_PLUGIN_DIR . 'composer.json' ) ) {
+				add_action(
+					'admin_notices',
+					function() {
+						$class = 'notice notice-error';
+						/* translators: %s: the path to the plugin */
+						$message = sprintf( __( 'The composer.json file was not found within %s. No classes will be loaded.', 'tenup-plugin' ), TENUP_PLUGIN_PATH );
+
+						printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
+					}
+				);
+				return;
+			}
+
+			ModuleInitialization::instance()->init_classes();
 		}
 
 		/**
