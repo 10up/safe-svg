@@ -57,7 +57,7 @@ class ModuleInitialization {
 	 */
 	protected function get_classes() {
 		$class_finder = new ClassFinder();
-		$class_finder::setAppRoot( SAFE_SVG_PLUGIN_DIR );
+		$class_finder::setAppRoot( SAFE_SVG_PLUGIN_PATH );
 		return $class_finder::getClassesInNamespace( 'SafeSvg', ClassFinder::RECURSIVE_MODE );
 	}
 

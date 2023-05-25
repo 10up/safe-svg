@@ -26,6 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 define( 'SAFE_SVG_VERSION', '2.1.1' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
+define( 'SAFE_SVG_PLUGIN_PATH', __DIR__ . '/' );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
@@ -152,13 +153,13 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function load_classes() {
 			// If the composer.json isn't found, trigger a warning.
-			if ( ! file_exists( SAFE_SVG_PLUGIN_DIR . 'composer.json' ) ) {
+			if ( ! file_exists( SAFE_SVG_PLUGIN_PATH . 'composer.json' ) ) {
 				add_action(
 					'admin_notices',
 					function() {
 						$class = 'notice notice-error';
 						/* translators: %s: the path to the plugin */
-						$message = sprintf( __( 'The composer.json file was not found within %s. No classes will be loaded.', 'tenup-plugin' ), TENUP_PLUGIN_PATH );
+						$message = sprintf( __( 'The composer.json file was not found within %s. No classes will be loaded.', 'safe-svg' ), SAFE_SVG_PLUGIN_PATH );
 
 						printf( '<div class="%1$s"><p>%2$s</p></div>', esc_attr( $class ), esc_html( $message ) );
 					}
