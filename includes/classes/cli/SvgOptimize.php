@@ -21,12 +21,12 @@ class SvgOptimize {
 		$optimizer = new VectorExpress();
 
 		foreach ( $svg_query->posts as $svg ) {
-			$r = $optimizer->optimize_image( $svg );
-			WP_CLI::log( $r );
+			$path = get_attached_file( $svg );
+			$optimizer->optimize_image( $path );
 		}
 	}
 
-	protected function get_svg_query( $limit = 10 ): WP_Query {
+	protected function get_svg_query( $limit = 1 ): WP_Query {
 		$args = [
 			'post_type'      => 'attachment',
 			'post_status'    => 'any',
