@@ -36,7 +36,11 @@ class VectorExpress implements Optimizer {
 				return new WP_Error( 'optimize-error', __( 'JSON decode failed on response.', 'safe-svg' ) );
 			}
 
-			return $response_json;
+			if ( empty( $response_json->resultUrl ) ) {
+				return new WP_Error( 'optimize-error', __( 'Could not parse response.', 'safe-svg' ) );
+			}
+
+			return $response_json->resultUrl;
 		}
 
 		return new WP_Error( 'optimize-error', __( 'API request failed.', 'safe-svg' ) );
