@@ -10,11 +10,15 @@ namespace SafeSvg\API;
 use \WP_Error;
 
 /**
- * Interface for optmization APIs
+ * VectorExpress API class.
  */
 class VectorExpress implements Optimizer {
 
 	const ENDPOINT = 'https://vector.express/api/v2/public/convert/svg/svgo/svg';
+
+	public function get_option_field() {
+		return [];
+	}
 
 	public function optimize_image( $image_path ) {
 		$body = file_get_contents( $image_path );

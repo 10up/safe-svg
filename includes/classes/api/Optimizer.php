@@ -12,6 +12,8 @@ namespace SafeSvg\API;
  */
 interface Optimizer {
 
+	public function get_option_fields();
+
 	public function optimize_image( $image );
 
 }
