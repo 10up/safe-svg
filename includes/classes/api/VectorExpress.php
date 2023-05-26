@@ -12,8 +12,8 @@ namespace SafeSvg\API;
  */
 class VectorExpress implements Optimizer {
 
-    public function optimize_image( $image ) {
+	public function optimize_image( $image ) {
 
-    }
+	}
 
 }

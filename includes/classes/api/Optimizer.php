@@ -12,6 +12,6 @@ namespace SafeSvg\API;
  */
 interface Optimizer {
 
-    public function optimize_image( $image );
+	public function optimize_image( $image );
 
 }
