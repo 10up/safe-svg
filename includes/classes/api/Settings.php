@@ -7,6 +7,8 @@
 
 namespace SafeSvg\API;
 
+use SafeSvg\Module;
+
 /**
  * Class for handling API settings.
  */
@@ -27,6 +29,29 @@ class Settings extends Module {
 	 * @return void
 	 */
 	public function register() {
+        add_action( 'admin_menu', [ $this, 'add_menu_page' ] );
+    }
+
+    /**
+     * Adds the API settings menu page.
+     *
+     * @return void
+     */
+    public function add_menu_page() {
+        add_submenu_page(
+            'options-general.php',
+            'Safe SVG API Settings',
+            'Safe SVG',
+            'manage_options',
+            'safe-svg-api',
+            [ $this, 'print_settings_page' ]
+        );
+    }
+
+    /**
+     *
+     */
+    public function print_settings_page() {
 
     }
 

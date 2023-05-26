@@ -16,7 +16,7 @@ class VectorExpress implements Optimizer {
 
 	const ENDPOINT = 'https://vector.express/api/v2/public/convert/svg/svgo/svg';
 
-	public function get_option_field() {
+	public function get_option_fields() {
 		return [];
 	}
 
