@@ -4,7 +4,7 @@ import {select, subscribe} from '@wordpress/data';
 
 (function () {
     const ajaxUrl = new URL(safeSvgParams.ajaxUrl);
-    const svgoParams = JSON.parse(safeSvgParams.svgoParams);
+    const svgoParams = safeSvgParams.svgoParams;
 
     if (!ajaxUrl || !svgoParams) {
         return;
@@ -17,10 +17,11 @@ import {select, subscribe} from '@wordpress/data';
      * Optimizes the SVG and prepares the parameters for the AJAX call.
      *
      * @param {string} svgUrl - The URL of the SVG file.
+     * @param {int} svgId - The ID of the SVG file.
      * @param {string} data - The SVG contents.
      * @returns {object}
      */
-    const ajaxUrlParams = (svgUrl, data) => {
+    const ajaxUrlParams = (svgUrl, data, svgId = 0) => {
         // Run the SVGO optimizer to get the optimized SVG contents.
         const optimized = optimize(data, svgoParams);
         const optimizedString = optimized?.data;
@@ -33,6 +34,7 @@ import {select, subscribe} from '@wordpress/data';
         return {
             action: 'safe_svg_optimize',
             svg_url: svgUrl,
+            svg_id: svgId ?? 0,
             optimized_svg: optimizedString,
             svg_nonce: safeSvgParams.nonce,
         };
@@ -42,6 +44,9 @@ import {select, subscribe} from '@wordpress/data';
      * Trigger a refresh on the uploader window to update the file size.
      */
     const refreshMediaUploaderWindow = () => {
+       if(typeof wp.media === 'undefined') {
+           return;
+       }
         if (wp.media.frame.content.get() !== null && wp.media.frame.content.get() !== undefined) {
             wp.media.frame.content
                 .get()
@@ -187,6 +192,7 @@ import {select, subscribe} from '@wordpress/data';
             // Run on a successful upload.
             success(attachment) {
                 const svgUrl = attachment?.attributes?.url;
+                const svgId = attachment?.attributes?.id;
                 if (!svgUrl || attachment?.attributes?.subtype !== 'svg+xml') {
                     return;
                 }
@@ -195,7 +201,7 @@ import {select, subscribe} from '@wordpress/data';
                 fetch(svgUrl, {method: 'GET'})
                     .then((response) => response.text())
                     .then((response) => {
-                        const params = ajaxUrlParams(svgUrl, response);
+                        const params = ajaxUrlParams(svgUrl, response, svgId);
                         if (!params) {
                             return;
                         }

@@ -90,18 +90,19 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			wp_enqueue_script(
 				'safe-svg-admin-scripts',
 				SAFE_SVG_PLUGIN_URL . '/dist/safe-svg-admin.js',
-				[ 'wp-data' ],
+				[ 'wp-data', 'utils' ],
 				SAFE_SVG_VERSION,
 				true
 			);
 			$params = wp_json_encode(
 				[
-					'ajaxUrl'    => esc_url( admin_url( 'admin-ajax.php' ) ),
-					'svgoParams' => wp_json_encode( $this->svgo_params() ),
+					'ajaxUrl'    => esc_url_raw( admin_url( 'admin-ajax.php' ) ),
+					'svgoParams' => $this->svgo_params(),
 					'nonce'      => wp_create_nonce( $this->nonce_name ),
 					'context'    => $hook,
 				]
 			);
+
 			wp_add_inline_script(
 				'safe-svg-admin-scripts',
 				sprintf(
@@ -117,12 +118,14 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 		 * @return void
 		 */
 		public function optimize() {
-			$svg_url = filter_input( INPUT_GET, 'svg_url', FILTER_SANITIZE_URL );
-			if ( ! current_user_can( 'edit_posts', attachment_url_to_postid( $svg_url ) ) ) {
+			$svg_url       = filter_input( INPUT_GET, 'svg_url', FILTER_SANITIZE_URL );
+			$svg_id        = filter_input( INPUT_GET, 'svg_id', FILTER_SANITIZE_NUMBER_INT );
+			$attachment_id = ! empty( $svg_id ) ? $svg_id : attachment_url_to_postid( $svg_url );
+			if ( empty( $attachment_id ) || ! current_user_can( 'edit_post', $attachment_id ) ) {
 				return;
 			}
 			check_ajax_referer( $this->nonce_name, 'svg_nonce' );
-			$svg_path = $this->url_to_path( $svg_url );
+			$svg_path = get_attached_file( $attachment_id );
 			if ( empty( $svg_path ) ) {
 				return;
 			}
@@ -130,33 +133,11 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			$sanitizer   = new Sanitizer();
 			$sanitizer->minify( true );
 			$sanitized = $sanitizer->sanitize( stripcslashes( $maybe_dirty ) );
-
 			if ( empty( $sanitized ) ) {
 				return;
 			}
 			file_put_contents( $svg_path, $sanitized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 			wp_die();
-		}
-		/**
-		 * A helper method to get the file path from its URL.
-		 *
-		 * @param string $url The URL string.
-		 *
-		 * @return false|string
-		 */
-		protected function url_to_path( string $url = '' ) {
-			if ( empty( $url ) ) {
-				return '';
-			}
-			$parsed_url = wp_parse_url( $url );
-			if ( empty( $parsed_url['path'] ) ) {
-				return false;
-			}
-			$file = ABSPATH . ltrim( $parsed_url['path'], '/' );
-			if ( file_exists( $file ) ) {
-				return $file;
-			}
-			return false;
 		}
 	}
 }
