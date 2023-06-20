@@ -101,6 +101,7 @@ if ( ! site_meets_php_requirements() ) {
 
 require __DIR__ . '/includes/safe-svg-tags.php';
 require __DIR__ . '/includes/safe-svg-attributes.php';
+require __DIR__ . '/includes/safe-svg-settings.php';
 require __DIR__ . '/includes/blocks.php';
 require __DIR__ . '/includes/optimizer.php';
 new \SafeSVG\Optimizer();
