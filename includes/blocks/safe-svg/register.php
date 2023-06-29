@@ -72,7 +72,7 @@ function render_block_callback( $attributes ) {
 			</div>',
 			$attributes['alignment'] ?? 'left',
 			$class_name,
-			isset( $attributes['className'] ) ? ' ' . $attributes['className'] : '',
+			isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) : '',
 			$attributes['dimensionWidth'],
 			$attributes['dimensionHeight'],
 			$contents
