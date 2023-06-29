@@ -5,8 +5,10 @@ node_modules
 tests/cypress/downloads
 tests/cypress/screenshots
 tests/cypress/videos
+tests/cypress/reports
 dist
 
 # Files
 safe-svg.zip
 .phpunit.result.cache
+.wp-env.override.json

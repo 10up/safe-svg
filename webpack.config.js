@@ -10,5 +10,6 @@ module.exports = {
     entry: {
         'safe-svg-block': [ './includes/blocks/safe-svg/index.js' ],
         'safe-svg-block-frontend': [ './includes/blocks/safe-svg/frontend.js' ],
+        'safe-svg-admin': [ './assets/js/admin/admin.js' ],
     }
 };
