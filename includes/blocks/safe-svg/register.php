@@ -68,12 +68,13 @@ function render_block_callback( $attributes ) {
 		'safe_svg_inline_markup',
 		sprintf(
 			'<div class="safe-svg-cover" style="text-align:%s">
-				<div class="safe-svg-inside %s" style="width: %spx; height: %spx;">%s</div>
+				<div class="safe-svg-inside %s%s" style="width: %spx; height: %spx;">%s</div>
 			</div>',
-			$attributes['alignment'] ?? 'left',
-			$class_name,
-			$attributes['dimensionWidth'],
-			$attributes['dimensionHeight'],
+			isset( $attributes['alignment'] ) ? esc_attr( $attributes['alignment'] ) : 'left',
+			esc_attr( $class_name ),
+			isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) : '',
+			isset( $attributes['dimensionWidth'] ) ? esc_attr( $attributes['dimensionWidth'] ) : '',
+			isset( $attributes['dimensionHeight'] ) ? esc_attr( $attributes['dimensionHeight'] ) : '',
 			$contents
 		),
 		$contents,
