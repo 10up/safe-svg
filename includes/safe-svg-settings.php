@@ -67,7 +67,7 @@ class safe_svg_settings {
 	}
 
 	/**
-	 * Get roles with with upload capabilities.
+	 * Get roles with upload capabilities.
 	 *
 	 * @return array An array of roles with the upload_files capability.
 	 */
@@ -80,6 +80,15 @@ class safe_svg_settings {
 			}
 		);
 
+		/**
+		 * Filter the roles that can upload SVG files.
+		 *
+		 * @since 2.2.0
+		 *
+		 * @param array             $upload_roles The roles that can upload SVG files.
+		 * @param array             $all_roles All editable roles on the site.
+		 * @param safe_svg_settings $this The safe_svg_settings instance.
+		 */
 		return apply_filters( 'safe_svg_upload_roles', $upload_roles, $all_roles, $this );
 	}
 
