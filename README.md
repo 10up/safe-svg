@@ -21,16 +21,15 @@ It gives you the ability to allow SVG uploads whilst making sure that they're sa
 ### Current Features
 
 * **Sanitised SVGs** - Don't open up security holes in your WordPress site by allowing uploads of unsanitised files.
+* **SVGO Optimisation** - Runs your SVGs through the SVGO tool on upload to save you space.
 * **View SVGs in the Media Library** - Gone are the days of guessing which SVG is the correct one, we'll enable SVG previews in the WordPress media library.
-
-### Features on the Roadmap
-
-* **SVGO Optimisation** - You'll have the option to run your SVGs through our SVGO server on upload to save you space.
 * **Choose Who Can Upload** - Restrict SVG uploads to certain users on your WordPress site or allow anyone to upload.
 
 Initially a proof of concept for [#24251](https://core.trac.wordpress.org/ticket/24251).
 
 SVG Sanitization is done through the following library: [https://github.com/darylldoyle/svg-sanitizer](https://github.com/darylldoyle/svg-sanitizer).
+
+SVG Optimization is done through the following library: [https://github.com/svg/svgo](https://github.com/svg/svgo).
 
 ## Requirements
 
