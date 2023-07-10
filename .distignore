@@ -4,12 +4,11 @@
 /.wordpress-org
 /node_modules
 /tests
-/vendor
-/node_modules
 
 # Files
 .distignore
 .gitignore
+.nvmrc
 .wp-env.json
 CHANGELOG.md
 CODE_OF_CONDUCT.md
@@ -23,3 +22,5 @@ package.json
 phpcs.xml
 phpunit.xml.dist
 README.md
+webpack.config.js
+/assets/js/admin/admin.js

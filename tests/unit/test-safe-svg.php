@@ -63,9 +63,35 @@ class SafeSvgTest extends TestCase {
 	 * @return void
 	 */
 	public function test_allow_svg() {
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => [ 'safe_svg_upload_roles', [] ],
+				'return' => [ 'editor' ],
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'safe_svg_upload_svg',
+				'return' => true,
+			)
+		);
+
 		$allowed_svg = $this->instance->allow_svg( array() );
 		$this->assertNotEmpty( $allowed_svg );
 		$this->assertContains( 'image/svg+xml', $allowed_svg );
+	}
+
+	/**
+	 * Test dont_allow_svg function.
+	 *
+	 * @return void
+	 */
+	public function test_dont_allow_svg() {
+		$allowed_svg = $this->instance->allow_svg( array() );
+		$this->assertEmpty( $allowed_svg );
 	}
 
 	/**
@@ -115,6 +141,14 @@ class SafeSvgTest extends TestCase {
 			)
 		);
 
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'upload_files',
+				'return' => true,
+			)
+		);
+
 		// Test sanitize on valid SVG.
 		$temp      = tempnam( sys_get_temp_dir(), 'TMP_' );
 		$files_dir = __DIR__ . '/files';
@@ -127,7 +161,9 @@ class SafeSvgTest extends TestCase {
 
 		$this->instance->check_for_svg( $file );
 
-		$expected  = str_replace( array( "\r", "\n" ), ' ', file_get_contents( $files_dir . '/svgCleanOne.svg' ) );
+		// @phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$expected = str_replace( array( "\r", "\n" ), ' ', file_get_contents( $files_dir . '/svgCleanOne.svg' ) );
+		// @phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$sanitized = file_get_contents( $temp );
 		$this->assertXmlStringEqualsXmlString( $expected, $sanitized );
 
