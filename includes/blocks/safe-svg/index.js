@@ -16,13 +16,13 @@ import save from './save';
 import block from './block.json';
 
 /* Uncomment for CSS overrides in the admin */
-// import './index.css';
+import './frontend.scss';
 
 /**
  * Register block
  */
 registerBlockType( block.name, {
-	title: __( 'Safe SVG Icon', 'safe-svg' ),
+	title: __( 'Inline SVG', 'safe-svg' ),
 	description: __(
 		'Display an SVG icon',
 		'safe-svg'
