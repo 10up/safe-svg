@@ -30,7 +30,7 @@ class safe_svg_tags extends \enshrined\svgSanitize\data\AllowedTags {
 	 *
 	 * @return array Array of allowed HTML tags and their allowed attributes.
 	 */
-	public function kses_allowed_html() {
+	public static function kses_allowed_html() {
 		return array(
 			'svg'            => array(
 				'version'           => true,

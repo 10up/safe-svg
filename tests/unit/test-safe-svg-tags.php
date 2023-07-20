@@ -47,4 +47,14 @@ class SafeSvgTagsTest extends TestCase {
 		$this->assertContains( 'customTag', $svg_tags );
 		$this->assertSame( $svg_tags, $filtered_svg_tags );
 	}
+
+	/**
+	 * Test the kses_allowed_html function.
+	 *
+	 * @throws PHPUnit\Framework\AssertionFailedError If the function does not return an array.
+	 */
+	public function test_kses_allowed_html() {
+		$allowed_html = SafeSvg\SafeSvgTags\safe_svg_tags::kses_allowed_html();
+		$this->assertIsArray( $allowed_html );
+	}
 }
