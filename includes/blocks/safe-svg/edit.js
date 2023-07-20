@@ -46,8 +46,22 @@ const SafeSvgBlockEdit = ( props ) => {
 		dimensionWidth,
 		dimensionHeight
 	} = attributes;
-	const blockProps = useBlockProps( { className:` safe-svg-cover align${alignment}` });
-	const { style, className, ...containerBlockProps } = blockProps;
+	const blockProps = useBlockProps(
+		{
+			className:` safe-svg-cover`,
+			style: {
+				textAlign: alignment,
+			}
+		}
+	);
+	const { className, ...containerBlockProps } = blockProps;
+
+	// Remove text alignment so we can apply to the parent container.
+	delete containerBlockProps.style.textAlign;
+
+	// Add the width and height to enforce dimensions and to keep parity with the frontend.
+	containerBlockProps.style.width = `${dimensionWidth}px`;
+	containerBlockProps.style.height = `${dimensionHeight}px`;
 
 	const ALLOWED_MEDIA_TYPES = [ 'image/svg+xml' ];
 
@@ -123,6 +137,9 @@ const SafeSvgBlockEdit = ( props ) => {
 		{ value: 'thumbnail', label: 'Thumbnail' },
 	];
 
+	// Remove core background & text color classes, so we can add our own.
+	const newClassName = className.replace(/has-[\w-]*-color|has-background/g, '').trim();
+
 	return (
 		<>
 			{svgURL &&
@@ -173,8 +190,11 @@ const SafeSvgBlockEdit = ( props ) => {
 			}
 
 			{svgURL &&
-				<div { ...containerBlockProps } className={className.replace(/(has-vivid-red-background-color|has-secondary-color|has-text-color|has-background)/g, '').trim()}>
-					<div className="safe-svg-inside" style={style}>
+				<div className={newClassName} style={{ textAlign: alignment }}>
+					<div
+						{ ...containerBlockProps }
+						className="safe-svg-inside"
+					>
 						<ReactSVG src={svgURL} beforeInjection={(svg) => {
 							svg.setAttribute( 'style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;` );
 						}} />
