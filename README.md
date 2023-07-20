@@ -74,6 +74,14 @@ add_filter( 'svg_allowed_tags', function ( $tags ) {
 } );
 ```
 
+### Can `wp_kses` be used with a helper to sanitize an SVG?
+
+Indeed, you can accomplish this with `\SafeSvg\SafeSvgTags\safe_svg_tags::kses_allowed_html()`:
+
+```php
+echo wp_kses('<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25"><path fill="currentcolor" d="M17.525 9.302H14v-2c0-1.032.084-1.682 1.563-1.682h1.868V2.44a26.065 26.065 0 0 0-2.738-.138C11.98 2.302 10 3.959 10 7v2.3H7v4h3v9h4V13.3l3.066-.001.459-3.996Z"/></svg>', \SafeSvg\SafeSvgTags\safe_svg_tags::kses_allowed_html())
+```
+
 ## Support Level
 
 **Stable:** 10up is not planning to develop any new features for this, but will still respond to bug reports and security concerns. We welcome PRs, but any that include new features should be small and easy to integrate and should not include breaking changes. We otherwise intend to keep this tested up to the most recent version of WordPress.
