@@ -564,6 +564,10 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return array|bool
 		 */
 		protected function svg_dimensions( $svg ) {
+			if ( ! function_exists('simplexml_load_file') ) {
+				return false;
+			}
+
 			$svg    = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 			$width  = 0;
 			$height = 0;
