@@ -39,7 +39,15 @@
     }
   },
   "supports": {
-    "html": false
+    "html": false,
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
   },
   "editorScript": "file:../../../dist/safe-svg-block.js",
   "style": "file:../../../dist/safe-svg-block-frontend.css"

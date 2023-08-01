@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "cypress-mochawesome-reporter": "^3.4.0",
+    "react-svg": "^16.1.18",
     "svgo": "^3.0.2"
   }
 }
