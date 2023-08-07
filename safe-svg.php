@@ -564,7 +564,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return array|bool
 		 */
 		protected function svg_dimensions( $svg ) {
-			if ( ! function_exists('simplexml_load_file') ) {
+			if ( ! function_exists( 'simplexml_load_file' ) ) {
 				return false;
 			}
 
