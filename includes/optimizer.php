@@ -61,8 +61,18 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 				return false;
 			}
 
-			$params = $this->svgo_params();
-			return ( ! empty( $params ) && is_array( $params ) );
+			/**
+			 * Filter to enable the optimizer.
+			 *
+			 * Note: this feature is disabled by default.
+			 *
+			 * @since 2.2.0
+			 * @hook safe_svg_optimizer_enabled
+			 *
+			 * @param bool $enabled Whether the optimizer is enabled.
+			 * @return bool
+			 */
+			return apply_filters( 'safe_svg_optimizer_enabled', false );
 		}
 
 		/**
