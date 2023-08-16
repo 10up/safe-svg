@@ -104,6 +104,7 @@ require __DIR__ . '/includes/safe-svg-attributes.php';
 require __DIR__ . '/includes/safe-svg-settings.php';
 require __DIR__ . '/includes/blocks.php';
 require __DIR__ . '/includes/optimizer.php';
+
 new \SafeSVG\Optimizer();
 
 if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
