@@ -5,19 +5,19 @@
 import { __ } from '@wordpress/i18n';
 import {
 	Placeholder,
-	Button,
 	PanelBody,
 } from '@wordpress/components';
 import {
 	useBlockProps,
-	MediaUpload,
 	BlockControls,
 	AlignmentToolbar,
 	InspectorControls,
 	__experimentalImageSizeControl as ImageSizeControl,
-	MediaReplaceFlow
+	MediaReplaceFlow,
+	MediaPlaceholder
 } from '@wordpress/block-editor';
 import PropTypes from 'prop-types';
+import { ReactSVG } from 'react-svg'
 
 /**
  * Edit component.
@@ -33,6 +33,7 @@ import PropTypes from 'prop-types';
  */
 const SafeSvgBlockEdit = ( props ) => {
 	const { attributes, setAttributes } = props;
+
 	const {
 		contentPostType,
 		svgURL,
@@ -45,7 +46,27 @@ const SafeSvgBlockEdit = ( props ) => {
 		dimensionWidth,
 		dimensionHeight
 	} = attributes;
-	const blockProps = useBlockProps();
+	const blockProps = useBlockProps(
+		{
+			className:` safe-svg-cover`,
+			style: {
+				textAlign: alignment,
+			}
+		}
+	);
+	const { className, style, ...containerBlockProps } = blockProps;
+
+	// Remove text alignment so we can apply to the parent container.
+	delete style.textAlign;
+	containerBlockProps.style = { textAlign: alignment };
+
+	// Remove core background & text color classes, so we can add our own.
+	const newClassName = className.replace(/has-[\w-]*-color|has-background/g, '').trim();
+	containerBlockProps.className = newClassName;
+
+	// Add the width and height to enforce dimensions and to keep parity with the frontend.
+	style.width = `${dimensionWidth}px`;
+	style.height = `${dimensionHeight}px`;
 
 	const ALLOWED_MEDIA_TYPES = [ 'image/svg+xml' ];
 
@@ -122,7 +143,7 @@ const SafeSvgBlockEdit = ( props ) => {
 	];
 
 	return (
-		<div { ...blockProps } style={{overflow: 'hidden'}}>
+		<>
 			{svgURL &&
 				<><InspectorControls>
 					<PanelBody
@@ -155,47 +176,34 @@ const SafeSvgBlockEdit = ( props ) => {
 							onError={onError} />
 					</BlockControls></>
 			}
-			<MediaUpload
-				onSelect={onSelectImage}
-				allowedTypes={ALLOWED_MEDIA_TYPES}
-				accept={ALLOWED_MEDIA_TYPES}
-				value={imageID}
-				render={({open}) => {
-					return (
-						<div
-							style={{
-								maxWidth: '100%',
-								textAlign: alignment
-							}}
-						>
-							{!svgURL &&
-								<Button variant="tertiary" onClick={open}>
-									{__('Select an SVG icon', 'safe-svg')}
-								</Button>
-							}
-							{svgURL &&
-								<svg
-									style={{
-										width: dimensionWidth,
-										height: dimensionHeight,
-										maxWidth: '100%',
-										maxHeight: '100%'
-									}}
-								>
-									<image
-										xlinkHref={svgURL}
-										src={svgURL}
-										width={dimensionWidth < dimensionHeight ? dimensionWidth : '100%'}
-										style={{
-											height: dimensionWidth > dimensionHeight ? dimensionHeight : 'auto'
-										}}
-									/>
-								</svg>
-							}
-						</div>
-					);
-				}}
-			/>
+
+
+			{!svgURL &&
+				<MediaPlaceholder
+					onSelect={onSelectImage}
+					allowedTypes = {ALLOWED_MEDIA_TYPES}
+					accept={ALLOWED_MEDIA_TYPES}
+					value={imageID}
+					labels={{
+						title: __( 'Inline SVG', 'safe-svg' ),
+						instructions: __( 'Upload an SVG or pick one from your media library.', 'safe-svg' )
+					}}
+				/>
+			}
+
+			{svgURL &&
+				<div { ...containerBlockProps }>
+					<div
+						style={style}
+						className="safe-svg-inside"
+					>
+						<ReactSVG src={svgURL} beforeInjection={(svg) => {
+							svg.setAttribute( 'style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;` );
+						}} />
+					</div>
+				</div>
+			}
+
 			{ contentPostType && (
 				<Placeholder
 					label={ __( 'SafeSvg', 'safe-svg' ) }
@@ -208,7 +216,7 @@ const SafeSvgBlockEdit = ( props ) => {
 					</p>
 				</Placeholder>
 			) }
-		</div>
+		</>
 	);
 };
 // Set the propTypes

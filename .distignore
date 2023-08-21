@@ -6,9 +6,7 @@
 /tests
 
 # Files
-.distignore
-.gitignore
-.wp-env.json
+.*
 CHANGELOG.md
 CODE_OF_CONDUCT.md
 composer.json
@@ -22,3 +20,4 @@ phpcs.xml
 phpunit.xml.dist
 README.md
 webpack.config.js
+/assets/js/admin/admin.js

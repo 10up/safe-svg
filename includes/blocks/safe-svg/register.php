@@ -31,12 +31,12 @@ function register() {
  * @return string|\WP_Post[] The rendered block markup.
  */
 function render_block_callback( $attributes ) {
-	// If image is not an SVG return empty string
+	// If image is not an SVG return empty string.
 	if ( 'image/svg+xml' !== get_post_mime_type( $attributes['imageID'] ) ) {
 		return '';
 	}
 
-	// If we couldn't get the contents of the file, empty string again
+	// If we couldn't get the contents of the file, empty string again.
 	if ( ! $contents = file_get_contents( get_attached_file( $attributes['imageID'] ) ) ) { // phpcs:ignore
 		return '';
 	}
@@ -67,17 +67,44 @@ function render_block_callback( $attributes ) {
 	return apply_filters(
 		'safe_svg_inline_markup',
 		sprintf(
-			'<div class="safe-svg-cover" style="text-align:%s">
-				<div class="safe-svg-inside %s" style="width: %spx; height: %spx;">%s</div>
+			'<div class="safe-svg-cover" style="text-align: %s;">
+				<div class="safe-svg-inside %s%s" style="width: %spx; height: %spx; background-color: var(--wp--preset--color--%s); color: var(--wp--preset--color--%s); padding-top: %s; padding-right: %s; padding-bottom: %s; padding-left: %s; margin-top: %s; margin-right: %s; margin-bottom: %s; margin-left: %s;">%s</div>
 			</div>',
-			$attributes['alignment'] ?? 'left',
-			$class_name,
-			$attributes['dimensionWidth'],
-			$attributes['dimensionHeight'],
+			isset( $attributes['alignment'] ) ? esc_attr( $attributes['alignment'] ) : 'left',
+			esc_attr( $class_name ),
+			isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) : '',
+			isset( $attributes['dimensionWidth'] ) ? esc_attr( $attributes['dimensionWidth'] ) : '',
+			isset( $attributes['dimensionHeight'] ) ? esc_attr( $attributes['dimensionHeight'] ) : '',
+			isset( $attributes['backgroundColor'] ) ? esc_attr( $attributes['backgroundColor'] ) : '',
+			isset( $attributes['textColor'] ) ? esc_attr( $attributes['textColor'] ) : '',
+			isset( $attributes['style']['spacing']['padding']['top'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['top'] ) ) : '',
+			isset( $attributes['style']['spacing']['padding']['right'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['right'] ) ) : '',
+			isset( $attributes['style']['spacing']['padding']['bottom'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['bottom'] ) ) : '',
+			isset( $attributes['style']['spacing']['padding']['left'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['left'] ) ) : '',
+			isset( $attributes['style']['spacing']['margin']['top'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['top'] ) ) : '',
+			isset( $attributes['style']['spacing']['margin']['right'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['right'] ) ) : '',
+			isset( $attributes['style']['spacing']['margin']['bottom'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['bottom'] ) ) : '',
+			isset( $attributes['style']['spacing']['margin']['left'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['left'] ) ) : '',
 			$contents
 		),
 		$contents,
 		$class_name,
 		$attributes['imageID']
 	);
+}
+
+/**
+ * Converts a given value to a CSS variable if it starts with 'var:'.
+ *
+ * @param string $value The value to be converted.
+ * @return string The converted value or the original value if it doesn't start with 'var:'.
+ */
+function convert_to_css_variable( $value ) {
+	if ( strpos( $value, 'var:' ) === 0 ) {
+		$parts = explode( '|', $value );
+		if ( count( $parts ) === 3 ) {
+			return 'var(--wp--preset--' . $parts[1] . '--' . $parts[2] . ')';
+		}
+	}
+	return $value;
 }
