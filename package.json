@@ -46,7 +46,7 @@
     "@wordpress/env": "^5.14.0",
     "@wordpress/icons": "^9.20.0",
     "@wordpress/scripts": "^26.0.0",
-    "cypress": "^10.0.2"
+    "cypress": "^13.3.0"
   },
   "dependencies": {
     "cypress-mochawesome-reporter": "^3.4.0",
