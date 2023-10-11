@@ -42,7 +42,7 @@
     "postarchive": "rm -rf safe-svg && unzip safe-svg.zip -d safe-svg && rm safe-svg.zip && zip -r safe-svg.zip safe-svg && rm -rf safe-svg"
   },
   "devDependencies": {
-    "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
+    "@10up/cypress-wp-utils": "^0.2.0",
     "@wordpress/env": "^5.14.0",
     "@wordpress/icons": "^9.20.0",
     "@wordpress/scripts": "^26.0.0",
