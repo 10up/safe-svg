@@ -48,7 +48,7 @@ const SafeSvgBlockEdit = ( props ) => {
 	} = attributes;
 	const blockProps = useBlockProps(
 		{
-			className:` safe-svg-cover`,
+			className:` wp-block-safe-svg-svg-icon`,
 			style: {
 				textAlign: alignment,
 			}
