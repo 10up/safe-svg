@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.2.2] - 2023-11-20
+### Changed
+- Bump WordPress "tested up to" version 6.4 (props [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@jeffpaul](https://github.com/jeffpaul) via [#162](https://github.com/10up/safe-svg/pull/162), [#163](https://github.com/10up/safe-svg/pull/163)).
+
+### Fixed
+- Ensure CSS applies properly to the SVG Icon block when added via `theme.json` (props [@tobeycodes](https://github.com/tobeycodes), [@dkotter](https://github.com/dkotter) via [#161](https://github.com/10up/safe-svg/pull/161)).
+
 ## [2.2.1] - 2023-10-23
 ### Changed
 - Update to `apiVersion` 3 for our SVG Icon block (props [@fabiankaegy](https://github.com/fabiankaegy), [@ravinderk](https://github.com/ravinderk), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#133](https://github.com/10up/safe-svg/pull/133)).
@@ -298,6 +305,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.2.2]: https://github.com/10up/safe-svg/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/10up/safe-svg/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/10up/safe-svg/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/10up/safe-svg/compare/2.1.0...2.1.1
