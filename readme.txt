@@ -3,7 +3,7 @@ Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 5.7
 Tested up to:      6.4
-Stable tag:        2.2.1
+Stable tag:        2.2.2
 Requires PHP:      7.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,10 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.2.2 - 2023-11-21 =
+* **Changed:** Bump WordPress "tested up to" version 6.4 (props [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@jeffpaul](https://github.com/jeffpaul) via [#162](https://github.com/10up/safe-svg/pull/162), [#163](https://github.com/10up/safe-svg/pull/163)).
+* **Fixed:** Ensure CSS applies properly to the SVG Icon block when added via `theme.json` (props [@tobeycodes](https://github.com/tobeycodes), [@dkotter](https://github.com/dkotter) via [#161](https://github.com/10up/safe-svg/pull/161)).
 
 = 2.2.1 - 2023-10-23 =
 * **Changed:** Update to `apiVersion` 3 for our SVG Icon block (props [@fabiankaegy](https://github.com/fabiankaegy), [@ravinderk](https://github.com/ravinderk), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#133](https://github.com/10up/safe-svg/pull/133)).
