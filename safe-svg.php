@@ -560,7 +560,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		/**
 		 * Get SVG size from the width/height or viewport.
 		 *
-		 * @param string|false $svg The file path to where the SVG file should be, false otherwise.
+		 * @param integer $attachment_id The attachment ID of the SVG being processed.
 		 *
 		 * @return array|bool
 		 */
@@ -594,7 +594,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			if ( $svg && ! empty( $metadata['width'] ) && empty( $metadata['height'] ) ) {
 				$width  = floatval( $metadata['width'] );
 				$height = floatval( $metadata['height'] );
-			} else if ( $svg ) {
+			} elseif ( $svg ) {
 				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 				$attributes = $svg->attributes();
