@@ -1,5 +1,5 @@
 describe('Safe SVG Tests', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
   });
 
@@ -14,10 +14,10 @@ describe('Safe SVG Tests', () => {
    *
    * fixtures folder contains custom.svg file
    * It contains custom tag (customTestTag) with custom attribute (customTestAttribute).
-   * 
+   *
    * This test upload custom.svg to WP, get svg file content by URL and verify
    * that it's not containing customTestTag and customTestAttribute.
-   */ 
+   */
   it('SVG should be sanitized', () => {
     // Deactivate Test Plugin if it is active.
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
