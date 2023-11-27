@@ -565,6 +565,23 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return array|bool
 		 */
 		protected function svg_dimensions( $attachment_id ) {
+			/**
+			 * Calculate SVG dimensions and orientation.
+			 *
+			 * This filter allows you to implement your own sizing. By returning a non-false
+			 * value, it will short-circuit this function and return your set value.
+			 *
+			 * @param boolean Default value of the filter.
+			 * @param integer $attachment_id The attachment ID of the SVG being processed.
+			 *
+			 * @return array|false An array of SVG dimensions and orientation or false.
+			 */
+			$short_circuit = apply_filters( 'safe_svg_pre_dimensions', false, $attachment_id );
+
+			if ( false !== $short_circuit ) {
+				return $short_circuit;
+			}
+
 			if ( ! function_exists( 'simplexml_load_file' ) ) {
 				return false;
 			}
