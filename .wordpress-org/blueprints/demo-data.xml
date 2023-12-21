@@ -52,13 +52,15 @@
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>There's an SVG icon displayed below using a custom Inline SVG block that this plugin adds. This SVG "<a href="https://commons.wikimedia.org/w/index.php?curid=19035934" target="_blank" rel="noreferrer noopener">Info-icon Wikipedians</a>" by David Peters is licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/?ref=openverse" target="_blank" rel="noreferrer noopener">CC BY-SA 3.0</a>.</p>
+<p>There's an SVG icon displayed below. This SVG "<a href="https://commons.wikimedia.org/w/index.php?curid=19035934" target="_blank" rel="noreferrer noopener">Info-icon Wikipedians</a>" by David Peters is licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/?ref=openverse" target="_blank" rel="noreferrer noopener">CC BY-SA 3.0</a>.</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:safe-svg/svg-icon {"svgURL":"https://raw.githubusercontent.com/10up/safe-svg/da123197efc0bf54c33f8fa83120c17981840da6/.wordpress-org/blueprints/Info-icon_Wikipedians.svg","imageID":12,"imageWidth":103.711,"imageHeight":97.838,"dimensionWidth":103.711,"dimensionHeight":97.838,"imageSizes":{"full":{"height":97.838,"width":103.711,"url":"https://raw.githubusercontent.com/10up/safe-svg/da123197efc0bf54c33f8fa83120c17981840da6/.wordpress-org/blueprints/Info-icon_Wikipedians.svg","orientation":"portrait"},"medium":{"height":"300","width":"300","url":"https://raw.githubusercontent.com/10up/safe-svg/da123197efc0bf54c33f8fa83120c17981840da6/.wordpress-org/blueprints/Info-icon_Wikipedians.svg","orientation":"portrait"},"thumbnail":{"height":"150","width":"150","url":"https://raw.githubusercontent.com/10up/safe-svg/da123197efc0bf54c33f8fa83120c17981840da6/.wordpress-org/blueprints/Info-icon_Wikipedians.svg","orientation":"portrait"}}} /-->
+<!-- wp:image {"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img src="https://raw.githubusercontent.com/10up/safe-svg/da123197efc0bf54c33f8fa83120c17981840da6/.wordpress-org/blueprints/Info-icon_Wikipedians.svg" alt=""/></figure>
+<!-- /wp:image -->
 
 <!-- wp:paragraph -->
-<p>You can try uploading additional SVG files either straight in the Media Library or inline here using the Inline SVG block. In addition, you can control which users have the ability to upload SVGs by going to Settings > Media.</p>
+<p>You can try uploading additional SVG files either straight in the Media Library or inline here using the Inline SVG block or core Image block. In addition, you can control which users have the ability to upload SVGs by going to Settings > Media.</p>
 <!-- /wp:paragraph -->]]></content:encoded>
 		<excerpt:encoded><![CDATA[]]></excerpt:encoded>
 		<wp:post_id>6</wp:post_id>
