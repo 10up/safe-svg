@@ -26,7 +26,7 @@
 			"step": "importFile",
 			"file": {
 				"resource": "url",
-				"url": "https:\/\/raw.githubusercontent.com\/10up\/safe-svg\/d2ff63d1127713d9f2a11235a002f38f2927b0ca\/.wordpress-org\/blueprints\/demo-data.xml"
+				"url": "https:\/\/raw.githubusercontent.com\/10up\/safe-svg\/66041f24db614356c0710acc6439f063a390e4c2\/.wordpress-org\/blueprints\/demo-data.xml"
 			}
 		}
 	]
