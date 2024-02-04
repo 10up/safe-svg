@@ -12,20 +12,22 @@
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
 
-const { readConfig } = require("@wordpress/env/lib/config");
+const { loadConfig } = require( '@wordpress/env/lib/config' );
+const getCacheDirectory = require( '@wordpress/env/lib/config/get-cache-directory' );
 
 /**
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = async (on, config) => {
-  wpEnvConfig = await readConfig("wp-env");
+  const cacheDirectory = await getCacheDirectory();
+  const wpEnvConfig = await loadConfig( cacheDirectory );
 
   if (wpEnvConfig) {
     const port = wpEnvConfig.env.tests.port || null;
 
     if (port) {
-      config.baseUrl = `http://${wpEnvConfig.env.tests.config.WP_TESTS_DOMAIN}:${port}`;
+      config.baseUrl = wpEnvConfig.env.tests.config.WP_SITEURL;
     }
   }
 
