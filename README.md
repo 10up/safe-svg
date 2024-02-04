@@ -2,7 +2,7 @@
 
 > Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website.
 
-[![Support Level](https://img.shields.io/badge/support-active-green.svg)](#support-level)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level)
 [![Release Version](https://img.shields.io/github/release/10up/safe-svg.svg)](https://github.com/10up/safe-svg/releases/latest)
 ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/safe-svg?label=WordPress)
 [![GPLv2 License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
@@ -21,16 +21,15 @@ It gives you the ability to allow SVG uploads whilst making sure that they're sa
 ### Current Features
 
 * **Sanitised SVGs** - Don't open up security holes in your WordPress site by allowing uploads of unsanitised files.
+* **SVGO Optimisation** - Runs your SVGs through the SVGO tool on upload to save you space. This feature is disabled by default but can be enabled by adding the following code: `add_filter( 'safe_svg_optimizer_enabled', '__return_true' );`
 * **View SVGs in the Media Library** - Gone are the days of guessing which SVG is the correct one, we'll enable SVG previews in the WordPress media library.
-
-### Features on the Roadmap
-
-* **SVGO Optimisation** - You'll have the option to run your SVGs through our SVGO server on upload to save you space.
 * **Choose Who Can Upload** - Restrict SVG uploads to certain users on your WordPress site or allow anyone to upload.
 
 Initially a proof of concept for [#24251](https://core.trac.wordpress.org/ticket/24251).
 
 SVG Sanitization is done through the following library: [https://github.com/darylldoyle/svg-sanitizer](https://github.com/darylldoyle/svg-sanitizer).
+
+SVG Optimization is done through the following library: [https://github.com/svg/svgo](https://github.com/svg/svgo).
 
 ## Requirements
 
@@ -77,7 +76,7 @@ add_filter( 'svg_allowed_tags', function ( $tags ) {
 
 ## Support Level
 
-**Active:** 10up is actively working on this, and we expect to continue work for the foreseeable future including keeping tested up to the most recent version of WordPress.  Bug reports, feature requests, questions, and pull requests are welcome.
+**Stable:** 10up is not planning to develop any new features for this, but will still respond to bug reports and security concerns. We welcome PRs, but any that include new features should be small and easy to integrate and should not include breaking changes. We otherwise intend to keep this tested up to the most recent version of WordPress.
 
 ## Changelog
 

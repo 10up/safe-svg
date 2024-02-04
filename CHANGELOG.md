@@ -4,6 +4,52 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.2.2] - 2023-11-21
+### Changed
+- Bump WordPress "tested up to" version 6.4 (props [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@jeffpaul](https://github.com/jeffpaul) via [#162](https://github.com/10up/safe-svg/pull/162), [#163](https://github.com/10up/safe-svg/pull/163)).
+
+### Fixed
+- Ensure CSS applies properly to the SVG Icon block when added via `theme.json` (props [@tobeycodes](https://github.com/tobeycodes), [@dkotter](https://github.com/dkotter) via [#161](https://github.com/10up/safe-svg/pull/161)).
+
+## [2.2.1] - 2023-10-23
+### Changed
+- Update to `apiVersion` 3 for our SVG Icon block (props [@fabiankaegy](https://github.com/fabiankaegy), [@ravinderk](https://github.com/ravinderk), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#133](https://github.com/10up/safe-svg/pull/133)).
+
+### Fixed
+- Address an error due to the SVG Icon block using the `fill-rule` attribute (props [@zamanq](https://github.com/zamanq), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh) via [#152](https://github.com/10up/safe-svg/pull/152)).
+
+### Security
+- Bump `postcss` from 8.4.20 to 8.4.31 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#155](https://github.com/10up/safe-svg/pull/155)).
+- Bump `@cypress/request` from 2.88.12 to 3.0.1 and `cypress` from 10.11.0 to 13.3.0 (props [@dependabot](https://github.com/apps/dependabot), [@ravinderk](https://github.com/ravinderk) via [#156](https://github.com/10up/safe-svg/pull/156)).
+- Bump `@babel/traverse` from 7.20.12 to 7.23.2 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#158](https://github.com/10up/safe-svg/pull/157)).
+
+## [2.2.0] - 2023-08-21
+### Added
+- New settings that give the ability to select which user roles can upload SVG files (props [@dhanendran](https://github.com/dhanendran), [@csloisel](https://github.com/csloisel), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter) via [#76](https://github.com/10up/safe-svg/pull/76)).
+- SVG optimization during upload via SVGO. Feature is disabled by default but can be enabled using the `safe_svg_optimizer_enabled` filter (props [@gsarig](https://github.com/gsarig), [@peterwilsoncc](https://github.com/peterwilsoncc), [@Sidsector9](https://github.com/Sidsector9), [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter), [@ravinderk](https://github.com/ravinderk) via [#79](https://github.com/10up/safe-svg/pull/79), [#145](https://github.com/10up/safe-svg/pull/145)).
+- Spacing and color controls added to SVG block (props [@bmarshall511](https://github.com/bmarshall511), [@iamdharmesh](https://github.com/iamdharmesh) via [#135](https://github.com/10up/safe-svg/pull/135)).
+- Mochawesome reporter added for Cypress test report (props [@jayedul](https://github.com/jayedul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#124](https://github.com/10up/safe-svg/pull/124)).
+
+### Changed
+- Update [Support Level](https://github.com/10up/safe-svg#support-level) from `Active` to `Stable` (props [@Sidsector9](https://github.com/Sidsector9), [@iamdharmesh](https://github.com/iamdharmesh) via [#100](https://github.com/10up/safe-svg/pull/100)).
+- Update name of SVG block from Safe SVG Icon to Inline SVG (props [@bmarshall511](https://github.com/bmarshall511), [@iamdharmesh](https://github.com/iamdharmesh) via [#135](https://github.com/10up/safe-svg/pull/135)).
+- Bump WordPress "tested up to" version 6.3 (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#144](https://github.com/10up/safe-svg/pull/144)).
+- Update the Dependency Review GitHub Action (props [@jeffpaul](https://github.com/jeffpaul), [@Sidsector9](https://github.com/Sidsector9) via [#128](https://github.com/10up/safe-svg/pull/128)).
+
+### Fixed
+- Add namespace to the `class_exists` check (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#120](https://github.com/10up/safe-svg/pull/120)).
+- Ensure Sanitizer class is properly imported (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#121](https://github.com/10up/safe-svg/pull/121)).
+- Remove an unneeded global (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#122](https://github.com/10up/safe-svg/pull/122)).
+- Use absolute path in require (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#123](https://github.com/10up/safe-svg/pull/123)).
+- Ensure custom classname added to SVG block is output on the front-end (props [@bmarshall511](https://github.com/bmarshall511), [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#130](https://github.com/10up/safe-svg/pull/130)).
+- Ensure `SimpleXML` exists before using it (props [@sdmtt](https://github.com/sdmtt), [@faisal-alvi](https://github.com/faisal-alvi) via [#140](https://github.com/10up/safe-svg/pull/140)).
+- Fix markdown issues in the readme (props [@szepeviktor](https://github.com/szepeviktor), [@iamdharmesh](https://github.com/iamdharmesh) via [#119](https://github.com/10up/safe-svg/pull/119)).
+
+### Security
+- Bump `semver` from 5.7.1 to 5.7.2 (props [@dependabot](https://github.com/apps/dependabot) via [#134](https://github.com/10up/safe-svg/pull/134)).
+- Bump `word-wrap` from 1.2.3 to 1.2.5 (props [@dependabot](https://github.com/apps/dependabot) via [#141](https://github.com/10up/safe-svg/pull/141)).
+- Bump `tough-cookie` from 4.1.2 to 4.1.3 and `@cypress/request` from 2.88.10 to 2.88.12 (props [@dependabot](https://github.com/apps/dependabot) via [#146](https://github.com/10up/safe-svg/pull/146)).
+
 ## [2.1.1] - 2023-04-05
 ### Changed
 - Upgrade `@wordpress` npm package dependencies (props [@ggutenberg](https://github.com/ggutenberg), [@Sidsector9](https://github.com/Sidsector9) via [#108](https://github.com/10up/safe-svg/pull/108)).
@@ -259,6 +305,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.2.2]: https://github.com/10up/safe-svg/compare/2.2.1...2.2.2
+[2.2.1]: https://github.com/10up/safe-svg/compare/2.2.0...2.2.1
+[2.2.0]: https://github.com/10up/safe-svg/compare/2.1.1...2.2.0
 [2.1.1]: https://github.com/10up/safe-svg/compare/2.1.0...2.1.1
 [2.1.0]: https://github.com/10up/safe-svg/compare/2.0.3...2.1.0
 [2.0.3]: https://github.com/10up/safe-svg/compare/2.0.2...2.0.3

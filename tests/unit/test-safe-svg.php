@@ -63,9 +63,35 @@ class SafeSvgTest extends TestCase {
 	 * @return void
 	 */
 	public function test_allow_svg() {
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => [ 'safe_svg_upload_roles', [] ],
+				'return' => [ 'editor' ],
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'safe_svg_upload_svg',
+				'return' => true,
+			)
+		);
+
 		$allowed_svg = $this->instance->allow_svg( array() );
 		$this->assertNotEmpty( $allowed_svg );
 		$this->assertContains( 'image/svg+xml', $allowed_svg );
+	}
+
+	/**
+	 * Test dont_allow_svg function.
+	 *
+	 * @return void
+	 */
+	public function test_dont_allow_svg() {
+		$allowed_svg = $this->instance->allow_svg( array() );
+		$this->assertEmpty( $allowed_svg );
 	}
 
 	/**
@@ -112,6 +138,14 @@ class SafeSvgTest extends TestCase {
 					'ext'  => 'svg',
 					'type' => 'image/svg+xml',
 				),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => 'upload_files',
+				'return' => true,
 			)
 		);
 
@@ -170,6 +204,64 @@ class SafeSvgTest extends TestCase {
 				'return_in_order' => array(
 					__DIR__ . '/files/svgCleanOne.svg',
 					__DIR__ . '/files/svgNoDimensions.svg',
+				),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_get_attachment_metadata',
+			array(
+				'args' => 1,
+				'return_in_order' => array(
+					array(
+						'width' => 600,
+						'height' => 600,
+						'file' => __DIR__ . '/files/svgCleanOne.svg',
+						'sizes' => array(
+							'thumbnail' => array(
+								'width' => 150,
+								'height' => 150,
+								'crop' => 1,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium' => array(
+								'width' => 300,
+								'height' => 300,
+								'crop' => 0, // Set to 0 if you don't want to crop
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium_large' => array(
+								'width' => 768,
+								'height' => 0,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'large' => array(
+								'width' => 1024,
+								'height' => 1024,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'1536x1536' => array(
+								'width' => 1536,
+								'height' => 1536,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'2048x2048' => array(
+								'width' => 2048,
+								'height' => 2048,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+						),
+					),
 				),
 			)
 		);

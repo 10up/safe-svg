@@ -1,6 +1,6 @@
 {
   "$schema": "https://schemas.wp.org/trunk/block.json",
-  "apiVersion": 2,
+  "apiVersion": 3,
   "title": "Safe SVG",
   "description": "Display the SVG icon",
   "textdomain": "safe-svg",
@@ -39,7 +39,15 @@
     }
   },
   "supports": {
-    "html": false
+    "html": false,
+    "color": {
+      "text": true,
+      "background": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
   },
   "editorScript": "file:../../../dist/safe-svg-block.js",
   "style": "file:../../../dist/safe-svg-block-frontend.css"

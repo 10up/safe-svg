@@ -1,0 +1,33 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "\/wp-admin\/post.php?post=6&action=edit",
+	"preferredVersions": {
+		"php": "7.4",
+		"wp": "latest"
+	},
+	"phpExtensionBundles": ["kitchen-sink"],
+	"steps": [
+		{
+			"step": "login",
+			"username": "admin",
+			"password": "password"
+		},
+		{
+			"step": "installPlugin",
+			"pluginZipFile": {
+				"resource": "wordpress.org\/plugins",
+				"slug": "safe-svg"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
+			"step": "importFile",
+			"file": {
+				"resource": "url",
+				"url": "https:\/\/raw.githubusercontent.com\/10up\/safe-svg\/ec6071406de403e9c9f4b5833abf4e438816df05\/.wordpress-org\/blueprints\/demo-data.xml"
+			}
+		}
+	]
+}

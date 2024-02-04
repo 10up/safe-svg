@@ -1,5 +1,5 @@
 describe('Admin can login and make sure plugin is activated', () => {
-  before(() => {
+  beforeEach(() => {
     cy.login();
   });
 
@@ -11,5 +11,11 @@ describe('Admin can login and make sure plugin is activated', () => {
   it('Can activate plugin if it is deactivated', () => {
     cy.activatePlugin('safe-svg');
     cy.deactivatePlugin('safe-svg-cypress-test-plugin');
+  });
+
+  it('Can enable user role', () => {
+    cy.visit('/wp-admin/options-media.php');
+	cy.get('[name="safe_svg_upload_roles[]"]').first().check();
+	cy.get('#submit').click()
   });
 });
