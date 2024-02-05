@@ -246,6 +246,10 @@ import {select, subscribe} from '@wordpress/data';
     subscribe(() => {
         if (editorStore.isSavingPost()) {
             const changes = editorStore.getPostEdits();
+            // maske sure we have blocks to process
+            if (!Array.isArray(changes.blocks) || !changes.blocks.length) {
+                return;
+            }
             for (const changedBlock of changes.blocks) {
                 const blockName = changedBlock?.name ?? '';
                 const innerBlocks = changedBlock?.innerBlocks ?? [];
