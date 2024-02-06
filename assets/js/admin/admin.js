@@ -246,7 +246,7 @@ import {select, subscribe} from '@wordpress/data';
     subscribe(() => {
         if (editorStore.isSavingPost()) {
             const changes = editorStore.getPostEdits();
-            // maske sure we have blocks to process
+            // make sure we have blocks to process
             if (!Array.isArray(changes.blocks) || !changes.blocks.length) {
                 return;
             }
