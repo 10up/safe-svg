@@ -591,7 +591,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			$width    = 0;
 			$height   = 0;
 
-			if ( $svg && ! empty( $metadata['width'] ) && empty( $metadata['height'] ) ) {
+			if ( $svg && ! empty( $metadata['width'] ) && ! empty( $metadata['height'] ) ) {
 				$width  = floatval( $metadata['width'] );
 				$height = floatval( $metadata['height'] );
 			} elseif ( $svg ) {
