@@ -262,6 +262,53 @@ class SafeSvgTest extends TestCase {
 							),
 						),
 					),
+					array(
+						'file' => __DIR__ . '/files/svgNoDimensions.svg',
+						'sizes' => array(
+							'thumbnail' => array(
+								'width' => 150,
+								'height' => 150,
+								'crop' => 1,
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium' => array(
+								'width' => 300,
+								'height' => 300,
+								'crop' => 0, // Set to 0 if you don't want to crop
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium_large' => array(
+								'width' => 768,
+								'height' => 0,
+								'crop' => 0,
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'large' => array(
+								'width' => 1024,
+								'height' => 1024,
+								'crop' => 0,
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'1536x1536' => array(
+								'width' => 1536,
+								'height' => 1536,
+								'crop' => 0,
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'2048x2048' => array(
+								'width' => 2048,
+								'height' => 2048,
+								'crop' => 0,
+								'file' => 'svgNoDimensions.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+						),
+					),
 				),
 			)
 		);
