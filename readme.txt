@@ -2,7 +2,7 @@
 Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 5.7
-Tested up to:      6.4
+Tested up to:      6.5
 Stable tag:        2.2.3
 Requires PHP:      7.4
 License:           GPLv2 or later
@@ -69,6 +69,7 @@ They take one argument that must be returned. See below for examples:
 = 2.2.3 - 2024-03-20 =
 * **Added:** Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#167](https://github.com/10up/safe-svg/pull/167)).
 * **Changed:** Clean up NPM dependencies and update node to v20 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#172](https://github.com/10up/safe-svg/pull/172)).
+* **Changed:** Bump WordPress "tested up to" version 6.5 (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#180](https://github.com/10up/safe-svg/pull/180)).
 * **Fixed:** Refactor the `svg_dimensions` function to be more performant (props [@sksaju](https://github.com/sksaju), [@cjyabraham](https://github.com/cjyabraham), [@bmarshall511](https://github.com/bmarshall511), [@Hercilio1](https://github.com/Hercilio1), [@darylldoyle](https://github.com/darylldoyle) via [#154](https://github.com/10up/safe-svg/pull/154), [#174](https://github.com/10up/safe-svg/pull/174)).
 * **Fixed:** Address fatal JS error when optimization is enabled and an item is published without blocks (props [@psorensen](https://github.com/psorensen), [@tictag](https://github.com/tictag), [@dkotter](https://github.com/dkotter) via [#173](https://github.com/10up/safe-svg/pull/173)).
 * **Security:** Bump `axios` from 0.25.0 to 1.6.2 and `@wordpress/scripts` from 26.0.0 to 26.18.0 (props [@dependabot](https://github.com/apps/dependabot), [@ravinderk](https://github.com/ravinderk) via [#166](https://github.com/10up/safe-svg/pull/166)).

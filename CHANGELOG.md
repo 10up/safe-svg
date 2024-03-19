@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Changed
 - Clean up NPM dependencies and update node to v20 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#172](https://github.com/10up/safe-svg/pull/172)).
+- Bump WordPress "tested up to" version 6.5 (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#180](https://github.com/10up/safe-svg/pull/180)).
 
 ### Fixed
 - Refactor the `svg_dimensions` function to be more performant (props [@sksaju](https://github.com/sksaju), [@cjyabraham](https://github.com/cjyabraham), [@bmarshall511](https://github.com/bmarshall511), [@Hercilio1](https://github.com/Hercilio1), [@darylldoyle](https://github.com/darylldoyle) via [#154](https://github.com/10up/safe-svg/pull/154), [#174](https://github.com/10up/safe-svg/pull/174)).
