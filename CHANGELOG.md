@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.2.3] - 2024-03-20
+### Added
+- Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#167](https://github.com/10up/safe-svg/pull/167)).
+
+### Changed
+- Clean up NPM dependencies and update node to v20 (props [@Sidsector9](https://github.com/Sidsector9), [@dkotter](https://github.com/dkotter) via [#172](https://github.com/10up/safe-svg/pull/172)).
+
+### Fixed
+- Refactor the `svg_dimensions` function to be more performant (props [@sksaju](https://github.com/sksaju), [@cjyabraham](https://github.com/cjyabraham), [@bmarshall511](https://github.com/bmarshall511), [@Hercilio1](https://github.com/Hercilio1), [@darylldoyle](https://github.com/darylldoyle) via [#154](https://github.com/10up/safe-svg/pull/154), [#174](https://github.com/10up/safe-svg/pull/174)).
+- Address fatal JS error when optimization is enabled and an item is published without blocks (props [@psorensen](https://github.com/psorensen), [@tictag](https://github.com/tictag), [@dkotter](https://github.com/dkotter) via [#173](https://github.com/10up/safe-svg/pull/173)).
+
+### Security
+- Bump `axios` from 0.25.0 to 1.6.2 and `@wordpress/scripts` from 26.0.0 to 26.18.0 (props [@dependabot](https://github.com/apps/dependabot), [@ravinderk](https://github.com/ravinderk) via [#166](https://github.com/10up/safe-svg/pull/166)).
+- Bump `follow-redirects` from 1.15.3 to 1.15.6 and `ip` from 1.1.8 to 1.1.9 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#169](https://github.com/10up/safe-svg/pull/169), [#177](https://github.com/10up/safe-svg/pull/177)).
+
 ## [2.2.2] - 2023-11-21
 ### Changed
 - Bump WordPress "tested up to" version 6.4 (props [@qasumitbagthariya](https://github.com/qasumitbagthariya), [@jeffpaul](https://github.com/jeffpaul) via [#162](https://github.com/10up/safe-svg/pull/162), [#163](https://github.com/10up/safe-svg/pull/163)).
@@ -305,6 +320,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.2.3]: https://github.com/10up/safe-svg/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/10up/safe-svg/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/10up/safe-svg/compare/2.2.0...2.2.1
 [2.2.0]: https://github.com/10up/safe-svg/compare/2.1.1...2.2.0
