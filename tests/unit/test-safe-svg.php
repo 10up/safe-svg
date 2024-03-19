@@ -262,6 +262,9 @@ class SafeSvgTest extends TestCase {
 							),
 						),
 					),
+					array(
+						'filesize' => 1001, // wp_get_attachment_metadata response for ./files/svgNoDimensions.svg file doesn't contain dimensions and sizes array.
+					),
 				),
 			)
 		);
