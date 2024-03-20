@@ -72,4 +72,13 @@ describe('Safe SVG Tests', () => {
 
     cy.get('.media-item .error-div.error').should('exist').contains('has failed to upload');
   });
+
+
+  // Test plugin doesn't break the block editor when no blocks are added
+  it('Plugin should not break the block editor when optimizer enabled', () => {
+    // Activate Test Plugin
+    cy.deactivatePlugin('safe-svg-cypress-test-plugin');
+    cy.activatePlugin('safe-svg-cypress-optimizer-test-plugin');
+    cy.createPost('Hello World');
+  });
 });

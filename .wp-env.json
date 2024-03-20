@@ -1,5 +1,9 @@
 {
-  "plugins": [".", "./tests/cypress/test-plugin"],
+  "plugins": [
+    ".",
+    "./tests/cypress/test-plugin/e2e-test-plugin.php",
+    "./tests/cypress/test-plugin/e2e-test-plugin-optimizer.php"
+  ],
   "env": {
     "tests": {
       "mappings": {

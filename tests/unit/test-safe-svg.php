@@ -208,6 +208,67 @@ class SafeSvgTest extends TestCase {
 			)
 		);
 
+		\WP_Mock::userFunction(
+			'wp_get_attachment_metadata',
+			array(
+				'args' => 1,
+				'return_in_order' => array(
+					array(
+						'width' => 600,
+						'height' => 600,
+						'file' => __DIR__ . '/files/svgCleanOne.svg',
+						'sizes' => array(
+							'thumbnail' => array(
+								'width' => 150,
+								'height' => 150,
+								'crop' => 1,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium' => array(
+								'width' => 300,
+								'height' => 300,
+								'crop' => 0, // Set to 0 if you don't want to crop
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'medium_large' => array(
+								'width' => 768,
+								'height' => 0,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'large' => array(
+								'width' => 1024,
+								'height' => 1024,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'1536x1536' => array(
+								'width' => 1536,
+								'height' => 1536,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+							'2048x2048' => array(
+								'width' => 2048,
+								'height' => 2048,
+								'crop' => 0,
+								'file' => 'svgCleanOne.svg',
+								'mime-type' => 'image/svg+xml',
+							),
+						),
+					),
+					array(
+						'filesize' => 1001, // wp_get_attachment_metadata response for ./files/svgNoDimensions.svg file doesn't contain dimensions and sizes array.
+					),
+				),
+			)
+		);
+
 		// Test SVG Dimensions
 		$image_sizes = $this->instance->one_pixel_fix( array(), 1, 'thumbnail', false );
 		if ( ! empty( $image_sizes ) ) {

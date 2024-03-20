@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.2.2
+ * Version:           2.2.3
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.2.2' );
+define( 'SAFE_SVG_VERSION', '2.2.3' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -328,7 +328,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function fix_admin_preview( $response, $attachment, $meta ) {
 
 			if ( 'image/svg+xml' === $response['mime'] ) {
-				$dimensions = $this->svg_dimensions( get_attached_file( $attachment->ID ) );
+				$dimensions = $this->svg_dimensions( $attachment->ID );
 
 				if ( $dimensions ) {
 					$response = array_merge( $response, $dimensions );
@@ -384,7 +384,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$dimensions = $this->svg_dimensions( get_attached_file( $attachment_id ) );
+				$dimensions = $this->svg_dimensions( $attachment_id );
 
 				if ( $dimensions ) {
 					$image[1] = $dimensions['width'];
@@ -445,7 +445,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 					$width  = $size[0];
 					$height = $size[1];
 				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
-				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( get_attached_file( $id ) ) ) {
+				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) {
 					$width  = $dimensions['width'];
 					$height = $dimensions['height'];
 				} else {
@@ -485,7 +485,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$relative_path = str_replace( trailingslashit( $upload_dir['basedir'] ), '', $svg_path );
 				$filename      = basename( $svg_path );
 
-				$dimensions = $this->svg_dimensions( $svg_path );
+				$dimensions = $this->svg_dimensions( $attachment_id );
 
 				if ( ! $dimensions ) {
 					return $metadata;
@@ -560,19 +560,43 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		/**
 		 * Get SVG size from the width/height or viewport.
 		 *
-		 * @param string|false $svg The file path to where the SVG file should be, false otherwise.
+		 * @param integer $attachment_id The attachment ID of the SVG being processed.
 		 *
 		 * @return array|bool
 		 */
-		protected function svg_dimensions( $svg ) {
+		protected function svg_dimensions( $attachment_id ) {
+			/**
+			 * Calculate SVG dimensions and orientation.
+			 *
+			 * This filter allows you to implement your own sizing. By returning a non-false
+			 * value, it will short-circuit this function and return your set value.
+			 *
+			 * @param boolean Default value of the filter.
+			 * @param integer $attachment_id The attachment ID of the SVG being processed.
+			 *
+			 * @return array|false An array of SVG dimensions and orientation or false.
+			 */
+			$short_circuit = apply_filters( 'safe_svg_pre_dimensions', false, $attachment_id );
+
+			if ( false !== $short_circuit ) {
+				return $short_circuit;
+			}
+
 			if ( ! function_exists( 'simplexml_load_file' ) ) {
 				return false;
 			}
 
-			$svg    = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-			$width  = 0;
-			$height = 0;
-			if ( $svg ) {
+			$svg      = get_attached_file( $attachment_id );
+			$metadata = wp_get_attachment_metadata( $attachment_id );
+			$width    = 0;
+			$height   = 0;
+
+			if ( $svg && ! empty( $metadata['width'] ) && ! empty( $metadata['height'] ) ) {
+				$width  = floatval( $metadata['width'] );
+				$height = floatval( $metadata['height'] );
+			} elseif ( $svg ) {
+				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+
 				$attributes = $svg->attributes();
 
 				if ( isset( $attributes->viewBox ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -627,11 +651,21 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				}
 			}
 
-			return array(
+			$dimensions = array(
 				'width'       => $width,
 				'height'      => $height,
 				'orientation' => ( $width > $height ) ? 'landscape' : 'portrait',
 			);
+
+			/**
+			 * Calculate SVG dimensions and orientation.
+			 *
+			 * @param array  $dimensions An array containing width, height, and orientation.
+			 * @param string $svg        The file path to the SVG.
+			 *
+			 * @return array An array of SVG dimensions and orientation.
+			 */
+			return apply_filters( 'safe_svg_dimensions', $dimensions, $svg );
 		}
 
 		/**
