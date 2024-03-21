@@ -28,7 +28,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     - name: Download build zip
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: ${{ github.event.repository.name }}
         path: ${{ github.event.repository.name }}
@@ -66,7 +66,7 @@ jobs:
           npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/
           cat ./tests/cypress/reports/mochawesome.md >> $GITHUB_STEP_SUMMARY
     - name: Make artifacts available
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: cypress-artifact
