@@ -121,7 +121,7 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			wp_enqueue_script(
 				'safe-svg-admin-scripts',
 				SAFE_SVG_PLUGIN_URL . 'dist/safe-svg-admin.js',
-				[ 'wp-data', 'utils' ],
+				[ 'wp-data', 'wp-editor', 'utils' ],
 				SAFE_SVG_VERSION,
 				true
 			);
