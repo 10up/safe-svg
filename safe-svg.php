@@ -597,6 +597,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			} elseif ( $svg ) {
 				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
+				// Ensure the svg could be loaded.
+				if ( ! $svg ) {
+					return false;
+				}
+
 				$attributes = $svg->attributes();
 
 				if ( isset( $attributes->viewBox ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
