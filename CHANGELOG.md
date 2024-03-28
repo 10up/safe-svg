@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.2.4] - 2024-03-28
+### Changed
+- Upgrade the `download-artifact` from v3 to v4 (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#181](https://github.com/10up/safe-svg/pull/181)).
+- Replaced `lee-dohm/no-response` with `actions/stale` to help with closing no-response/stale issues (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#183](https://github.com/10up/safe-svg/pull/183)).
+
+### Fixed
+- Ensure the svg file can be loaded before we try accessing it's attributes (props [@dkotter](https://github.com/dkotter), [@metashield-ie](https://github.com/metashield-ie), [@ocean90](https://github.com/ocean90), [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi) via [#186](https://github.com/10up/safe-svg/pull/186)).
+- Ensure we don't throw JS errors in the Classic Editor when the optimizer feature is turned on (props [@dkotter](https://github.com/dkotter), [@turtlepod](https://github.com/turtlepod), [@faisal-alvi](https://github.com/faisal-alvi) via [#187](https://github.com/10up/safe-svg/pull/187)).
+
+### Security
+- Bump `webpack-dev-middleware` from 5.3.3 to 5.3.4 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#185](https://github.com/10up/safe-svg/pull/185)).
+- Bump `express` from 4.18.2 to 4.19.2 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#188](https://github.com/10up/safe-svg/pull/188)).
+
 ## [2.2.3] - 2024-03-20
 ### Added
 - Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#167](https://github.com/10up/safe-svg/pull/167)).
@@ -321,6 +334,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.2.4]: https://github.com/10up/safe-svg/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/10up/safe-svg/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/10up/safe-svg/compare/2.2.1...2.2.2
 [2.2.1]: https://github.com/10up/safe-svg/compare/2.2.0...2.2.1
