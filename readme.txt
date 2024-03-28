@@ -3,7 +3,7 @@ Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, sanitize, upload, sanitise, security, svg upload, image, vector, file, graphic, media, mime
 Requires at least: 5.7
 Tested up to:      6.5
-Stable tag:        2.2.3
+Stable tag:        2.2.4
 Requires PHP:      7.4
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
@@ -65,6 +65,14 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.2.4 - 2024-03-28 =
+* **Changed:** Upgrade the `download-artifact` from v3 to v4 (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#181](https://github.com/10up/safe-svg/pull/181)).
+* **Changed:** Replaced `lee-dohm/no-response` with `actions/stale` to help with closing no-response/stale issues (props [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#183](https://github.com/10up/safe-svg/pull/183)).
+* **Fixed:** Ensure the svg file can be loaded before we try accessing it's attributes (props [@dkotter](https://github.com/dkotter), [@metashield-ie](https://github.com/metashield-ie), [@ocean90](https://github.com/ocean90), [@darylldoyle](https://github.com/darylldoyle), [@faisal-alvi](https://github.com/faisal-alvi) via [#186](https://github.com/10up/safe-svg/pull/186)).
+* **Fixed:** Ensure we don't throw JS errors in the Classic Editor when the optimizer feature is turned on (props [@dkotter](https://github.com/dkotter), [@turtlepod](https://github.com/turtlepod), [@faisal-alvi](https://github.com/faisal-alvi) via [#187](https://github.com/10up/safe-svg/pull/187)).
+* **Security:** Bump `webpack-dev-middleware` from 5.3.3 to 5.3.4 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#185](https://github.com/10up/safe-svg/pull/185)).
+* **Security:** Bump `express` from 4.18.2 to 4.19.2 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#188](https://github.com/10up/safe-svg/pull/188)).
 
 = 2.2.3 - 2024-03-20 =
 * **Added:** Support for the WordPress.org plugin preview (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#167](https://github.com/10up/safe-svg/pull/167)).

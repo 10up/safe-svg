@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.2.3
+ * Version:           2.2.4
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.2.3' );
+define( 'SAFE_SVG_VERSION', '2.2.4' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -596,6 +596,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$height = floatval( $metadata['height'] );
 			} elseif ( $svg ) {
 				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+
+				// Ensure the svg could be loaded.
+				if ( ! $svg ) {
+					return false;
+				}
 
 				$attributes = $svg->attributes();
 
