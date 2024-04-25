@@ -341,5 +341,16 @@ class SafeSvgTest extends TestCase {
 
 		$response = $this->instance->featured_image_fix( 'test', 1, 1 );
 		$this->assertSame( '<span class="svg">test</span>', $response );
+
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => null,
+				'return' => false,
+			)
+		);
+
+		$response = $this->instance->featured_image_fix( 'test', 1 );
+		$this->assertSame( 'test', $response );
 	}
 }
