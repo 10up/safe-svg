@@ -401,13 +401,13 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		/**
 		 * If the featured image is an SVG we wrap it in an SVG class so we can apply our CSS fix.
 		 *
-		 * @param string $content Admin post thumbnail HTML markup.
-		 * @param int    $post_id Post ID.
-		 * @param int    $thumbnail_id Thumbnail ID.
+		 * @param string   $content Admin post thumbnail HTML markup.
+		 * @param int      $post_id Post ID.
+		 * @param int|null $thumbnail_id Thumbnail attachment ID, or null if there isn't one.
 		 *
 		 * @return string
 		 */
-		public function featured_image_fix( $content, $post_id, $thumbnail_id ) {
+		public function featured_image_fix( $content, $post_id, $thumbnail_id = null ) {
 			$mime = get_post_mime_type( $thumbnail_id );
 
 			if ( 'image/svg+xml' === $mime ) {
