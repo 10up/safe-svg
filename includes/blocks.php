@@ -43,6 +43,10 @@ function register_blocks() {
  * @return array Filtered categories.
  */
 function blocks_categories( $categories ) {
+	if ( ! is_array( $categories ) ) {
+		$categories = [];
+	}
+
 	return array_merge(
 		$categories,
 		array(
