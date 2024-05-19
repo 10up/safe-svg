@@ -11,7 +11,7 @@
 			"email": "opensource@10up.com",
 			"homepage": "https://10up.com/",
 			"role": "Developer"
-		},		
+		},
 		{
 			"name": "Daryll Doyle",
 			"email": "daryll@enshrined.co.uk",
@@ -21,7 +21,7 @@
 	],
 	"require": {
 		"php": ">=7.4",
-		"enshrined/svg-sanitize": "^0.16.0"
+		"enshrined/svg-sanitize": "^0.18.0"
 	},
 	"require-dev": {
 		"10up/phpcs-composer": "dev-master",
