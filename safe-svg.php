@@ -699,6 +699,10 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function disable_srcset( $image_meta, $size_array, $image_src, $attachment_id ) {
 			if ( $attachment_id && 'image/svg+xml' === get_post_mime_type( $attachment_id ) ) {
+				// Convert to array if not already to avoid PHP warnings.
+				if ( ! is_array( $image_meta ) ) {
+					$image_meta = array();
+				}
 				$image_meta['sizes'] = array();
 			}
 
