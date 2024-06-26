@@ -1,12 +1,10 @@
 === Safe SVG ===
 Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, security, media, vector, mime
-Requires at least: 5.7
 Tested up to:      6.5
 Stable tag:        2.2.5
-Requires PHP:      7.4
-License:           GPLv2 or later
-License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+License:           GPL-2.0-or-later
+License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
 Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
 
