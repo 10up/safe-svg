@@ -121,5 +121,6 @@ They take one argument that must be returned. See below for examples:
 [View historical changelog details here](https://github.com/10up/safe-svg/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
 = 1.9.10 =
-* Important: bumped the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.
+Important: bumped the WordPress minimum version from 4.0 to 4.7 and the PHP minimum version from 5.6 to 7.0.
