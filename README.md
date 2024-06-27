@@ -5,7 +5,7 @@
 [![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level)
 [![Release Version](https://img.shields.io/github/release/10up/safe-svg.svg)](https://github.com/10up/safe-svg/releases/latest)
 ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/safe-svg?label=WordPress)
-[![GPLv2 License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
+[![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
 [![Dependency Review](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml)
 [![E2E test](https://github.com/10up/safe-svg/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/cypress.yml)
 [![PHP Compatibility](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml)

@@ -3,13 +3,13 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.2.4
+ * Version:           2.2.5
  * Requires at least: 5.7
  * Requires PHP:      7.4
  * Author:            10up
  * Author URI:        https://10up.com
- * License:           GPL v2 or later
- * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * License:           GPL-2.0-or-later
+ * License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
  * Text Domain:       safe-svg
  * Domain Path:       /languages
  *
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.2.4' );
+define( 'SAFE_SVG_VERSION', '2.2.5' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -153,13 +153,24 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function current_user_can_upload_svg() {
 			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
+			$can_upload   = false;
 
-			// Fallback to upload_files check for backwards compatibility.
 			if ( empty( $upload_roles ) ) {
-				return current_user_can( 'upload_files' );
+				// Fallback to upload_files check for backwards compatibility.
+				$can_upload = current_user_can( 'upload_files' );
+			} else {
+				// Use our custom capability if some upload roles are set.
+				$can_upload = current_user_can( 'safe_svg_upload_svg' );
 			}
 
-			return current_user_can( 'safe_svg_upload_svg' );
+			/**
+			 * Determine if the current user can upload an svg.
+			 *
+			 * @param bool $can_upload Can the current user upload an svg?
+			 *
+			 * @return bool
+			 */
+			return (bool) apply_filters( 'safe_svg_current_user_can_upload', $can_upload );
 		}
 
 		/**
@@ -401,13 +412,13 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		/**
 		 * If the featured image is an SVG we wrap it in an SVG class so we can apply our CSS fix.
 		 *
-		 * @param string $content Admin post thumbnail HTML markup.
-		 * @param int    $post_id Post ID.
-		 * @param int    $thumbnail_id Thumbnail ID.
+		 * @param string   $content Admin post thumbnail HTML markup.
+		 * @param int      $post_id Post ID.
+		 * @param int|null $thumbnail_id Thumbnail attachment ID, or null if there isn't one.
 		 *
 		 * @return string
 		 */
-		public function featured_image_fix( $content, $post_id, $thumbnail_id ) {
+		public function featured_image_fix( $content, $post_id, $thumbnail_id = null ) {
 			$mime = get_post_mime_type( $thumbnail_id );
 
 			if ( 'image/svg+xml' === $mime ) {
@@ -687,7 +698,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @param int    $attachment_id The image attachment ID.
 		 */
 		public function disable_srcset( $image_meta, $size_array, $image_src, $attachment_id ) {
-			if ( $attachment_id && 'image/svg+xml' === get_post_mime_type( $attachment_id ) ) {
+			if ( $attachment_id && 'image/svg+xml' === get_post_mime_type( $attachment_id ) && is_array( $image_meta ) ) {
 				$image_meta['sizes'] = array();
 			}
 
