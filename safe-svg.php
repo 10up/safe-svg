@@ -395,11 +395,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$dimensions = $this->svg_dimensions( $attachment_id );
+				$width	=  $this->set_svg_dimension( 'width', $size, $attachment_id );
+				$height	=  $this->set_svg_dimension( 'height', $size, $attachment_id );
 
-				if ( $dimensions ) {
-					$image[1] = $dimensions['width'];
-					$image[2] = $dimensions['height'];
+				if ( $height && $width ) {
+					$image[1] = $width;
+					$image[2] = $height;
 				} else {
 					$image[1] = 100;
 					$image[2] = 100;
@@ -450,19 +451,9 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
-
 			if ( 'image/svg+xml' === $mime ) {
-				if ( is_array( $size ) ) {
-					$width  = $size[0];
-					$height = $size[1];
-				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
-				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) {
-					$width  = $dimensions['width'];
-					$height = $dimensions['height'];
-				} else {
-					$width  = get_option( "{$size}_size_w", false );
-					$height = get_option( "{$size}_size_h", false );
-				}
+				$width	=  $this->set_svg_dimension( 'width', $size, $id );
+				$height	=  $this->set_svg_dimension( 'height', $size, $id );
 
 				if ( $height && $width ) {
 					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $width ), $html );
@@ -726,6 +717,37 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 			$len = strlen( $needle );
 			return 0 === substr_compare( $haystack, $needle, -$len, $len );
+		}
+
+		/**
+		 * Set custom width or height of the SVG image.
+		 *
+		 * @param string       $dimension Dimension quality of the image. Either 'width' or 'height'.
+		 * @param string|array $size      Size of image. Image size or array of width and height values
+		 *                                    (in that order). Default 'thumbnail'.
+		 * @param int          $id        Image attachment ID.
+		 *
+		 * @return int|false Width or height of the SVG image, or false if not found.
+		 */
+		public function set_svg_dimension( $dimension, $size, $id ) {
+			$dimensions = $this->svg_dimensions( $id );
+
+			if ( is_array( $size ) ) {
+				$width  = $size[0];
+				$height = $size[1];
+			} elseif ( 'full' === $size && $dimensions ) {
+				$width  = $dimensions['width'];
+				$height = $dimensions['height'];
+			} else {
+				$width  = get_option( "{$size}_size_w", false );
+				$height = get_option( "{$size}_size_h", false );
+			}
+
+			if ($dimension === 'width') {
+				return $width ?: false;
+			} else {
+				return $height ?: false;
+			}
 		}
 
 	}
