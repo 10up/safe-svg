@@ -395,8 +395,8 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$width	=  $this->set_svg_dimension( 'width', $size, $attachment_id );
-				$height	=  $this->set_svg_dimension( 'height', $size, $attachment_id );
+				$width =  $this->set_svg_dimension( 'width', $size, $attachment_id );
+				$height	= $this->set_svg_dimension( 'height', $size, $attachment_id );
 
 				if ( $height && $width ) {
 					$image[1] = $width;
@@ -452,8 +452,8 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
 			if ( 'image/svg+xml' === $mime ) {
-				$width	=  $this->set_svg_dimension( 'width', $size, $id );
-				$height	=  $this->set_svg_dimension( 'height', $size, $id );
+				$width =  $this->set_svg_dimension( 'width', $size, $id );
+				$height	= $this->set_svg_dimension( 'height', $size, $id );
 
 				if ( $height && $width ) {
 					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $width ), $html );
@@ -743,10 +743,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$height = get_option( "{$size}_size_h", false );
 			}
 
-			if ($dimension === 'width') {
-				return $width ?: false;
+			if ( 'width' === $dimension  ) {
+				return $width;
+			} elseif ( 'height' === $dimension ) {
+				return $height;
 			} else {
-				return $height ?: false;
+				return false;
 			}
 		}
 
