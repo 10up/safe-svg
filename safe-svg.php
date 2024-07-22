@@ -395,12 +395,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$width  = $this->set_svg_dimension( 'width', $size, $attachment_id );
-				$height = $this->set_svg_dimension( 'height', $size, $attachment_id );
+				$dimensions = $this->set_svg_dimensions( $size, $attachment_id );
 
-				if ( $height && $width ) {
-					$image[1] = $width;
-					$image[2] = $height;
+				if ( $dimensions && $dimensions['height'] && $dimensions['width'] ) {
+					$image[1] = $dimensions['width'];
+					$image[2] = $dimensions['height'];
 				} else {
 					$image[1] = 100;
 					$image[2] = 100;
@@ -452,12 +451,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
 			if ( 'image/svg+xml' === $mime ) {
-				$width  = $this->set_svg_dimension( 'width', $size, $id );
-				$height = $this->set_svg_dimension( 'height', $size, $id );
+				$dimensions = $this->set_svg_dimensions( $size, $id );
 
-				if ( $height && $width ) {
-					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $width ), $html );
-					$html = str_replace( 'height="1" ', sprintf( 'height="%s" ', $height ), $html );
+				if ( $dimensions['height'] && $dimensions['width'] ) {
+					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $dimensions['width'] ), $html );
+					$html = str_replace( 'height="1" ', sprintf( 'height="%s" ', $dimensions['height'] ), $html );
 				} else {
 					$html = str_replace( 'width="1" ', '', $html );
 					$html = str_replace( 'height="1" ', '', $html );
@@ -729,7 +727,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return int|false Width or height of the SVG image, or false if not found.
 		 */
-		public function set_svg_dimension( $dimension, $size, $id ) {
+		protected function set_svg_dimensions( $size, $id ) {
 			$dimensions = $this->svg_dimensions( $id );
 
 			if ( is_array( $size ) ) {
@@ -743,13 +741,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$height = get_option( "{$size}_size_h", false );
 			}
 
-			if ( 'width' === $dimension ) {
-				return $width;
-			} elseif ( 'height' === $dimension ) {
-				return $height;
-			} else {
-				return false;
+			if ( $dimensions ) {
+				$dimensions['width']  = $width;
+				$dimensions['height'] = $height;
 			}
+
+			return $dimensions;
 		}
 
 	}
