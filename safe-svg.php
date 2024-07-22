@@ -396,7 +396,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
 				$width  = $this->set_svg_dimension( 'width', $size, $attachment_id );
-				$height	= $this->set_svg_dimension( 'height', $size, $attachment_id );
+				$height = $this->set_svg_dimension( 'height', $size, $attachment_id );
 
 				if ( $height && $width ) {
 					$image[1] = $width;
