@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.2.5] - 2024-06-27
+### Added
+- New filter, `safe_svg_current_user_can_upload`, allowing more control over who can upload SVG files (props [@dkotter](https://github.com/dkotter), [@iamdharmesh](https://github.com/iamdharmesh) via [#193](https://github.com/10up/safe-svg/pull/193)).
+
+### Fixed
+- Fatal error when applying the `admin_post_thumbnail_html` filter with just two arguments (props [@kmgalanakis](https://github.com/kmgalanakis), [@dkotter](https://github.com/dkotter), [@liz1kiweno](https://github.com/liz1kiweno) via [#196](https://github.com/10up/safe-svg/pull/196)).
+- Prevent PHP fatal error when the value of the filtered block categories is not an array (props [@kmgalanakis](https://github.com/kmgalanakis), [@dkotter](https://github.com/dkotter), [@cguidog](https://github.com/cguidog) via [#200](https://github.com/10up/safe-svg/pull/200)).
+- Handled PHP warning when the `$image_meta` is not an array (props [@faisal-alvi](https://github.com/faisal-alvi), [@dkotter](https://github.com/dkotter), [@drazenbebic](https://github.com/drazenbebic), [@kirtangajjar](https://github.com/kirtangajjar) via [#203](https://github.com/10up/safe-svg/pull/203)).
+
+### Developer
+- Added a "Testing" section in the `CONTRIBUTING.md` file (props [@kmgalanakis](https://github.com/kmgalanakis), [@jeffpaul](https://github.com/jeffpaul) via [#197](https://github.com/10up/safe-svg/pull/197)).
+- Added the Repo Automator GitHub Action (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#198](https://github.com/10up/safe-svg/pull/198)).
+
 ## [2.2.4] - 2024-03-28
 ### Changed
 - Upgrade the `download-artifact` from v3 to v4 (props [@iamdharmesh](https://github.com/iamdharmesh), [@jeffpaul](https://github.com/jeffpaul) via [#181](https://github.com/10up/safe-svg/pull/181)).
@@ -334,6 +347,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.2.5]: https://github.com/10up/safe-svg/compare/2.2.4...2.2.5
 [2.2.4]: https://github.com/10up/safe-svg/compare/2.2.3...2.2.4
 [2.2.3]: https://github.com/10up/safe-svg/compare/2.2.2...2.2.3
 [2.2.2]: https://github.com/10up/safe-svg/compare/2.2.1...2.2.2
