@@ -1,6 +1,6 @@
 {
   "name": "@10up/safe-svg",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website",
   "homepage": "https://github.com/10up/safe-svg#readme",
   "license": "GPL-2.0-or-later",
