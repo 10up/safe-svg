@@ -2,15 +2,9 @@
 
 > Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website.
 
-[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level)
-[![Release Version](https://img.shields.io/github/release/10up/safe-svg.svg)](https://github.com/10up/safe-svg/releases/latest)
-![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/safe-svg?label=WordPress)
-[![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md)
-[![Dependency Review](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml)
-[![E2E test](https://github.com/10up/safe-svg/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/cypress.yml)
-[![PHP Compatibility](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml)
-[![PHPCS](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml)
-[![PHPUnit](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml)
+[![Support Level](https://img.shields.io/badge/support-stable-blue.svg)](#support-level) ![WordPress tested up to version](https://img.shields.io/wordpress/plugin/tested/safe-svg?label=WordPress) [![GPL-2.0-or-later License](https://img.shields.io/github/license/10up/safe-svg.svg)](https://github.com/10up/safe-svg/blob/develop/LICENSE.md) [![WordPress Playground Demo](https://img.shields.io/wordpress/plugin/v/safe-svg?logo=wordpress&logoColor=FFFFFF&label=Playground%20Demo&labelColor=3858E9&color=3858E9)](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/10up/safe-svg/update/badges/.wordpress-org/blueprints/blueprint.json)
+
+[![E2E test](https://github.com/10up/safe-svg/actions/workflows/cypress.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/cypress.yml) [![PHP Compatibility](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/php-compatibility.yml) [![PHPCS](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpcs.yml) [![PHPUnit](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/phpunit.yml) [![Dependency Review](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/10up/safe-svg/actions/workflows/dependency-review.yml) 
 
 ## Overview
 
@@ -34,7 +28,7 @@ SVG Optimization is done through the following library: [https://github.com/svg/
 ## Requirements
 
 * PHP 7.4+
-* [WordPress](http://wordpress.org/) 5.7+
+* [WordPress](http://wordpress.org/) 6.4+
 
 ## Installation
 
