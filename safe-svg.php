@@ -395,7 +395,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$dimensions = $this->set_svg_dimensions( $attachment_id, $size );
+				$dimensions = $this->get_svg_dimensions( $attachment_id, $size );
 
 				if ( $dimensions && $dimensions['height'] && $dimensions['width'] ) {
 					$image[1] = $dimensions['width'];
@@ -451,7 +451,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
 			if ( 'image/svg+xml' === $mime ) {
-				$dimensions = $this->set_svg_dimensions( $id, $size );
+				$dimensions = $this->get_svg_dimensions( $id, $size );
 
 				if ( $dimensions['height'] && $dimensions['width'] ) {
 					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $dimensions['width'] ), $html );
@@ -718,21 +718,21 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		}
 
 		/**
-		 * Set custom width or height of the SVG image.
+		 * Return custom width or height of the SVG image.
 		 *
 		 * @param int          $id   Image attachment ID.
 		 * @param string|array $size Size of image. Image size or array of width and height values
 		 *                                    (in that order). Default 'thumbnail'.
 		 *
-		 * @return int|false Width or height of the SVG image, or false if not found.
+		 * @return array|bool Width or height of the SVG image, or false if not found.
 		 */
-		protected function set_svg_dimensions( $id, $size ) {
+		protected function get_svg_dimensions( $id, $size ) {
 			$dimensions = $this->svg_dimensions( $id );
 
 			if ( is_array( $size ) ) {
 				$width  = $size[0];
 				$height = $size[1];
-			} elseif ( 'full' === $size && $dimensions ) {
+			} elseif   ( 'full' === $size && is_array( $dimensions ) && isset( $dimensions['width'], $dimensions['height'] ) ) {
 				$width  = $dimensions['width'];
 				$height = $dimensions['height'];
 			} else {
