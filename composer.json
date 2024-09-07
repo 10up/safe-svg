@@ -21,7 +21,7 @@
 	],
 	"require": {
 		"php": ">=7.4",
-		"enshrined/svg-sanitize": "^0.18.0"
+		"enshrined/svg-sanitize": "^0.19.0"
 	},
 	"require-dev": {
 		"10up/phpcs-composer": "dev-master",
@@ -32,7 +32,37 @@
 		"phpcs": "./vendor/bin/phpcs . -p -s",
 		"phpcbf": "./vendor/bin/phpcbf .",
 		"phpcs:compat": "./vendor/bin/phpcs *.php includes -p --standard=PHPCompatibilityWP --extensions=php --runtime-set testVersion 7.4-",
-		"test:unit": "./vendor/bin/phpunit"
+		"test:unit": "./vendor/bin/phpunit",
+		"pre-archive-cmd": [
+			"composer install --no-dev --no-interaction --no-progress --optimize-autoloader"
+		],
+		"post-archive-cmd": [
+			"composer install --no-interaction --no-progress"
+		]
+	},
+	"archive": {
+		"exclude": [
+			"/.distignore",
+			"/.github",
+			"/.gitignore",
+			"/.wordpress-org",
+			"/.wp-env.json",
+			"/.wp-env.override.json",
+			"/CHANGELOG.md",
+			"/CODE_OF_CONDUCT.md",
+			"/composer.json",
+			"/composer.lock",
+			"/CONTRIBUTING.md",
+			"/CREDITS.md",
+			"/package-lock.json",
+			"/package.json",
+			"/phpcs.xml",
+			"/phpunit.xml.dist",
+			"/README.md",
+			"/webpack.config.js",
+			"/node_modules",
+			"/tests"
+		]
 	},
 	"config": {
 		"allow-plugins": {
