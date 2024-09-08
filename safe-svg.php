@@ -733,7 +733,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			if ( is_array( $size ) ) {
 				$width  = $size[0];
 				$height = $size[1];
-			} elseif   ( 'full' === $size && is_array( $dimensions ) && isset( $dimensions['width'], $dimensions['height'] ) ) {
+			} elseif ( 'full' === $size && is_array( $dimensions ) && isset( $dimensions['width'], $dimensions['height'] ) ) {
 				$width  = $dimensions['width'];
 				$height = $dimensions['height'];
 			} else {
