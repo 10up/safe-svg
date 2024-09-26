@@ -129,10 +129,8 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			$this->sanitizer->minify( true );
 
 			add_action( 'init', array( $this, 'setup_blocks' ) );
-			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
-			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
 			add_filter( 'wp_prepare_attachment_for_js', array( $this, 'fix_admin_preview' ), 10, 3 );
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'one_pixel_fix' ), 10, 4 );
 			add_filter( 'admin_post_thumbnail_html', array( $this, 'featured_image_fix' ), 10, 3 );
@@ -242,7 +240,18 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			}
 
 			$file_name   = isset( $file['name'] ) ? $file['name'] : '';
+
+			// Allow SVGs to be uploaded when this function runs.
+			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
+			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
+
 			$wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file_name );
+
+			// Remove the SVG mime type after we've sanitized the file.
+			// We need to utilize the pre_move_uploaded_file filter to ensure we can remove the filters after the file has been full-processed.
+			// This is because wp_check_filetype_and_ext() is called multiple times during the upload process.
+			add_filter( 'pre_move_uploaded_file', array( $this, 'pre_move_uploaded_file' ) );
+
 			$type        = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
 			if ( 'image/svg+xml' === $type ) {
@@ -264,6 +273,23 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			}
 
 			return $file;
+		}
+
+		/**
+		 * Remove the filters after the file has been processed.
+		 *
+		 * We need to utilize the pre_move_uploaded_file filter to ensure we can remove the filters after the file has been full-processed.
+		 * This is because wp_check_filetype_and_ext() is called multiple times during the upload process.
+		 *
+		 * @param string $move_new_file The new file path. We don't touch this, just return it.
+		 *
+		 * @return string
+		 */
+		public function pre_move_uploaded_file( $move_new_file ) {
+			remove_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75 );
+			remove_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
+
+			return $move_new_file;
 		}
 
 		/**
