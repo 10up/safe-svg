@@ -128,8 +128,14 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			$this->sanitizer = new Sanitizer();
 			$this->sanitizer->minify( true );
 
-			add_action( 'init', array( $this, 'setup_blocks' ) );
+			// Allow SVG uploads from specific contexts.
 			add_action( 'load-upload.php', array( $this, 'allow_svg_from_upload' ) );
+			add_action( 'load-post-new.php', array( $this, 'allow_svg_from_upload' ) );
+			add_action( 'load-post.php', array( $this, 'allow_svg_from_upload' ) );
+			add_action( 'load-site-editor.php', array( $this, 'allow_svg_from_upload' ) );
+
+			// Init all the things.
+			add_action( 'init', array( $this, 'setup_blocks' ) );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_prepare_attachment_for_js', array( $this, 'fix_admin_preview' ), 10, 3 );
