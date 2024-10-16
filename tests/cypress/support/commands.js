@@ -30,3 +30,17 @@ Cypress.Commands.add('uploadMedia', (filePath) => {
     cy.get('#drag-drop-area').should('exist');
     cy.get('#drag-drop-area').selectFile(filePath, { action: 'drag-drop' });
 });
+
+Cypress.Commands.add('uploadMediaThroughGrid', (filePath) => {
+    cy.visit('/wp-admin/upload.php?mode=grid');
+    cy.get('.supports-drag-drop').should('exist');
+    cy.get('.uploader-window').should('exist');
+    // Intercept the upload request
+    cy.intercept('POST', '/wp-admin/async-upload.php').as('upload');
+    cy.get('.supports-drag-drop').selectFile(filePath, { action: 'drag-drop', force: true, waitForAnimations: true });
+    return cy.wait('@upload')
+        .then(({ request, response }) => {
+            cy.get('.uploader-window').trigger('dropzone:leave');
+            return cy.wrap(response.headers['x-wp-upload-attachment-id'] ?? 0);
+        })
+});
