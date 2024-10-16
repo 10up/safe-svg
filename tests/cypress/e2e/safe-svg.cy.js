@@ -3,10 +3,16 @@ describe('Safe SVG Tests', () => {
     cy.login();
   });
 
-  it('Admin can upload SVG image', () => {
+  it('Admin can upload SVG image via add new media file', () => {
     cy.uploadMedia('.wordpress-org/icon.svg');
     cy.get('.media-item .media-list-title, .media-item .title').should('exist').contains('icon');
     cy.get('.media-item a.edit-attachment').should('exist').contains('Edit');
+  });
+
+  it('Admin can upload SVG image via the media grid', () => {
+    cy.uploadMediaThroughGrid('.wordpress-org/icon.svg').then((attachmentId) => {
+      cy.get(`.attachments .attachment[data-id="${attachmentId}"]`).should('exist');
+    });
   });
 
   /**

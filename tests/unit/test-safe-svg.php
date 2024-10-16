@@ -41,9 +41,9 @@ class SafeSvgTest extends TestCase {
 	 * Test constructor.
 	 */
 	public function test_constructor() {
-		\WP_Mock::expectFilterAdded( 'upload_mimes', array( $this->instance, 'allow_svg' ) );
+		\WP_Mock::expectActionAdded( 'load-upload.php', array( $this->instance, 'allow_svg_from_upload' ) );
 		\WP_Mock::expectFilterAdded( 'wp_handle_upload_prefilter', array( $this->instance, 'check_for_svg' ) );
-		\WP_Mock::expectFilterAdded( 'wp_check_filetype_and_ext', array( $this->instance, 'fix_mime_type_svg' ), 75, 4 );
+		\WP_Mock::expectFilterAdded( 'wp_handle_sideload_prefilter', array( $this->instance, 'check_for_svg' ) );
 		\WP_Mock::expectFilterAdded( 'wp_prepare_attachment_for_js', array( $this->instance, 'fix_admin_preview' ), 10, 3 );
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image_src', array( $this->instance, 'one_pixel_fix' ), 10, 4 );
 		\WP_Mock::expectFilterAdded( 'admin_post_thumbnail_html', array( $this->instance, 'featured_image_fix' ), 10, 3 );
@@ -158,6 +158,10 @@ class SafeSvgTest extends TestCase {
 			'tmp_name' => $temp,
 			'name'     => 'svgTestOne.svg',
 		);
+
+		\WP_Mock::expectFilterAdded( 'upload_mimes', array( $this->instance, 'allow_svg' ) );
+		\WP_Mock::expectFilterAdded( 'wp_check_filetype_and_ext', array( $this->instance, 'fix_mime_type_svg' ), 75, 4 );
+		\WP_Mock::expectFilterAdded( 'pre_move_uploaded_file', array( $this->instance, 'pre_move_uploaded_file' ) );
 
 		$this->instance->check_for_svg( $file );
 
