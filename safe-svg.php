@@ -439,9 +439,9 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
-				$dimensions = $this->svg_dimensions( $attachment_id );
+				$dimensions = $this->get_svg_dimensions( $attachment_id, $size );
 
-				if ( $dimensions ) {
+				if ( $dimensions && $dimensions['height'] && $dimensions['width'] ) {
 					$image[1] = $dimensions['width'];
 					$image[2] = $dimensions['height'];
 				} else {
@@ -494,23 +494,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 */
 		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
 			$mime = get_post_mime_type( $id );
-
 			if ( 'image/svg+xml' === $mime ) {
-				if ( is_array( $size ) ) {
-					$width  = $size[0];
-					$height = $size[1];
-				// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
-				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) {
-					$width  = $dimensions['width'];
-					$height = $dimensions['height'];
-				} else {
-					$width  = get_option( "{$size}_size_w", false );
-					$height = get_option( "{$size}_size_h", false );
-				}
+				$dimensions = $this->get_svg_dimensions( $id, $size );
 
-				if ( $height && $width ) {
-					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $width ), $html );
-					$html = str_replace( 'height="1" ', sprintf( 'height="%s" ', $height ), $html );
+				if ( $dimensions['height'] && $dimensions['width'] ) {
+					$html = str_replace( 'width="1" ', sprintf( 'width="%s" ', $dimensions['width'] ), $html );
+					$html = str_replace( 'height="1" ', sprintf( 'height="%s" ', $dimensions['height'] ), $html );
 				} else {
 					$html = str_replace( 'width="1" ', '', $html );
 					$html = str_replace( 'height="1" ', '', $html );
@@ -770,6 +759,37 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 			$len = strlen( $needle );
 			return 0 === substr_compare( $haystack, $needle, -$len, $len );
+		}
+
+		/**
+		 * Return custom width or height of the SVG image.
+		 *
+		 * @param int          $id   Image attachment ID.
+		 * @param string|array $size Size of image. Image size or array of width and height values
+		 *                                    (in that order). Default 'thumbnail'.
+		 *
+		 * @return array|bool Width or height of the SVG image, or false if not found.
+		 */
+		protected function get_svg_dimensions( $id, $size ) {
+			$dimensions = $this->svg_dimensions( $id );
+
+			if ( is_array( $size ) ) {
+				$width  = $size[0];
+				$height = $size[1];
+			} elseif ( 'full' === $size && is_array( $dimensions ) && isset( $dimensions['width'], $dimensions['height'] ) ) {
+				$width  = $dimensions['width'];
+				$height = $dimensions['height'];
+			} else {
+				$width  = get_option( "{$size}_size_w", false );
+				$height = get_option( "{$size}_size_h", false );
+			}
+
+			if ( $dimensions ) {
+				$dimensions['width']  = $width;
+				$dimensions['height'] = $height;
+			}
+
+			return $dimensions;
 		}
 
 	}
