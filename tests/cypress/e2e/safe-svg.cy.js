@@ -3,11 +3,35 @@ describe('Safe SVG Tests', () => {
     cy.login();
   });
 
-  it('Admin can upload SVG image', () => {
+  it('Admin can upload SVG image via add new media file', () => {
     cy.uploadMedia('.wordpress-org/icon.svg');
     cy.get('.media-item .media-list-title, .media-item .title').should('exist').contains('icon');
     cy.get('.media-item a.edit-attachment').should('exist').contains('Edit');
   });
+
+  it('Admin can upload SVG image via the media grid', () => {
+    cy.uploadMediaThroughGrid('.wordpress-org/icon.svg').then((attachmentId) => {
+      cy.get(`.attachments .attachment[data-id="${attachmentId}"]`).should('exist');
+    });
+  });
+
+  it('Admin can add SVG block to a post', () => {
+	cy.uploadMedia('.wordpress-org/icon.svg');
+
+	cy.createPost( {
+		title: 'SVG Block Test',
+		beforeSave: () => {
+			cy.insertBlock( 'safe-svg/svg-icon' );
+			cy.getBlockEditor().find( '.block-editor-media-placeholder' ).contains( 'button', 'Media Library' ).click();
+			cy.get( '#menu-item-browse' ).click();
+			cy.get( '.attachments-wrapper li:first .thumbnail' ).click();
+			cy.get( '.media-modal .media-button-select' ).click();
+		},
+	} ).then( post => {
+		cy.visit( `/wp-admin/post.php?post=${post.id}&action=edit` );
+		cy.getBlockEditor().find( '.wp-block-safe-svg-svg-icon' );
+	} );
+  } );
 
   /**
    * Flow for verify SVG sanitization.

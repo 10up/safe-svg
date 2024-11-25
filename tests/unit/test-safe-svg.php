@@ -41,9 +41,9 @@ class SafeSvgTest extends TestCase {
 	 * Test constructor.
 	 */
 	public function test_constructor() {
-		\WP_Mock::expectFilterAdded( 'upload_mimes', array( $this->instance, 'allow_svg' ) );
+		\WP_Mock::expectActionAdded( 'load-upload.php', array( $this->instance, 'allow_svg_from_upload' ) );
 		\WP_Mock::expectFilterAdded( 'wp_handle_upload_prefilter', array( $this->instance, 'check_for_svg' ) );
-		\WP_Mock::expectFilterAdded( 'wp_check_filetype_and_ext', array( $this->instance, 'fix_mime_type_svg' ), 75, 4 );
+		\WP_Mock::expectFilterAdded( 'wp_handle_sideload_prefilter', array( $this->instance, 'check_for_svg' ) );
 		\WP_Mock::expectFilterAdded( 'wp_prepare_attachment_for_js', array( $this->instance, 'fix_admin_preview' ), 10, 3 );
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image_src', array( $this->instance, 'one_pixel_fix' ), 10, 4 );
 		\WP_Mock::expectFilterAdded( 'admin_post_thumbnail_html', array( $this->instance, 'featured_image_fix' ), 10, 3 );
@@ -159,6 +159,10 @@ class SafeSvgTest extends TestCase {
 			'name'     => 'svgTestOne.svg',
 		);
 
+		\WP_Mock::expectFilterAdded( 'upload_mimes', array( $this->instance, 'allow_svg' ) );
+		\WP_Mock::expectFilterAdded( 'wp_check_filetype_and_ext', array( $this->instance, 'fix_mime_type_svg' ), 75, 4 );
+		\WP_Mock::expectFilterAdded( 'pre_move_uploaded_file', array( $this->instance, 'pre_move_uploaded_file' ) );
+
 		$this->instance->check_for_svg( $file );
 
 		// @phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -204,6 +208,7 @@ class SafeSvgTest extends TestCase {
 				'return_in_order' => array(
 					__DIR__ . '/files/svgCleanOne.svg',
 					__DIR__ . '/files/svgNoDimensions.svg',
+					__DIR__ . '/files/svgCleanOne.svg',
 				),
 			)
 		);
@@ -270,7 +275,7 @@ class SafeSvgTest extends TestCase {
 		);
 
 		// Test SVG Dimensions
-		$image_sizes = $this->instance->one_pixel_fix( array(), 1, 'thumbnail', false );
+		$image_sizes = $this->instance->one_pixel_fix( array(), 1, 'full', false );
 		if ( ! empty( $image_sizes ) ) {
 			$image_sizes = array_map( 'intval', $image_sizes );
 		}
@@ -291,6 +296,19 @@ class SafeSvgTest extends TestCase {
 			array(
 				1 => 100,
 				2 => 100,
+			),
+			$image_sizes
+		);
+
+		// Test Custom Dimensions
+		$image_sizes = $this->instance->one_pixel_fix( array(), 1, [ 500, 500 ], false );
+		if ( ! empty( $image_sizes ) ) {
+			$image_sizes = array_map( 'intval', $image_sizes );
+		}
+		$this->assertSame(
+			array(
+				1 => 500,
+				2 => 500,
 			),
 			$image_sizes
 		);

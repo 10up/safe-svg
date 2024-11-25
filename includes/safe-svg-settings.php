@@ -25,6 +25,15 @@ class safe_svg_settings {
 	 */
 	public function settings_init() {
 		register_setting( 'media', 'safe_svg_upload_roles', [ $this, 'sanitize_safe_svg_roles' ] );
+		register_setting(
+			'media',
+			'safe_svg_large_svg',
+			[
+				'type'              => 'integer',
+				'default'           => 0,
+				'sanitize_callback' => 'absint',
+			]
+		);
 
 		add_settings_section(
 			'safe_svg_settings',
@@ -37,6 +46,14 @@ class safe_svg_settings {
 			'safe_svg_roles',
 			__( 'User Roles', 'safe-svg' ),
 			[ $this, 'safe_svg_roles_cb' ],
+			'media',
+			'safe_svg_settings'
+		);
+
+		add_settings_field(
+			'safe_svg_large_svg',
+			__( 'Large Files', 'safe-svg' ),
+			[ $this, 'safe_svg_large_svg_cb' ],
 			'media',
 			'safe_svg_settings'
 		);
@@ -162,4 +179,15 @@ class safe_svg_settings {
 		return $new_roles;
 	}
 
+	/**
+	 * Large SVG files field callback function.
+	 */
+	public function safe_svg_large_svg_cb() {
+		?>
+		<label>
+			<input type="checkbox" name="safe_svg_large_svg" value="1" <?php checked( get_option( 'safe_svg_large_svg' ), 1 ); ?> /> <?php esc_html_e( 'Allow large SVG files', 'safe-svg' ); ?>
+		</label>
+		<p class="description"><?php esc_html_e( 'Turning this on will allow SVG files larger than 10MB to be uploaded. This can impact performance and is not recommended unless needed.', 'safe-svg' ); ?></p>
+		<?php
+	}
 }

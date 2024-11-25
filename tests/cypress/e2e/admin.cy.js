@@ -18,4 +18,10 @@ describe('Admin can login and make sure plugin is activated', () => {
 	cy.get('[name="safe_svg_upload_roles[]"]').first().check();
 	cy.get('#submit').click()
   });
+
+  it('Can toggle the large SVG setting', () => {
+    cy.visit('/wp-admin/options-media.php');
+	cy.get('[name="safe_svg_large_svg"]').check();
+	cy.get('#submit').click()
+  });
 });

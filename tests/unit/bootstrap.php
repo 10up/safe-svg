@@ -15,5 +15,6 @@ require_once TEST_PLUGIN_DIR . '/vendor/autoload.php';
 WP_Mock::bootstrap();
 
 \WP_Mock::userFunction( 'plugin_dir_url' );
+\WP_Mock::userFunction( 'remove_filter' );
 
 require TEST_PLUGIN_DIR . '/safe-svg.php';
