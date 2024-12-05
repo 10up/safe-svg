@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.3.1] - 2024-12-05
+### Fixed
+- Revert changes made to how we determine custom dimensions for SVGs (props [@dkotter](https://github.com/dkotter), [@martinpl](https://github.com/martinpl), [@subfighter3](https://github.com/subfighter3), [@smerriman](https://github.com/smerriman), [@gigatyrant](https://github.com/gigatyrant), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh) via [#238](https://github.com/10up/safe-svg/pull/238)).
+
 ## [2.3.0] - 2024-11-25
 **Note that this release bumps the WordPress minimum version from 6.4 to 6.5.**
 
@@ -388,6 +392,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.3.1]: https://github.com/10up/safe-svg/compare/2.3.0...2.3.1
 [2.3.0]: https://github.com/10up/safe-svg/compare/2.2.6...2.3.0
 [2.2.6]: https://github.com/10up/safe-svg/compare/2.2.5...2.2.6
 [2.2.5]: https://github.com/10up/safe-svg/compare/2.2.4...2.2.5

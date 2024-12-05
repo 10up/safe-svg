@@ -3,7 +3,7 @@ Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, security, media, vector, mime
 Requires at least: 6.5
 Tested up to:      6.7
-Stable tag:        2.3.0
+Stable tag:        2.3.1
 License:           GPL-2.0-or-later
 License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
@@ -64,6 +64,9 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.3.1 - 2024-12-05 =
+* **Fixed:** Revert changes made to how we determine custom dimensions for SVGs (props [@dkotter](https://github.com/dkotter), [@martinpl](https://github.com/martinpl), [@subfighter3](https://github.com/subfighter3), [@smerriman](https://github.com/smerriman), [@gigatyrant](https://github.com/gigatyrant), [@jeffpaul](https://github.com/jeffpaul), [@iamdharmesh](https://github.com/iamdharmesh) via [#238](https://github.com/10up/safe-svg/pull/238)).
 
 = 2.3.0 - 2024-11-25 =
 * **Added:** New setting that allows large SVG files (roughly 10MB or greater) to be uploaded and sanitized properly (props [@kirtangajjar](https://github.com/kirtangajjar), [@faisal-alvi](https://github.com/faisal-alvi), [@darylldoyle](https://github.com/darylldoyle), [@manojsiddoji](https://github.com/manojsiddoji), [@dkotter](https://github.com/dkotter) via [#201](https://github.com/10up/safe-svg/pull/201)).

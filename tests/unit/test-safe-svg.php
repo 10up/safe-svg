@@ -275,7 +275,7 @@ class SafeSvgTest extends TestCase {
 		);
 
 		// Test SVG Dimensions
-		$image_sizes = $this->instance->one_pixel_fix( array(), 1, 'full', false );
+		$image_sizes = $this->instance->one_pixel_fix( array(), 1, 'thumbnail', false );
 		if ( ! empty( $image_sizes ) ) {
 			$image_sizes = array_map( 'intval', $image_sizes );
 		}
@@ -307,8 +307,8 @@ class SafeSvgTest extends TestCase {
 		}
 		$this->assertSame(
 			array(
-				1 => 500,
-				2 => 500,
+				1 => 600,
+				2 => 600,
 			),
 			$image_sizes
 		);
