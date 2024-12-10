@@ -45,7 +45,7 @@
     "@10up/cypress-wp-utils": "^0.4.0",
     "@wordpress/env": "^10.12.0",
     "@wordpress/icons": "^9.20.0",
-    "@wordpress/scripts": "27.9.0",
+    "@wordpress/scripts": "30.6.0",
     "cypress": "^13.16.0",
     "cypress-mochawesome-reporter": "^3.8.2",
     "mochawesome-json-to-md": "^0.7.2"
