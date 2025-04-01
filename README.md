@@ -28,7 +28,7 @@ SVG Optimization is done through the following library: [https://github.com/svg/
 ## Requirements
 
 * PHP 7.4+
-* [WordPress](http://wordpress.org/) 6.5+
+* [WordPress](http://wordpress.org/) 6.6+
 
 ## Installation
 
