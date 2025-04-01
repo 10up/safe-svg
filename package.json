@@ -42,11 +42,11 @@
     "postarchive": "rm -rf safe-svg && unzip safe-svg.zip -d safe-svg && rm safe-svg.zip && zip -r safe-svg.zip safe-svg && rm -rf safe-svg"
   },
   "devDependencies": {
-    "@10up/cypress-wp-utils": "^0.4.0",
-    "@wordpress/env": "^10.12.0",
-    "@wordpress/icons": "^9.20.0",
-    "@wordpress/scripts": "30.6.0",
-    "cypress": "^13.16.0",
+    "@10up/cypress-wp-utils": "^0.5.0",
+    "@wordpress/env": "^10.21.0",
+    "@wordpress/icons": "^10.21.0",
+    "@wordpress/scripts": "30.14.1",
+    "cypress": "^14.2.1",
     "cypress-mochawesome-reporter": "^3.8.2",
     "mochawesome-json-to-md": "^0.7.2"
   },
