@@ -54,6 +54,7 @@ const SafeSvgBlockEdit = (props) => {
 			}
 		}
 	);
+
 	const { className, style, ...containerBlockProps } = blockProps;
 
 	// Remove text alignment so we can apply to the parent container.
@@ -137,9 +138,15 @@ const SafeSvgBlockEdit = (props) => {
 	}
 
 	const imageSizeOptions = [
-		{ value: 'full', label: 'Full Size' },
-		{ value: 'medium', label: 'Medium' },
-		{ value: 'thumbnail', label: 'Thumbnail' },
+		{
+			value: 'full', label: __('Full Size', 'safe-svg')
+		},
+		{
+			value: 'medium', label: __('Medium', 'safe-svg')
+		},
+		{
+			value: 'thumbnail', label: __('Thumbnail', 'safe-svg')
+		},
 	];
 
 	return (
