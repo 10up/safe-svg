@@ -47,7 +47,7 @@
   "supports": {
     "html": false,
     "color": {
-      "text": true,
+      "text": false,
       "background": true
     },
     "spacing": {
