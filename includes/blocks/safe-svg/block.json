@@ -36,6 +36,12 @@
     },
     "imageSizes": {
       "type": "object"
+    },
+    "iconColor": {
+      "type": "string"
+    },
+    "iconColorValue": {
+      "type": "string"
     }
   },
   "supports": {

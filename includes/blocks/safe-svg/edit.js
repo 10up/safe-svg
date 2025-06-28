@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
 /**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+import { ReactSVG } from 'react-svg'
+import classnames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -14,10 +21,11 @@ import {
 	InspectorControls,
 	__experimentalImageSizeControl as ImageSizeControl,
 	MediaReplaceFlow,
-	MediaPlaceholder
+	MediaPlaceholder,
+	withColors,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 } from '@wordpress/block-editor';
-import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg'
 
 /**
  * Edit component.
@@ -32,7 +40,13 @@ import { ReactSVG } from 'react-svg'
  * @return {Function} Render the edit screen
  */
 const SafeSvgBlockEdit = (props) => {
-	const { attributes, setAttributes } = props;
+	const {
+		clientId,
+		attributes,
+		setAttributes,
+		iconColor,
+		setIconColor,
+	} = props;
 
 	const {
 		contentPostType,
@@ -44,14 +58,23 @@ const SafeSvgBlockEdit = (props) => {
 		imageWidth,
 		imageHeight,
 		dimensionWidth,
-		dimensionHeight
+		dimensionHeight,
+		iconColorValue,
 	} = attributes;
+
+	const iconClasses = classnames('wp-block-safe-svg-svg-icon', 'safe-svg-cover', {
+		'has-icon-color': iconColor.color || iconColorValue,
+	});
+
+	const iconStyles = {
+		textAlign: alignment,
+		color: iconColorValue,
+	};
+
 	const blockProps = useBlockProps(
 		{
-			className: ` wp-block-safe-svg-svg-icon safe-svg-cover`,
-			style: {
-				textAlign: alignment,
-			}
+			className: iconClasses,
+			style: iconStyles
 		}
 	);
 
@@ -149,6 +172,23 @@ const SafeSvgBlockEdit = (props) => {
 		},
 	];
 
+	const colorSettings = [
+		{
+			value: iconColor.color || iconColorValue,
+			onChange: (colorValue) => {
+				setIconColor(colorValue);
+				setAttributes({ iconColorValue: colorValue });
+			},
+			label: __('Icon color', 'safe-svg'),
+			resetAllFilter: () => {
+				setIconColor(undefined);
+				setAttributes({ iconColorValue: undefined });
+			},
+		},
+	];
+
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
+
 	return (
 		<>
 			{svgURL &&
@@ -171,6 +211,31 @@ const SafeSvgBlockEdit = (props) => {
 								onChangeImage={onChangeImage} />
 						</PanelBody>
 					</InspectorControls>
+					{colorGradientSettings.hasColorsOrGradients && (
+						<InspectorControls group="color">
+							{colorSettings.map(
+								({ onChange, label, value, resetAllFilter }) => (
+									<ColorGradientSettingsDropdown
+										key={`wp-block-safe-svg-color-${label}`}
+										__experimentalIsRenderedInSidebar
+										settings={[
+											{
+												colorValue: value,
+												label,
+												onColorChange: onChange,
+												isShownByDefault: true,
+												resetAllFilter,
+												enableAlpha: true,
+												clearable: true,
+											},
+										]}
+										panelId={clientId}
+										{...colorGradientSettings}
+									/>
+								)
+							)}
+						</InspectorControls>
+					)}
 					<BlockControls>
 						<AlignmentToolbar
 							value={alignment}
@@ -246,4 +311,8 @@ SafeSvgBlockEdit.propTypes = {
 	setAttributes: PropTypes.func.isRequired,
 };
 
-export default SafeSvgBlockEdit;
+const iconColorAttributes = {
+	iconColor: 'icon-color',
+};
+
+export default withColors(iconColorAttributes)(SafeSvgBlockEdit);
