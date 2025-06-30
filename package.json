@@ -51,6 +51,7 @@
     "mochawesome-json-to-md": "^0.7.2"
   },
   "dependencies": {
+    "classnames": "^2.5.1",
     "react-svg": "^16.1.18",
     "svgo": "^3.0.2"
   }

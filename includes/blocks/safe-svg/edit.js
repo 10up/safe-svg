@@ -1,5 +1,12 @@
 /* eslint-disable no-unused-vars */
 /**
+ * External dependencies
+ */
+import PropTypes from 'prop-types';
+import { ReactSVG } from 'react-svg'
+import classnames from 'classnames';
+
+/**
  * WordPress dependencies
  */
 import { __ } from '@wordpress/i18n';
@@ -14,10 +21,11 @@ import {
 	InspectorControls,
 	__experimentalImageSizeControl as ImageSizeControl,
 	MediaReplaceFlow,
-	MediaPlaceholder
+	MediaPlaceholder,
+	withColors,
+	__experimentalUseMultipleOriginColorsAndGradients as useMultipleOriginColorsAndGradients,
+	__experimentalColorGradientSettingsDropdown as ColorGradientSettingsDropdown,
 } from '@wordpress/block-editor';
-import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg'
 
 /**
  * Edit component.
@@ -31,8 +39,14 @@ import { ReactSVG } from 'react-svg'
  * @param {Function} props.setAttributes        Sets the value for block attributes.
  * @return {Function} Render the edit screen
  */
-const SafeSvgBlockEdit = ( props ) => {
-	const { attributes, setAttributes } = props;
+const SafeSvgBlockEdit = (props) => {
+	const {
+		clientId,
+		attributes,
+		setAttributes,
+		iconColor,
+		setIconColor,
+	} = props;
 
 	const {
 		contentPostType,
@@ -44,16 +58,26 @@ const SafeSvgBlockEdit = ( props ) => {
 		imageWidth,
 		imageHeight,
 		dimensionWidth,
-		dimensionHeight
+		dimensionHeight,
+		iconColorValue,
 	} = attributes;
+
+	const iconClasses = classnames('wp-block-safe-svg-svg-icon', 'safe-svg-cover', {
+		'has-icon-color': iconColor.color || iconColorValue,
+	});
+
+	const iconStyles = {
+		textAlign: alignment,
+		color: iconColorValue,
+	};
+
 	const blockProps = useBlockProps(
 		{
-			className:` wp-block-safe-svg-svg-icon safe-svg-cover`,
-			style: {
-				textAlign: alignment,
-			}
+			className: iconClasses,
+			style: iconStyles
 		}
 	);
+
 	const { className, style, ...containerBlockProps } = blockProps;
 
 	// Remove text alignment so we can apply to the parent container.
@@ -68,20 +92,20 @@ const SafeSvgBlockEdit = ( props ) => {
 	style.width = `${dimensionWidth}px`;
 	style.height = `${dimensionHeight}px`;
 
-	const ALLOWED_MEDIA_TYPES = [ 'image/svg+xml' ];
+	const ALLOWED_MEDIA_TYPES = ['image/svg+xml'];
 
 	const onSelectImage = media => {
-		if ( !media.sizes && !media.media_details?.sizes ) {
+		if (!media.sizes && !media.media_details?.sizes) {
 			return;
 		}
 
-		if( media.media_details ) {
+		if (media.media_details) {
 			media.sizes = media.media_details.sizes;
 		}
 
 		const newURL = media.sizes.full.url ?? media.sizes.full.source_url;
 
-		setAttributes( {
+		setAttributes({
 			imageSizes: {
 				full: media.sizes.full,
 				medium: media.sizes.medium,
@@ -94,17 +118,17 @@ const SafeSvgBlockEdit = ( props ) => {
 			imageID: media.id,
 			svgURL: newURL,
 			type: 'full',
-		} );
+		});
 	};
 
-	const onError = ( message ) => {
-		console.log( __(`Something went wrong, please try again. Message: ${message}`, 'safe-svg') );
+	const onError = (message) => {
+		console.log(__(`Something went wrong, please try again. Message: ${message}`, 'safe-svg'));
 	}
 
 	const onChange = (dimensionSizes) => {
-		if( !dimensionSizes.width && !dimensionSizes.height ) {
-			dimensionSizes.width = parseInt( imageSizes[type].width );
-			dimensionSizes.height = parseInt( imageSizes[type].height );
+		if (!dimensionSizes.width && !dimensionSizes.height) {
+			dimensionSizes.width = parseInt(imageSizes[type].width);
+			dimensionSizes.height = parseInt(imageSizes[type].height);
 		}
 		setAttributes({
 			dimensionWidth: dimensionSizes.width ?? dimensionWidth,
@@ -114,13 +138,13 @@ const SafeSvgBlockEdit = ( props ) => {
 
 	const onChangeImage = (newSizeSlug) => {
 		const newUrl = imageSizes[newSizeSlug].url ?? imageSizes[newSizeSlug].source_url;
-		if( ! newUrl ) {
+		if (!newUrl) {
 			return null;
 		}
-		let newWidth = parseInt( imageSizes[newSizeSlug].width );
-		let newHeight = parseInt( imageSizes[newSizeSlug].height );
-		if( 'full' !== newSizeSlug ) {
-			if(imageSizes[newSizeSlug].width >= imageSizes[newSizeSlug].height) {
+		let newWidth = parseInt(imageSizes[newSizeSlug].width);
+		let newHeight = parseInt(imageSizes[newSizeSlug].height);
+		if ('full' !== newSizeSlug) {
+			if (imageSizes[newSizeSlug].width >= imageSizes[newSizeSlug].height) {
 				newHeight = imageSizes[newSizeSlug].height * imageSizes['full'].height / imageSizes['full'].width;
 			} else {
 				newWidth = imageSizes[newSizeSlug].width * imageSizes['full'].width / imageSizes['full'].height;
@@ -137,36 +161,87 @@ const SafeSvgBlockEdit = ( props ) => {
 	}
 
 	const imageSizeOptions = [
-		{ value: 'full', label: 'Full Size' },
-		{ value: 'medium', label: 'Medium' },
-		{ value: 'thumbnail', label: 'Thumbnail' },
+		{
+			value: 'full', label: __('Full Size', 'safe-svg')
+		},
+		{
+			value: 'medium', label: __('Medium', 'safe-svg')
+		},
+		{
+			value: 'thumbnail', label: __('Thumbnail', 'safe-svg')
+		},
 	];
+
+	const colorSettings = [
+		{
+			value: iconColor.color || iconColorValue,
+			onChange: (colorValue) => {
+				setIconColor(colorValue);
+				setAttributes({ iconColorValue: colorValue });
+			},
+			label: __('Icon color', 'safe-svg'),
+			resetAllFilter: () => {
+				setIconColor(undefined);
+				setAttributes({ iconColorValue: undefined });
+			},
+		},
+	];
+
+	const colorGradientSettings = useMultipleOriginColorsAndGradients();
 
 	return (
 		<>
 			{svgURL &&
-				<><InspectorControls>
-					<PanelBody
-						title={__(
-							'Image settings',
-							'safe-svg'
-						)}
-					>
-						<ImageSizeControl
-							width={dimensionWidth}
-							height={dimensionHeight}
-							imageWidth={imageWidth}
-							imageHeight={imageHeight}
-							imageSizeOptions={imageSizeOptions}
-							slug={type}
-							onChange={onChange}
-							onChangeImage={onChangeImage} />
-					</PanelBody>
-				</InspectorControls><BlockControls>
+				<>
+					<InspectorControls>
+						<PanelBody
+							title={__(
+								'Image settings',
+								'safe-svg'
+							)}
+						>
+							<ImageSizeControl
+								width={dimensionWidth}
+								height={dimensionHeight}
+								imageWidth={imageWidth}
+								imageHeight={imageHeight}
+								imageSizeOptions={imageSizeOptions}
+								slug={type}
+								onChange={onChange}
+								onChangeImage={onChangeImage} />
+						</PanelBody>
+					</InspectorControls>
+					{colorGradientSettings.hasColorsOrGradients && (
+						<InspectorControls group="color">
+							{colorSettings.map(
+								({ onChange, label, value, resetAllFilter }) => (
+									<ColorGradientSettingsDropdown
+										key={`wp-block-safe-svg-color-${label}`}
+										__experimentalIsRenderedInSidebar
+										settings={[
+											{
+												colorValue: value,
+												label,
+												onColorChange: onChange,
+												isShownByDefault: true,
+												resetAllFilter,
+												enableAlpha: true,
+												clearable: true,
+											},
+										]}
+										panelId={clientId}
+										{...colorGradientSettings}
+									/>
+								)
+							)}
+						</InspectorControls>
+					)}
+					<BlockControls>
 						<AlignmentToolbar
 							value={alignment}
 							onChange={(newVal) => setAttributes({ alignment: newVal })} />
-					</BlockControls><BlockControls>
+					</BlockControls>
+					<BlockControls>
 						<MediaReplaceFlow
 							mediaId={imageID}
 							mediaURL={svgURL}
@@ -174,48 +249,48 @@ const SafeSvgBlockEdit = ( props ) => {
 							accept={ALLOWED_MEDIA_TYPES}
 							onSelect={onSelectImage}
 							onError={onError} />
-					</BlockControls></>
+					</BlockControls>
+				</>
 			}
-
 
 			{!svgURL &&
 				<MediaPlaceholder
 					onSelect={onSelectImage}
-					allowedTypes = {ALLOWED_MEDIA_TYPES}
+					allowedTypes={ALLOWED_MEDIA_TYPES}
 					accept={ALLOWED_MEDIA_TYPES}
 					value={imageID}
 					labels={{
-						title: __( 'Inline SVG', 'safe-svg' ),
-						instructions: __( 'Upload an SVG or pick one from your media library.', 'safe-svg' )
+						title: __('Inline SVG', 'safe-svg'),
+						instructions: __('Upload an SVG or pick one from your media library.', 'safe-svg')
 					}}
 				/>
 			}
 
 			{svgURL &&
-				<div { ...containerBlockProps }>
+				<div {...containerBlockProps}>
 					<div
 						style={style}
 						className="safe-svg-inside"
 					>
 						<ReactSVG src={svgURL} beforeInjection={(svg) => {
-							svg.setAttribute( 'style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;` );
+							svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
 						}} />
 					</div>
 				</div>
 			}
 
-			{ contentPostType && (
+			{contentPostType && (
 				<Placeholder
-					label={ __( 'SafeSvg', 'safe-svg' ) }
+					label={__('SafeSvg', 'safe-svg')}
 				>
 					<p>
-						{ __(
+						{__(
 							'Please select the SVG icon.',
 							'safe-svg'
-						) }
+						)}
 					</p>
 				</Placeholder>
-			) }
+			)}
 		</>
 	);
 };
@@ -236,4 +311,8 @@ SafeSvgBlockEdit.propTypes = {
 	setAttributes: PropTypes.func.isRequired,
 };
 
-export default SafeSvgBlockEdit;
+const iconColorAttributes = {
+	iconColor: 'icon-color',
+};
+
+export default withColors(iconColorAttributes)(SafeSvgBlockEdit);
