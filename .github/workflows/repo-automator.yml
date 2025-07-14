@@ -1,5 +1,9 @@
 name: 'Repo Automator'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 on:
   issues:
     types:

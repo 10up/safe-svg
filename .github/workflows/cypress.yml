@@ -9,6 +9,10 @@ on:
     branches:
       - develop
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   build:
     uses: 10up/safe-svg/.github/workflows/build-release-zip.yml@develop

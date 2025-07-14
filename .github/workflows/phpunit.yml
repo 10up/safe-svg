@@ -1,4 +1,6 @@
 name: PHPUnit
+permissions:
+  contents: read
 
 env:
   COMPOSER_VERSION: "2"
