@@ -36,18 +36,12 @@
     },
     "imageSizes": {
       "type": "object"
-    },
-    "iconColor": {
-      "type": "string"
-    },
-    "iconColorValue": {
-      "type": "string"
     }
   },
   "supports": {
     "html": false,
     "color": {
-      "text": false,
+      "text": true,
       "background": true
     },
     "spacing": {
