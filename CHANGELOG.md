@@ -4,11 +4,11 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.3.2] - 2025-07-15
+## [2.3.2] - 2025-07-21
 **Note that this release bumps the WordPress minimum version from 6.5 to 6.6.**
 
-### Added
-- `fillColor` support with Icon color settings (props [@s3rgiosan](https://github.com/s3rgiosan), [@dkotter](https://github.com/dkotter) via [#261](https://github.com/10up/safe-svg/pull/261)).
+### Fixed
+- Visual parity between the front end and the block editor (props [@s3rgiosan](https://github.com/s3rgiosan), [@dkotter](https://github.com/dkotter) via [#261](https://github.com/10up/safe-svg/pull/261), [#266](https://github.com/10up/safe-svg/pull/266)).
 
 ### Changed
 - Bump WordPress "tested up to" version 6.8 (props [@godleman](https://github.com/godleman), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#251](https://github.com/10up/safe-svg/pull/251), [#254](https://github.com/10up/safe-svg/pull/254)).
@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Bump `@babel/runtime` from 7.23.9 to 7.27.0, `axios` from 1.7.4 to 1.8.4, `cookie` from 0.4.2 to 0.7.1, `express` from 4.21.0 to 4.21.2 and `@wordpress/e2e-test-utils-playwright` from 0.26.0 to 1.20.0 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#250](https://github.com/10up/safe-svg/pull/250)).
 - Bump `http-proxy-middleware` from 2.0.6 to 2.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@iamdharmesh](https://github.com/iamdharmesh) via [#253](https://github.com/10up/safe-svg/pull/253)).
 - Bump `tar-fs` from 3.0.8 to 3.0.9 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#258](https://github.com/10up/safe-svg/pull/258)).
+- Bump `bytes` from 3.0.0 to 3.1.2 and `compression` from 1.7.4 to 1.8.1 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#265](https://github.com/10up/safe-svg/pull/265)).
 
 ### Developer
 - Update all third-party actions our workflows rely on to use versions based on specific commit hashes (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#248](https://github.com/10up/safe-svg/pull/248)).
