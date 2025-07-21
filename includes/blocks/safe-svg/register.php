@@ -67,8 +67,8 @@ function render_block_callback( $attributes ) {
 	return apply_filters(
 		'safe_svg_inline_markup',
 		sprintf(
-			'<div class="wp-block-safe-svg-svg-icon safe-svg-cover" style="text-align: %s;">
-				<div class="safe-svg-inside %s%s" style="width: %spx; height: %spx; background-color: var(--wp--preset--color--%s); color: var(--wp--preset--color--%s); padding-top: %s; padding-right: %s; padding-bottom: %s; padding-left: %s; margin-top: %s; margin-right: %s; margin-bottom: %s; margin-left: %s;">%s</div>
+			'<div class="wp-block-safe-svg-svg-icon safe-svg-cover" style="text-align: %1$s;">
+				<div class="safe-svg-inside %2$s%3$s" style="width: %4$spx; height: %5$spx; background-color: var(--wp--preset--color--%6$s); color: var(--wp--preset--color--%7$s); padding-top: %8$s; padding-right: %9$s; padding-bottom: %10$s; padding-left: %11$s; margin-top: %12$s; margin-right: %13$s; margin-bottom: %14$s; margin-left: %15$s;">%16$s</div>
 			</div>',
 			isset( $attributes['alignment'] ) ? esc_attr( $attributes['alignment'] ) : 'left',
 			esc_attr( $class_name ),
