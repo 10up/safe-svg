@@ -142,7 +142,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'one_pixel_fix' ), 10, 4 );
 			add_filter( 'admin_post_thumbnail_html', array( $this, 'featured_image_fix' ), 10, 3 );
 			add_action( 'admin_enqueue_scripts', array( $this, 'load_custom_admin_style' ) );
-			add_action( 'get_image_tag', array( $this, 'get_image_tag_override' ), 10, 6 );
+			add_filter( 'get_image_tag', array( $this, 'get_image_tag_override' ), 10, 6 );
 			add_filter( 'wp_generate_attachment_metadata', array( $this, 'skip_svg_regeneration' ), 10, 2 );
 			add_filter( 'wp_get_attachment_metadata', array( $this, 'metadata_error_fix' ), 10, 2 );
 			add_filter( 'wp_calculate_image_srcset_meta', array( $this, 'disable_srcset' ), 10, 4 );
@@ -497,7 +497,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return mixed
 		 */
-		public function get_image_tag_override( $html, $id, $alt, $title, $align, $size ) {
+		public function get_image_tag_override( $html, $id = null, $alt = '', $title = '', $align = '', $size = 'medium' ) {
+			// Return early if we don't have a valid attachment ID
+			if ( ! $id ) {
+				return $html;
+			}
+
 			$mime = get_post_mime_type( $id );
 
 			if ( 'image/svg+xml' === $mime ) {

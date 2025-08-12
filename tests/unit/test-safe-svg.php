@@ -48,7 +48,7 @@ class SafeSvgTest extends TestCase {
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_image_src', array( $this->instance, 'one_pixel_fix' ), 10, 4 );
 		\WP_Mock::expectFilterAdded( 'admin_post_thumbnail_html', array( $this->instance, 'featured_image_fix' ), 10, 3 );
 		\WP_Mock::expectActionAdded( 'admin_enqueue_scripts', array( $this->instance, 'load_custom_admin_style' ) );
-		\WP_Mock::expectActionAdded( 'get_image_tag', array( $this->instance, 'get_image_tag_override' ), 10, 6 );
+		\WP_Mock::expectFilterAdded( 'get_image_tag', array( $this->instance, 'get_image_tag_override' ), 10, 6 );
 		\WP_Mock::expectFilterAdded( 'wp_generate_attachment_metadata', array( $this->instance, 'skip_svg_regeneration' ), 10, 2 );
 		\WP_Mock::expectFilterAdded( 'wp_get_attachment_metadata', array( $this->instance, 'metadata_error_fix' ), 10, 2 );
 		\WP_Mock::expectFilterAdded( 'wp_calculate_image_srcset_meta', array( $this->instance, 'disable_srcset' ), 10, 4 );
@@ -370,5 +370,89 @@ class SafeSvgTest extends TestCase {
 
 		$response = $this->instance->featured_image_fix( 'test', 1 );
 		$this->assertSame( 'test', $response );
+	}
+
+	/**
+	 * Test `get_image_tag_override` function with fewer arguments.
+	 *
+	 * @return void
+	 */
+	public function test_get_image_tag_override_with_fewer_arguments() {
+		// Test with just HTML (should return HTML unchanged)
+		$response = $this->instance->get_image_tag_override( '<img src="test.svg" />' );
+		$this->assertSame( '<img src="test.svg" />', $response );
+
+		// Test with HTML and null ID (should return HTML unchanged)
+		$response = $this->instance->get_image_tag_override( '<img src="test.svg" />', null );
+		$this->assertSame( '<img src="test.svg" />', $response );
+	}
+
+	/**
+	 * Test `get_image_tag_override` function with SVG.
+	 *
+	 * @return void
+	 */
+	public function test_get_image_tag_override_with_svg() {
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 1,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => array( 'medium_size_w', false ),
+				'return' => 300,
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => array( 'medium_size_h', false ),
+				'return' => 300,
+			)
+		);
+
+		// Test with SVG and all parameters
+		$html = '<img width="1" height="1" src="test.svg" />';
+		$expected = '<img width="300" height="300" src="test.svg"  role="img" />';
+		
+		$response = $this->instance->get_image_tag_override( $html, 1, 'alt text', 'title text', 'center', 'medium' );
+		$this->assertSame( $expected, $response );
+
+		// Test with SVG but no size options (should remove width="1" and height="1")
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 2,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => array( 'large_size_w', false ),
+				'return' => false,
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => array( 'large_size_h', false ),
+				'return' => false,
+			)
+		);
+
+		$html = '<img width="1" height="1" src="test.svg" class="test" />';
+		$expected = '<img src="test.svg" class="test"  role="img" />';
+		
+		$response = $this->instance->get_image_tag_override( $html, 2, 'alt text', 'title text', 'center', 'large' );
+		$this->assertSame( $expected, $response );
 	}
 }
