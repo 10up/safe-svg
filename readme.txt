@@ -2,7 +2,7 @@
 Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, security, media, vector, mime
 Tested up to:      6.8
-Stable tag:        2.3.2
+Stable tag:        2.3.3
 License:           GPL-2.0-or-later
 License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
