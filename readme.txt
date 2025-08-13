@@ -2,7 +2,7 @@
 Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, security, media, vector, mime
 Tested up to:      6.8
-Stable tag:        2.3.2
+Stable tag:        2.3.3
 License:           GPL-2.0-or-later
 License URI:       https://spdx.org/licenses/GPL-2.0-or-later.html
 
@@ -63,6 +63,11 @@ They take one argument that must be returned. See below for examples:
     } );
 
 == Changelog ==
+
+= 2.3.3 - 2025-08-13 =
+* **Security:** Update the `enshrined/svg-sanitize` package from `0.19.0` to `0.22.0` to fix an issue with case-insensitive attributes slipping through the sanitiser and address PHP 8.4 deprecation warnings (props [@darylldoyle](https://github.com/darylldoyle), [@sudar](https://github.com/sudar), [@georgestephanis](https://github.com/georgestephanis), [@dkotter](https://github.com/dkotter), [@realazizk](https://github.com/realazizk) via [#268](https://github.com/10up/safe-svg/pull/268), [#272](https://github.com/10up/safe-svg/pull/272)).
+* **Security:** Bump `form-data` from 4.0.0 to 4.0.4 (props [@dependabot](https://github.com/apps/dependabot), [@faisal-alvi](https://github.com/faisal-alvi) via [#270](https://github.com/10up/safe-svg/pull/270)).
+* **Security:** Bump `tmp` from 0.2.3 to 0.2.5 and `@inquirer/editor` from 4.2.9 to 4.2.16 (props [@dependabot](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#271](https://github.com/10up/safe-svg/pull/271)).
 
 = 2.3.2 - 2025-07-21 =
 * **Fixed:** Visual parity between the front end and the block editor (props [@s3rgiosan](https://github.com/s3rgiosan), [@dkotter](https://github.com/dkotter) via [#261](https://github.com/10up/safe-svg/pull/261), [#266](https://github.com/10up/safe-svg/pull/266)).
