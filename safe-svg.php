@@ -654,14 +654,14 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$width  = floatval( $metadata['width'] );
 				$height = floatval( $metadata['height'] );
 			} elseif ( $svg ) {
-				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				$xml = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 				// Ensure the svg could be loaded.
-				if ( ! $svg ) {
+				if ( ! $xml ) {
 					return false;
 				}
 
-				$attributes = $svg->attributes();
+				$attributes = $xml->attributes();
 
 				if ( isset( $attributes->viewBox ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$sizes = explode( ' ', $attributes->viewBox ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -687,10 +687,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				 *
 				 * @param bool   $use_width_height_attributes If the width & height attributes should be used first. Default false.
 				 * @param string $svg                         The file path to the SVG.
+				 * @param int    $attachment_id               The attachment ID.
 				 *
 				 * @return bool If we should use the width & height attributes first or not.
 				 */
-				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg );
+				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg, $attachment_id );
 
 				if ( $use_width_height ) {
 					if ( isset( $attr_width, $attr_height ) ) {
@@ -724,12 +725,13 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			/**
 			 * Calculate SVG dimensions and orientation.
 			 *
-			 * @param array  $dimensions An array containing width, height, and orientation.
-			 * @param string $svg        The file path to the SVG.
+			 * @param array  $dimensions    An array containing width, height, and orientation.
+			 * @param string $svg           The file path to the SVG.
+			 * @param int    $attachment_id The attachment ID.
 			 *
 			 * @return array An array of SVG dimensions and orientation.
 			 */
-			return apply_filters( 'safe_svg_dimensions', $dimensions, $svg );
+			return apply_filters( 'safe_svg_dimensions', $dimensions, $svg, $attachment_id );
 		}
 
 		/**
