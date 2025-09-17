@@ -134,6 +134,18 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			add_action( 'load-post.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-site-editor.php', array( $this, 'allow_svg_from_upload' ) );
 
+			// This filter runs very early on in the `wp_enqueue_media()` function, which is used to load the
+			// assets required to use the media JS APIs. Whilst we don't want to adjust the tabs, this does
+			// give us a good point to hook into _all_ the places allowing uploads and add SVGs to the list.
+			add_action(
+				'media_upload_tabs',
+				function ( $tabs ) {
+					$this->allow_svg_from_upload();
+
+					return $tabs;
+				}
+			);
+
 			// Init all the things.
 			add_action( 'init', array( $this, 'setup_blocks' ) );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
