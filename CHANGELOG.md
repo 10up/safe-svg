@@ -14,9 +14,6 @@ All notable changes to this project will be documented in this file, per [the Ke
 ### Fixed
 - Inconsistent or incorrect data type for `$svg` argument in the filters `safe_svg_use_width_height_attributes` and `safe_svg_dimensions` (props [@roborourke](https://github.com/roborourke), [@dkotter](https://github.com/dkotter) via [#278](https://github.com/10up/safe-svg/pull/278)).
 
-### Developer
-- Fix typo in `dependency-review.yml` (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul) via [#276](https://github.com/10up/safe-svg/pull/276)).
-
 ## [2.3.3] - 2025-08-13
 ### Security
 - Update the `enshrined/svg-sanitize` package from `0.19.0` to `0.22.0` to fix an issue with case-insensitive attributes slipping through the sanitiser and address PHP 8.4 deprecation warnings (props [@darylldoyle](https://github.com/darylldoyle), [@sudar](https://github.com/sudar), [@georgestephanis](https://github.com/georgestephanis), [@dkotter](https://github.com/dkotter), [@realazizk](https://github.com/realazizk) via [#268](https://github.com/10up/safe-svg/pull/268), [#272](https://github.com/10up/safe-svg/pull/272)).
@@ -25,6 +22,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Developer
 - Configure dependabot to automatically create PR for `enshrined/svg-sanitize` (props [@sudar](https://github.com/sudar), [@georgestephanis](https://github.com/georgestephanis), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#269](https://github.com/10up/safe-svg/pull/269)).
+- Fix typo in `dependency-review.yml` (props [@szepeviktor](https://github.com/szepeviktor), [@jeffpaul](https://github.com/jeffpaul) via [#276](https://github.com/10up/safe-svg/pull/276)).
 
 ## [2.3.2] - 2025-07-21
 **Note that this release bumps the WordPress minimum version from 6.5 to 6.6.**
