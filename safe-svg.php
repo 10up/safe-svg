@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.3.3
+ * Version:           2.4.0
  * Requires at least: 6.6
  * Requires PHP:      7.4
  * Author:            10up
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.3.3' );
+define( 'SAFE_SVG_VERSION', '2.4.0' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -133,6 +133,18 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			add_action( 'load-post-new.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-post.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-site-editor.php', array( $this, 'allow_svg_from_upload' ) );
+
+			// This filter runs very early on in the `wp_enqueue_media()` function, which is used to load the
+			// assets required to use the media JS APIs. Whilst we don't want to adjust the tabs, this does
+			// give us a good point to hook into _all_ the places allowing uploads and add SVGs to the list.
+			add_action(
+				'media_upload_tabs',
+				function ( $tabs ) {
+					$this->allow_svg_from_upload();
+
+					return $tabs;
+				}
+			);
 
 			// Init all the things.
 			add_action( 'init', array( $this, 'setup_blocks' ) );
@@ -654,14 +666,14 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$width  = floatval( $metadata['width'] );
 				$height = floatval( $metadata['height'] );
 			} elseif ( $svg ) {
-				$svg = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				$xml = @simplexml_load_file( $svg ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 				// Ensure the svg could be loaded.
-				if ( ! $svg ) {
+				if ( ! $xml ) {
 					return false;
 				}
 
-				$attributes = $svg->attributes();
+				$attributes = $xml->attributes();
 
 				if ( isset( $attributes->viewBox ) ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 					$sizes = explode( ' ', $attributes->viewBox ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
@@ -687,10 +699,11 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				 *
 				 * @param bool   $use_width_height_attributes If the width & height attributes should be used first. Default false.
 				 * @param string $svg                         The file path to the SVG.
+				 * @param int    $attachment_id               The attachment ID.
 				 *
 				 * @return bool If we should use the width & height attributes first or not.
 				 */
-				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg );
+				$use_width_height = (bool) apply_filters( 'safe_svg_use_width_height_attributes', false, $svg, $attachment_id );
 
 				if ( $use_width_height ) {
 					if ( isset( $attr_width, $attr_height ) ) {
@@ -724,12 +737,13 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			/**
 			 * Calculate SVG dimensions and orientation.
 			 *
-			 * @param array  $dimensions An array containing width, height, and orientation.
-			 * @param string $svg        The file path to the SVG.
+			 * @param array  $dimensions    An array containing width, height, and orientation.
+			 * @param string $svg           The file path to the SVG.
+			 * @param int    $attachment_id The attachment ID.
 			 *
 			 * @return array An array of SVG dimensions and orientation.
 			 */
-			return apply_filters( 'safe_svg_dimensions', $dimensions, $svg );
+			return apply_filters( 'safe_svg_dimensions', $dimensions, $svg, $attachment_id );
 		}
 
 		/**
