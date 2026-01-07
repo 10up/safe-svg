@@ -133,6 +133,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			add_action( 'load-post-new.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-post.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-site-editor.php', array( $this, 'allow_svg_from_upload' ) );
+			add_action( 'load-media_page_enable-media-replace/enable-media-replace', array( $this, 'allow_svg_from_upload' ) );
 
 			// This filter runs very early on in the `wp_enqueue_media()` function, which is used to load the
 			// assets required to use the media JS APIs. Whilst we don't want to adjust the tabs, this does
