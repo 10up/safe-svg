@@ -44,7 +44,7 @@
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.5.0",
     "@wordpress/env": "^10.21.0",
-    "@wordpress/icons": "^10.21.0",
+    "@wordpress/icons": "^11.4.0",
     "@wordpress/scripts": "30.14.1",
     "cypress": "^14.2.1",
     "cypress-mochawesome-reporter": "^3.8.2",
