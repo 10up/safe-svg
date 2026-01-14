@@ -149,10 +149,8 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 			// Init all the things.
 			add_action( 'init', array( $this, 'setup_blocks' ) );
-
-			// Register SVG MIME type globally for third-party plugin compatibility (e.g., WP Offload Media).
-			// This ensures wp_check_filetype() can identify SVG files in all contexts.
 			add_action( 'init', array( $this, 'register_svg_mime_type' ) );
+			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 100, 4 );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_prepare_attachment_for_js', array( $this, 'fix_admin_preview' ), 10, 3 );
