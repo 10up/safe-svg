@@ -149,6 +149,10 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 			// Init all the things.
 			add_action( 'init', array( $this, 'setup_blocks' ) );
+
+			// Register SVG MIME type globally for third-party plugin compatibility (e.g., WP Offload Media).
+			// This ensures wp_check_filetype() can identify SVG files in all contexts.
+			add_action( 'init', array( $this, 'register_svg_mime_type' ) );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_prepare_attachment_for_js', array( $this, 'fix_admin_preview' ), 10, 3 );
@@ -171,6 +175,22 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		public function allow_svg_from_upload() {
 			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 			add_filter( 'wp_check_filetype_and_ext', array( $this, 'fix_mime_type_svg' ), 75, 4 );
+		}
+
+		/**
+		 * Register SVG MIME type globally for proper detection by third-party plugins.
+		 *
+		 * This ensures wp_check_filetype() can identify SVG files in all contexts,
+		 * not just during specific admin page loads. This fixes compatibility with
+		 * plugins like WP Offload Media that process files outside of the standard
+		 * WordPress upload flow.
+		 *
+		 * @since 2.4.1
+		 *
+		 * @return void
+		 */
+		public function register_svg_mime_type() {
+			add_filter( 'upload_mimes', array( $this, 'allow_svg' ) );
 		}
 
 		/**
