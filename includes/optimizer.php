@@ -9,6 +9,10 @@ namespace SafeSVG;
 
 use enshrined\svgSanitize\Sanitizer;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 
 	/**
