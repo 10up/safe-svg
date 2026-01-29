@@ -7,6 +7,10 @@
 
 namespace SafeSvg;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * SVG settings class.
  */
