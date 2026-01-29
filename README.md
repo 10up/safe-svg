@@ -25,6 +25,10 @@ SVG Sanitization is done through the following library: [https://github.com/dary
 
 SVG Optimization is done through the following library: [https://github.com/svg/svgo](https://github.com/svg/svgo).
 
+### Technical: Upload Path Security
+
+WordPress’s `_wp_handle_upload( $file, $action )` function allows any `$action` value, which determines the filter hook name: `{$action}_prefilter`. Safe SVG hooks common actions like `wp_handle_upload` and `wp_handle_sideload`, but cannot hook arbitrary custom actions defined by third-party code. Since upload actions are unbounded and MIME allowances are global, we cannot guarantee sanitization coverage across all possible upload paths.
+
 ## Requirements
 
 * PHP 7.4+
@@ -67,6 +71,14 @@ add_filter( 'svg_allowed_tags', function ( $tags ) {
     return $tags;
 } );
 ```
+
+### Why doesn't Safe SVG globally enable SVG uploads?
+
+Safe SVG only allows SVGs through upload paths it can actively sanitize. While most WordPress uploads use standard functions like `wp_handle_upload()` (which Safe SVG hooks), plugins and themes can create custom upload paths by calling WordPress's underlying `_wp_handle_upload()` function with arbitrary action parameters.
+
+Globally enabling the `image/svg+xml` MIME type would allow SVGs through all upload paths—including custom ones Safe SVG cannot intercept and sanitize. This would create security vulnerabilities where unsanitized SVGs containing malicious scripts could be uploaded.
+
+This is a deliberate design decision: Safe SVG prioritizes guaranteed sanitization over broad compatibility. SVGs are only allowed when we can ensure they're safe.
 
 ### Where do I report security bugs found in this plugin?
 
