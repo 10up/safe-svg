@@ -52,6 +52,22 @@ function render_block_callback( $attributes ) {
 	 */
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
+	if ( ! empty( $attributes['href'] ) ) {
+		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '_self';
+		$rel         = trim(
+			( ! empty( $attributes['nofollow'] ) ? 'nofollow' : '' )
+			. ' '
+			. ( ! empty( $attributes['sponsored'] ) ? 'sponsored' : '' )
+		);
+		$contents    = sprintf(
+			'<a href="%1$s" target="%2$s" rel="%3$s">%4$s</a>',
+			esc_url( $attributes['href'] ),
+			esc_attr( $link_target ),
+			esc_attr( $rel ),
+			$contents
+		);
+	}
+
 	/**
 	 * The wrapper markup.
 	 *

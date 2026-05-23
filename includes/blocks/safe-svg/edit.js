@@ -13,7 +13,10 @@ import { __ } from '@wordpress/i18n';
 import {
 	Placeholder,
 	PanelBody,
+	Dropdown,
+	ToolbarButton,
 } from '@wordpress/components';
+import { link } from '@wordpress/icons';
 import {
 	useBlockProps,
 	BlockControls,
@@ -22,6 +25,7 @@ import {
 	__experimentalImageSizeControl as ImageSizeControl,
 	MediaReplaceFlow,
 	MediaPlaceholder,
+	LinkControl,
 	getColorClassName,
 } from '@wordpress/block-editor';
 
@@ -51,6 +55,10 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 		dimensionWidth,
 		dimensionHeight,
 		textColor,
+		href,
+		linkTarget,
+		nofollow,
+		sponsored,
 	} = attributes;
 
 	const blockProps = useBlockProps(
@@ -191,6 +199,61 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 							accept={ALLOWED_MEDIA_TYPES}
 							onSelect={onSelectImage}
 							onError={onError} />
+						<Dropdown
+							className="safe-svg-link-dropdown"
+							renderToggle={({ isOpen, onToggle }) => (
+								<ToolbarButton
+									icon={link}
+									label={__('Link', 'safe-svg')}
+									onClick={onToggle}
+									aria-expanded={isOpen}
+								/>
+							)}
+							renderContent={({ onClose }) => (
+								<div className="block-editor-link-control">
+									<LinkControl
+										value={{
+											url: href,
+											opensInNewTab: linkTarget === '_blank',
+											nofollow: !!nofollow,
+											sponsored: !!sponsored,
+										}}
+										onChange={(linkSettings) => {
+											setAttributes({
+												href: linkSettings.url,
+												linkTarget: linkSettings.opensInNewTab ? '_blank' : '_self',
+												nofollow: !!linkSettings.nofollow,
+												sponsored: !!linkSettings.sponsored,
+											});
+										}}
+										settings={[
+											{
+												id: 'opensInNewTab',
+												title: __(
+													'Open in new tab',
+													'safe-svg'
+												),
+											},
+											{
+												id: 'nofollow',
+												title: __(
+													'Add rel="nofollow"',
+													'safe-svg'
+												),
+											},
+											{
+												id: 'sponsored',
+												title: __(
+													'Add rel="sponsored"',
+													'safe-svg'
+												),
+											},
+										]}
+										onClose={onClose}
+									/>
+								</div>
+							)}
+						/>
 					</BlockControls>
 				</>
 			}
@@ -210,17 +273,37 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 
 			{svgURL &&
 				<div {...containerBlockProps}>
-					<div
-						style={style}
-						className={classnames(
-							'safe-svg-inside',
-							getColorClassName('color', textColor) || ''
-						)}
-					>
-						<ReactSVG src={svgURL} beforeInjection={(svg) => {
-							svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
-						}} />
-					</div>
+					{href ? (
+						<a
+							href={href}
+							target={linkTarget}
+							rel={[nofollow ? 'nofollow' : '', sponsored ? 'sponsored' : ''].filter(Boolean).join(' ') || undefined}
+						>
+							<div
+								style={style}
+								className={classnames(
+									'safe-svg-inside',
+									getColorClassName('color', textColor) || ''
+								)}
+							>
+								<ReactSVG src={svgURL} beforeInjection={(svg) => {
+									svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
+								}} />
+							</div>
+						</a>
+					) : (
+						<div
+							style={style}
+							className={classnames(
+								'safe-svg-inside',
+								getColorClassName('color', textColor) || ''
+							)}
+						>
+							<ReactSVG src={svgURL} beforeInjection={(svg) => {
+								svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
+							}} />
+						</div>
+					)}
 				</div>
 			}
 
@@ -250,6 +333,10 @@ SafeSvgBlockEdit.propTypes = {
 		dimensionWidth: PropTypes.number,
 		dimensionHeight: PropTypes.number,
 		imageSizes: PropTypes.object,
+		href: PropTypes.string,
+		linkTarget: PropTypes.string,
+		nofollow: PropTypes.bool,
+		sponsored: PropTypes.bool,
 	}).isRequired,
 	className: PropTypes.string,
 	clientId: PropTypes.string,

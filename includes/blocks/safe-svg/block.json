@@ -36,6 +36,21 @@
     },
     "imageSizes": {
       "type": "object"
+    },
+    "href": {
+      "type": "string"
+    },
+    "linkTarget": {
+      "type": "string",
+      "default": "_self"
+    },
+    "nofollow": {
+      "type": "boolean",
+      "default": false
+    },
+    "sponsored": {
+      "type": "boolean",
+      "default": false
     }
   },
   "supports": {
