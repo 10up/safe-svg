@@ -443,6 +443,31 @@ class PluginHeadersTests extends TestCase {
 	}
 
 	/**
+	 * Test that the minimum WordPress version in readme matches the Cypress test config.
+	 */
+	public function test_minimum_wordpress_version_matches_cypress_config() {
+		$cypress_file = self::PLUGIN_ROOT_DIR . '/.github/workflows/cypress.yml';
+
+		$this->assertFileExists( $cypress_file, 'Cypress workflow file does not exist.' );
+
+		$cypress_contents = file_get_contents( $cypress_file );
+		$this->assertNotFalse( $cypress_contents, 'Unable to read cypress.yml.' );
+
+		// Extract the minimum WordPress version from the "WP minimum" matrix entry in cypress.yml.
+		// Looking for: - {name: 'WP minimum', version: 'WordPress/WordPress#6.6'}
+		$pattern = '/\-\s*\{\s*name:\s*\'WP minimum\'\s*,\s*version:\s*\'WordPress\/WordPress#([\d.]+)\'/';
+		preg_match( $pattern, $cypress_contents, $cypress_match );
+		$this->assertNotEmpty( $cypress_match, 'Unable to parse minimum WordPress version from the "WP minimum" matrix entry in cypress.yml.' );
+		$cypress_min_wp = $cypress_match[1];
+
+		// Get the minimum WordPress version from the readme.
+		$this->assertArrayHasKey( 'Requires at least', self::$defined_readme_headers, "The readme.txt header 'Requires at least' is missing." );
+		$readme_min_wp = self::$defined_readme_headers['Requires at least'];
+
+		$this->assertSame( $cypress_min_wp, $readme_min_wp, "Minimum WordPress version mismatch between cypress.yml ({$cypress_min_wp}) and readme.txt Requires at least ({$readme_min_wp})." );
+	}
+
+	/**
 	 * Ensure that the plugin banner includes a low resolution version.
 	 *
 	 * Per the plugin asset guidelines, the high resolution (retina) banner can
