@@ -464,7 +464,7 @@ class PluginHeadersTests extends TestCase {
 		$this->assertArrayHasKey( 'Requires at least', self::$defined_readme_headers, "The readme.txt header 'Requires at least' is missing." );
 		$readme_min_wp = self::$defined_readme_headers['Requires at least'];
 
-		$this->assertSame( $cypress_min_wp, $readme_min_wp, "Minimum WordPress version mismatch between cypress.yml ({$cypress_min_wp}) and readme.txt Requires at least ({$readme_min_wp})." );
+		$this->assertSame( $readme_min_wp, $cypress_min_wp, "Minimum WordPress version mismatch between cypress.yml ({$cypress_min_wp}) and readme.txt Requires at least ({$readme_min_wp})." );
 	}
 
 	/**
