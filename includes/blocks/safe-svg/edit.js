@@ -15,6 +15,7 @@ import {
 	PanelBody,
 	Dropdown,
 	ToolbarButton,
+	TextControl,
 } from '@wordpress/components';
 import { link } from '@wordpress/icons';
 import {
@@ -59,6 +60,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 		linkTarget,
 		nofollow,
 		sponsored,
+		linkLabel,
 	} = attributes;
 
 	const blockProps = useBlockProps(
@@ -251,6 +253,12 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 										]}
 										onClose={onClose}
 									/>
+									<TextControl
+										label={__('Link Label (aria-label)', 'safe-svg')}
+										value={linkLabel}
+										onChange={(value) => setAttributes({ linkLabel: value })}
+										help={__('Provides an accessible label for screen readers.', 'safe-svg')}
+									/>
 								</div>
 							)}
 						/>
@@ -274,23 +282,24 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 			{svgURL &&
 				<div {...containerBlockProps}>
 					{href ? (
-						<a
-							href={href}
-							target={linkTarget}
-							rel={[nofollow ? 'nofollow' : '', sponsored ? 'sponsored' : ''].filter(Boolean).join(' ') || undefined}
+						<div
+							style={style}
+							className={classnames(
+								'safe-svg-inside',
+								getColorClassName('color', textColor) || ''
+							)}
 						>
-							<div
-								style={style}
-								className={classnames(
-									'safe-svg-inside',
-									getColorClassName('color', textColor) || ''
-								)}
+							<a
+								href={href}
+								target={linkTarget}
+								rel={[nofollow ? 'nofollow' : '', sponsored ? 'sponsored' : '', linkTarget === '_blank' ? 'noopener' : ''].filter(Boolean).join(' ') || undefined}
+								aria-label={linkLabel || undefined}
 							>
 								<ReactSVG src={svgURL} beforeInjection={(svg) => {
 									svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
 								}} />
-							</div>
-						</a>
+							</a>
+						</div>
 					) : (
 						<div
 							style={style}
@@ -337,6 +346,7 @@ SafeSvgBlockEdit.propTypes = {
 		linkTarget: PropTypes.string,
 		nofollow: PropTypes.bool,
 		sponsored: PropTypes.bool,
+		linkLabel: PropTypes.string,
 	}).isRequired,
 	className: PropTypes.string,
 	clientId: PropTypes.string,

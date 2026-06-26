@@ -54,16 +54,28 @@ function render_block_callback( $attributes ) {
 
 	if ( ! empty( $attributes['href'] ) ) {
 		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '_self';
-		$rel         = trim(
-			( ! empty( $attributes['nofollow'] ) ? 'nofollow' : '' )
-			. ' '
-			. ( ! empty( $attributes['sponsored'] ) ? 'sponsored' : '' )
-		);
-		$contents    = sprintf(
-			'<a href="%1$s" target="%2$s" rel="%3$s">%4$s</a>',
+
+		$rel_parts = array();
+		if ( ! empty( $attributes['nofollow'] ) ) {
+			$rel_parts[] = 'nofollow';
+		}
+		if ( ! empty( $attributes['sponsored'] ) ) {
+			$rel_parts[] = 'sponsored';
+		}
+		if ( '_blank' === $link_target ) {
+			$rel_parts[] = 'noopener';
+		}
+		$rel      = implode( ' ', $rel_parts );
+		$rel_attr = $rel ? ' rel="' . esc_attr( $rel ) . '"' : '';
+
+		$aria_label = ! empty( $attributes['linkLabel'] ) ? ' aria-label="' . esc_attr( $attributes['linkLabel'] ) . '"' : '';
+
+		$contents = sprintf(
+			'<a href="%1$s" target="%2$s"%3$s%4$s>%5$s</a>',
 			esc_url( $attributes['href'] ),
 			esc_attr( $link_target ),
-			esc_attr( $rel ),
+			$rel_attr,
+			$aria_label,
 			$contents
 		);
 	}
