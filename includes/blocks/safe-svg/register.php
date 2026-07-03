@@ -62,9 +62,6 @@ function render_block_callback( $attributes ) {
 		if ( ! empty( $attributes['sponsored'] ) ) {
 			$rel_parts[] = 'sponsored';
 		}
-		if ( '_blank' === $link_target ) {
-			$rel_parts[] = 'noopener';
-		}
 		$rel      = implode( ' ', $rel_parts );
 		$rel_attr = $rel ? ' rel="' . esc_attr( $rel ) . '"' : '';
 

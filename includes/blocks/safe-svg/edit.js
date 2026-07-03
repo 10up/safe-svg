@@ -228,6 +228,14 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 												sponsored: !!linkSettings.sponsored,
 											});
 										}}
+										onRemove={() => {
+											setAttributes({
+												href: '',
+												linkTarget: '_self',
+												nofollow: false,
+												sponsored: false,
+											});
+										}}
 										settings={[
 											{
 												id: 'opensInNewTab',
@@ -281,38 +289,17 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 
 			{svgURL &&
 				<div {...containerBlockProps}>
-					{href ? (
-						<div
-							style={style}
-							className={classnames(
-								'safe-svg-inside',
-								getColorClassName('color', textColor) || ''
-							)}
-						>
-							<a
-								href={href}
-								target={linkTarget}
-								rel={[nofollow ? 'nofollow' : '', sponsored ? 'sponsored' : '', linkTarget === '_blank' ? 'noopener' : ''].filter(Boolean).join(' ') || undefined}
-								aria-label={linkLabel || undefined}
-							>
-								<ReactSVG src={svgURL} beforeInjection={(svg) => {
-									svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
-								}} />
-							</a>
-						</div>
-					) : (
-						<div
-							style={style}
-							className={classnames(
-								'safe-svg-inside',
-								getColorClassName('color', textColor) || ''
-							)}
-						>
-							<ReactSVG src={svgURL} beforeInjection={(svg) => {
-								svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
-							}} />
-						</div>
-					)}
+					<div
+						style={style}
+						className={classnames(
+							'safe-svg-inside',
+							getColorClassName('color', textColor) || ''
+						)}
+					>
+						<ReactSVG src={svgURL} beforeInjection={(svg) => {
+							svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
+						}} />
+					</div>
 				</div>
 			}
 
