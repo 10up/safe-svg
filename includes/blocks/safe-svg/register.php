@@ -53,7 +53,7 @@ function render_block_callback( $attributes ) {
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
 	if ( ! empty( $attributes['href'] ) ) {
-		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : '_self';
+		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : false;
 
 		$rel_parts = array();
 		if ( ! empty( $attributes['nofollow'] ) ) {
@@ -68,9 +68,9 @@ function render_block_callback( $attributes ) {
 		$aria_label = ! empty( $attributes['linkLabel'] ) ? ' aria-label="' . esc_attr( $attributes['linkLabel'] ) . '"' : '';
 
 		$contents = sprintf(
-			'<a href="%1$s" target="%2$s"%3$s%4$s>%5$s</a>',
+			'<a href="%1$s"%2$s%3$s%4$s>%5$s</a>',
 			esc_url( $attributes['href'] ),
-			esc_attr( $link_target ),
+			$link_target ? ' target="' . esc_attr( $link_target ) . '"' : '',
 			$rel_attr,
 			$aria_label,
 			$contents

@@ -223,7 +223,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 										onChange={(linkSettings) => {
 											setAttributes({
 												href: linkSettings.url,
-												linkTarget: linkSettings.opensInNewTab ? '_blank' : '_self',
+												linkTarget: linkSettings.opensInNewTab ? '_blank' : '',
 												nofollow: !!linkSettings.nofollow,
 												sponsored: !!linkSettings.sponsored,
 											});
@@ -231,7 +231,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 										onRemove={() => {
 											setAttributes({
 												href: '',
-												linkTarget: '_self',
+												linkTarget: '',
 												nofollow: false,
 												sponsored: false,
 											});

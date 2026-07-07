@@ -42,7 +42,7 @@
     },
     "linkTarget": {
       "type": "string",
-      "default": "_self"
+      "default": ""
     },
     "nofollow": {
       "type": "boolean",
