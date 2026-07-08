@@ -36,6 +36,24 @@
     },
     "imageSizes": {
       "type": "object"
+    },
+    "href": {
+      "type": "string"
+    },
+    "linkTarget": {
+      "type": "string",
+      "default": ""
+    },
+    "nofollow": {
+      "type": "boolean",
+      "default": false
+    },
+    "sponsored": {
+      "type": "boolean",
+      "default": false
+    },
+    "linkLabel": {
+      "type": "string"
     }
   },
   "supports": {
@@ -50,5 +68,6 @@
     }
   },
   "editorScript": "file:../../../dist/safe-svg-block.js",
+  "editorStyle": "file:../../../dist/safe-svg-block.css",
   "style": "file:../../../dist/safe-svg-block-frontend.css"
 }

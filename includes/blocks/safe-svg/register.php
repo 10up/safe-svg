@@ -52,6 +52,31 @@ function render_block_callback( $attributes ) {
 	 */
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
+	if ( ! empty( $attributes['href'] ) ) {
+		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : false;
+
+		$rel_parts = array();
+		if ( ! empty( $attributes['nofollow'] ) ) {
+			$rel_parts[] = 'nofollow';
+		}
+		if ( ! empty( $attributes['sponsored'] ) ) {
+			$rel_parts[] = 'sponsored';
+		}
+		$rel      = implode( ' ', $rel_parts );
+		$rel_attr = $rel ? ' rel="' . esc_attr( $rel ) . '"' : '';
+
+		$aria_label = ! empty( $attributes['linkLabel'] ) ? ' aria-label="' . esc_attr( $attributes['linkLabel'] ) . '"' : '';
+
+		$contents = sprintf(
+			'<a href="%1$s"%2$s%3$s%4$s>%5$s</a>',
+			esc_url( $attributes['href'] ),
+			$link_target ? ' target="' . esc_attr( $link_target ) . '"' : '',
+			$rel_attr,
+			$aria_label,
+			$contents
+		);
+	}
+
 	/**
 	 * The wrapper markup.
 	 *
