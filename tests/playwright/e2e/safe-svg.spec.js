@@ -9,19 +9,19 @@ const FILTER_TEST_PLUGIN = 'safe-svg-playwright-test-plugin';
 const OPTIMIZER_TEST_PLUGIN = 'safe-svg-playwright-optimizer-test-plugin';
 
 test.describe('Safe SVG Tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
+  test.beforeEach(async ({ requestUtils }) => {
+    await login(requestUtils);
   });
 
-  test('Admin can upload SVG image via add new media file', async ({ page }) => {
-    await uploadFromMediaNew(page, SVG_ICON_FILE);
+  test('Admin can upload SVG image via add new media file', async ({ admin, page }) => {
+    await uploadFromMediaNew(admin, page, SVG_ICON_FILE);
 
     await expect(page.locator('.media-item .media-list-title, .media-item .title')).toContainText('icon');
     await expect(page.locator('.media-item a.edit-attachment')).toContainText('Edit');
   });
 
-  test('Admin can upload SVG image via the media grid', async ({ page }) => {
-    const attachmentId = await uploadFromMediaGrid(page, SVG_ICON_FILE);
+  test('Admin can upload SVG image via the media grid', async ({ admin, page }) => {
+    const attachmentId = await uploadFromMediaGrid(admin, page, SVG_ICON_FILE);
 
     await expect(page.locator(`.attachments .attachment[data-id="${attachmentId}"]`)).toBeVisible();
   });
@@ -64,8 +64,8 @@ test.describe('Safe SVG Tests', () => {
     await requestUtils.deactivatePlugin(FILTER_TEST_PLUGIN);
   });
 
-  test('Bad formatted SVG should not upload and should give an error', async ({ page }) => {
-    await uploadFromMediaNew(page, BAD_XML_FILE);
+  test('Bad formatted SVG should not upload and should give an error', async ({ admin, page }) => {
+    await uploadFromMediaNew(admin, page, BAD_XML_FILE);
     await expect(page.locator('.media-item .error-div.error')).toContainText('has failed to upload');
   });
 

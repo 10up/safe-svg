@@ -2,12 +2,12 @@ const { test, expect } = require('@wordpress/e2e-test-utils-playwright');
 const { login } = require('./helpers');
 
 test.describe('Admin can login and make sure plugin is activated', () => {
-  test.beforeEach(async ({ page }) => {
-    await login(page);
+  test.beforeEach(async ({ requestUtils }) => {
+    await login(requestUtils);
   });
 
-  test('Open dashboard', async ({ page }) => {
-    await page.goto('/wp-admin/');
+  test('Open dashboard', async ({ admin, page }) => {
+    await admin.visitAdminPage('index.php');
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
   });
 
@@ -16,15 +16,15 @@ test.describe('Admin can login and make sure plugin is activated', () => {
     await requestUtils.deactivatePlugin('safe-svg-playwright-test-plugin');
   });
 
-  test('Can enable user role', async ({ page }) => {
-    await page.goto('/wp-admin/options-media.php');
+  test('Can enable user role', async ({ admin, page }) => {
+    await admin.visitAdminPage('options-media.php');
     await page.locator('[name="safe_svg_upload_roles[]"]').first().check();
     await page.locator('#submit').click();
     await expect(page.locator('#setting-error-settings_updated')).toBeVisible();
   });
 
-  test('Can toggle the large SVG setting', async ({ page }) => {
-    await page.goto('/wp-admin/options-media.php');
+  test('Can toggle the large SVG setting', async ({ admin, page }) => {
+    await admin.visitAdminPage('options-media.php');
     await page.locator('[name="safe_svg_large_svg"]').check();
     await page.locator('#submit').click();
     await expect(page.locator('#setting-error-settings_updated')).toBeVisible();
