@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin name: Safe SVG Cypress Optimizer Test plugin
+ * Plugin name: Safe SVG Playwright Optimizer Test plugin
  * Description: Test plugin for Safe SVG to test the optimizer.
  *
  * @package safe-svg

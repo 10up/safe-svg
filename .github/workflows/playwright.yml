@@ -17,7 +17,7 @@ jobs:
   build:
     uses: 10up/safe-svg/.github/workflows/build-release-zip.yml@develop
 
-  cypress:
+  playwright:
     needs: build
     name: ${{ matrix.core.name }}
     runs-on: ubuntu-latest
@@ -61,32 +61,24 @@ jobs:
     - name: Composer
       run: composer install
 
+    - name: Install Playwright browser
+      run: npx playwright install --with-deps chromium
+
     - name: Set the core version and plugins config
-      run: ./tests/bin/set-wp-config.js --core=${{ matrix.core.version }} --plugins=./${{ github.event.repository.name }},./tests/cypress/test-plugin
+      run: ./tests/bin/set-wp-config.js --core=${{ matrix.core.version }} --plugins=./${{ github.event.repository.name }},./tests/playwright/test-plugin
 
     - name: Set up WP environment
       run: npm run env:start
 
     - name: Test
-      run: npm run cypress:run
-
-    - name: Update summary
-      if: always()
-      run: |
-          npx mochawesome-merge ./tests/cypress/reports/*.json -o tests/cypress/reports/mochawesome.json
-          rm -rf ./tests/cypress/reports/mochawesome-*.json
-          npx mochawesome-json-to-md -p ./tests/cypress/reports/mochawesome.json -o ./tests/cypress/reports/mochawesome.md
-          npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/
-          cat ./tests/cypress/reports/mochawesome.md >> $GITHUB_STEP_SUMMARY
+      run: npm run playwright:test
 
     - name: Make artifacts available
       uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
       if: failure()
       with:
-        name: cypress-artifact
+        name: playwright-artifact
         retention-days: 2
         path: |
-            ${{ github.workspace }}/tests/cypress/screenshots/
-            ${{ github.workspace }}/tests/cypress/videos/
-            ${{ github.workspace }}/tests/cypress/logs/
-            ${{ github.workspace }}/tests/cypress/reports/
+            ${{ github.workspace }}/tests/playwright/reports/html/
+            ${{ github.workspace }}/tests/playwright/reports/test-results/

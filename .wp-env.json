@@ -1,8 +1,8 @@
 {
   "plugins": [
     ".",
-    "./tests/cypress/test-plugin/e2e-test-plugin.php",
-    "./tests/cypress/test-plugin/e2e-test-plugin-optimizer.php"
+    "./tests/playwright/test-plugin/e2e-test-plugin.php",
+    "./tests/playwright/test-plugin/e2e-test-plugin-optimizer.php"
   ],
   "env": {
     "tests": {

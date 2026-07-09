@@ -2,10 +2,11 @@
 vendor
 .DS_Store
 node_modules
-tests/cypress/downloads
-tests/cypress/screenshots
-tests/cypress/videos
-tests/cypress/reports
+tests/playwright/reports
+tests/playwright/tests/playwright/reports
+test-results
+playwright-report
+artifacts
 dist
 
 # Files

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin name: Safe SVG Cypress Test plugin
+ * Plugin name: Safe SVG Playwright Test plugin
  *
  * @package safe-svg
  */

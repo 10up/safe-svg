@@ -32,8 +32,8 @@
   "scripts": {
     "start": "wp-scripts start",
     "build": "wp-scripts build",
-    "cypress:open": "cypress open --config-file tests/cypress/cypress.config.js",
-    "cypress:run": "cypress run --config-file tests/cypress/cypress.config.js",
+    "playwright:test": "playwright test --config=tests/playwright/playwright.config.js",
+    "playwright:test:headed": "playwright test --headed --config=tests/playwright/playwright.config.js",
     "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
@@ -42,13 +42,12 @@
     "postarchive": "rm -rf safe-svg && unzip safe-svg.zip -d safe-svg && rm safe-svg.zip && zip -r safe-svg.zip safe-svg && rm -rf safe-svg"
   },
   "devDependencies": {
-    "@10up/cypress-wp-utils": "^0.5.0",
+    "@playwright/test": "^1.54.1",
+    "@wordpress/e2e-test-utils-playwright": "^1.50.0",
     "@wordpress/env": "^10.21.0",
     "@wordpress/icons": "^11.4.0",
     "@wordpress/scripts": "30.14.1",
-    "cypress": "^14.2.1",
-    "cypress-mochawesome-reporter": "^3.8.2",
-    "mochawesome-json-to-md": "^0.7.2"
+    "playwright": "^1.54.1"
   },
   "dependencies": {
     "classnames": "^2.5.1",
