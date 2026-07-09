@@ -78,8 +78,9 @@ test.describe('Safe SVG Tests', () => {
 
   test('Output of wp_get_attachment_image should use full svg dimensions', async ({ page, requestUtils }) => {
     await requestUtils.activatePlugin(FILTER_TEST_PLUGIN);
+    const media = await requestUtils.uploadMedia(SVG_ICON_FILE);
 
-    await page.goto('/');
+    await page.goto(`/?safe_svg_attachment_id=${media.id}`);
 
     await expect(page.locator('#thumbnail-image')).toHaveAttribute('width', '256');
     await expect(page.locator('#thumbnail-image')).toHaveAttribute('height', '256');
@@ -97,19 +98,20 @@ test.describe('Safe SVG Tests', () => {
 
   test('Output of get_image_tag should use custom dimensions', async ({ page, requestUtils }) => {
     await requestUtils.activatePlugin(FILTER_TEST_PLUGIN);
+    const media = await requestUtils.uploadMedia(SVG_ICON_FILE);
 
-    await page.goto('/');
+    await page.goto(`/?safe_svg_attachment_id=${media.id}`);
 
-    await expect(page.locator('.size-thumbnail.wp-image-6')).toHaveAttribute('width', '150');
-    await expect(page.locator('.size-thumbnail.wp-image-6')).toHaveAttribute('height', '150');
-    await expect(page.locator('.size-medium.wp-image-6')).toHaveAttribute('width', '300');
-    await expect(page.locator('.size-medium.wp-image-6')).toHaveAttribute('height', '300');
-    await expect(page.locator('.size-large.wp-image-6')).toHaveAttribute('width', '1024');
-    await expect(page.locator('.size-large.wp-image-6')).toHaveAttribute('height', '1024');
-    await expect(page.locator('.size-full.wp-image-6')).toHaveAttribute('width', '256');
-    await expect(page.locator('.size-full.wp-image-6')).toHaveAttribute('height', '256');
-    await expect(page.locator('.size-100x120.wp-image-6')).toHaveAttribute('width', '100');
-    await expect(page.locator('.size-100x120.wp-image-6')).toHaveAttribute('height', '100');
+    await expect(page.locator(`.size-thumbnail.wp-image-${media.id}`)).toHaveAttribute('width', '150');
+    await expect(page.locator(`.size-thumbnail.wp-image-${media.id}`)).toHaveAttribute('height', '150');
+    await expect(page.locator(`.size-medium.wp-image-${media.id}`)).toHaveAttribute('width', '300');
+    await expect(page.locator(`.size-medium.wp-image-${media.id}`)).toHaveAttribute('height', '300');
+    await expect(page.locator(`.size-large.wp-image-${media.id}`)).toHaveAttribute('width', '1024');
+    await expect(page.locator(`.size-large.wp-image-${media.id}`)).toHaveAttribute('height', '1024');
+    await expect(page.locator(`.size-full.wp-image-${media.id}`)).toHaveAttribute('width', '256');
+    await expect(page.locator(`.size-full.wp-image-${media.id}`)).toHaveAttribute('height', '256');
+    await expect(page.locator(`.size-100x120.wp-image-${media.id}`)).toHaveAttribute('width', '100');
+    await expect(page.locator(`.size-100x120.wp-image-${media.id}`)).toHaveAttribute('height', '100');
 
     await requestUtils.deactivatePlugin(FILTER_TEST_PLUGIN);
   });
