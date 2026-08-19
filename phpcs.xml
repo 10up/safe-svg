@@ -6,5 +6,13 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="safe_svg_upload_svg"/>
+			</property>
+		</properties>
+	</rule>
+
 	<exclude-pattern>*/tests/*</exclude-pattern>
 </ruleset>

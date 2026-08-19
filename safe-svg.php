@@ -12,6 +12,8 @@
  * Domain Path:       /languages
  *
  * @package safe-svg
+ *
+ * phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
  */
 
 namespace SafeSvg;
@@ -52,7 +54,7 @@ function site_meets_php_requirements() {
 if ( ! site_meets_php_requirements() ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
 			<div class="notice notice-error">
 				<p>
@@ -76,7 +78,7 @@ if ( ! site_meets_php_requirements() ) {
 } elseif ( ! class_exists( Sanitizer::class ) ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
 			<div class="notice notice-error">
 				<p>
@@ -236,7 +238,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return null
 		 */
-		public function fix_mime_type_svg( $data = null, $file = null, $filename = null, $mimes = null ) {
+		public function fix_mime_type_svg( $data = null, $file = null, $filename = null, $mimes = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 			$ext = isset( $data['ext'] ) ? $data['ext'] : '';
 			if ( strlen( $ext ) < 1 ) {
 				$exploded = explode( '.', $filename );
@@ -363,7 +365,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$clean = gzencode( $clean );
 			}
 
-			file_put_contents( $file, $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+			file_put_contents( $file, $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 
 			return true;
 		}
@@ -396,7 +398,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return array
 		 */
-		public function fix_admin_preview( $response, $attachment, $meta ) {
+		public function fix_admin_preview( $response, $attachment, $meta ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 
 			if ( 'image/svg+xml' === $response['mime'] ) {
 				$dimensions = $this->svg_dimensions( $attachment->ID );
@@ -453,7 +455,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return array
 		 */
-		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
+		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
 				$dimensions = $this->svg_dimensions( $attachment_id, $size );
 
@@ -515,7 +517,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				if ( is_array( $size ) ) {
 					$width  = $size[0];
 					$height = $size[1];
-				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 					$width  = $dimensions['width'];
 					$height = $dimensions['height'];
 				} else {
@@ -712,14 +714,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 						$width  = $viewbox_width;
 						$height = $viewbox_height;
 					}
-				} else {
-					if ( isset( $viewbox_width, $viewbox_height ) ) {
+				} elseif ( isset( $viewbox_width, $viewbox_height ) ) {
 						$width  = $viewbox_width;
 						$height = $viewbox_height;
-					} elseif ( isset( $attr_width, $attr_height ) ) {
-						$width  = $attr_width;
-						$height = $attr_height;
-					}
+				} elseif ( isset( $attr_width, $attr_height ) ) {
+					$width  = $attr_width;
+					$height = $attr_height;
 				}
 
 				if ( ! $width && ! $height ) {
