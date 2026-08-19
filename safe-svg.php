@@ -517,7 +517,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				if ( is_array( $size ) ) {
 					$width  = $size[0];
 					$height = $size[1];
-				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) { // phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
+				} elseif ( 'full' === $size && $dimensions = $this->svg_dimensions( $id ) ) { // phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.Found, Squiz.PHP.DisallowMultipleAssignments.FoundInControlStructure
 					$width  = $dimensions['width'];
 					$height = $dimensions['height'];
 				} else {
