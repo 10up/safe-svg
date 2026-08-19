@@ -52,7 +52,7 @@ function site_meets_php_requirements() {
 if ( ! site_meets_php_requirements() ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
 			<div class="notice notice-error">
 				<p>
@@ -76,7 +76,7 @@ if ( ! site_meets_php_requirements() ) {
 } elseif ( ! class_exists( Sanitizer::class ) ) {
 	add_action(
 		'admin_notices',
-		function() {
+		function () {
 			?>
 			<div class="notice notice-error">
 				<p>
@@ -712,14 +712,12 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 						$width  = $viewbox_width;
 						$height = $viewbox_height;
 					}
-				} else {
-					if ( isset( $viewbox_width, $viewbox_height ) ) {
+				} elseif ( isset( $viewbox_width, $viewbox_height ) ) {
 						$width  = $viewbox_width;
 						$height = $viewbox_height;
-					} elseif ( isset( $attr_width, $attr_height ) ) {
-						$width  = $attr_width;
-						$height = $attr_height;
-					}
+				} elseif ( isset( $attr_width, $attr_height ) ) {
+					$width  = $attr_width;
+					$height = $attr_height;
 				}
 
 				if ( ! $width && ! $height ) {

@@ -187,7 +187,6 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 
 			wp_die();
 		}
-
 	}
 
 }

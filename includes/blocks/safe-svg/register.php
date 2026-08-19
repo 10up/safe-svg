@@ -11,7 +11,7 @@ namespace SafeSvg\Blocks\SafeSvgBlock;
  * Register the block
  */
 function register() {
-	$n = function( $function ) {
+	$n = function ( $function ) {
 		return __NAMESPACE__ . "\\$function";
 	};
 	// Register the block.
