@@ -24,7 +24,7 @@
 		"enshrined/svg-sanitize": "^0.22.0"
 	},
 	"require-dev": {
-		"10up/phpcs-composer": "dev-master",
+		"10up/phpcs-composer": "dev-trunk",
 		"10up/wp_mock": "^0.4.2",
 		"yoast/phpunit-polyfills": "^1.0"
 	},

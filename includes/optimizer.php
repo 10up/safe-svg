@@ -183,11 +183,10 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 				return;
 			}
 
-			file_put_contents( $svg_path, $sanitized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+			file_put_contents( $svg_path, $sanitized ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 
 			wp_die();
 		}
-
 	}
 
 }
