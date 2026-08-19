@@ -363,7 +363,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$clean = gzencode( $clean );
 			}
 
-			file_put_contents( $file, $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+			file_put_contents( $file, $clean ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
 
 			return true;
 		}
