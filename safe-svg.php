@@ -238,7 +238,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return null
 		 */
-		public function fix_mime_type_svg( $data = null, $file = null, $filename = null, $mimes = null ) {
+		public function fix_mime_type_svg( $data = null, $file = null, $filename = null, $mimes = null ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 			$ext = isset( $data['ext'] ) ? $data['ext'] : '';
 			if ( strlen( $ext ) < 1 ) {
 				$exploded = explode( '.', $filename );
@@ -398,7 +398,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return array
 		 */
-		public function fix_admin_preview( $response, $attachment, $meta ) {
+		public function fix_admin_preview( $response, $attachment, $meta ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 
 			if ( 'image/svg+xml' === $response['mime'] ) {
 				$dimensions = $this->svg_dimensions( $attachment->ID );
@@ -455,7 +455,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 *
 		 * @return array
 		 */
-		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) {
+		public function one_pixel_fix( $image, $attachment_id, $size, $icon ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- legacy
 			if ( get_post_mime_type( $attachment_id ) === 'image/svg+xml' ) {
 				$dimensions = $this->svg_dimensions( $attachment_id, $size );
 
