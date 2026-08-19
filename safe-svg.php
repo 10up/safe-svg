@@ -12,6 +12,8 @@
  * Domain Path:       /languages
  *
  * @package safe-svg
+ *
+ * phpcs:disable Universal.Files.SeparateFunctionsFromOO.Mixed
  */
 
 namespace SafeSvg;
