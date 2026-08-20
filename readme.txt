@@ -1,7 +1,7 @@
 === Safe SVG ===
 Contributors:      10up, enshrined, jeffpaul
 Tags:              svg, security, media, vector, mime
-Requires at least: 6.6
+Requires at least: 6.9
 Requires PHP:      7.4
 Tested up to:      7.1
 Stable tag:        2.4.0
