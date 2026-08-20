@@ -454,8 +454,8 @@ class PluginHeadersTests extends TestCase {
 		$this->assertNotFalse( $cypress_contents, 'Unable to read cypress.yml.' );
 
 		// Extract the minimum WordPress version from the "WP minimum" matrix entry in cypress.yml.
-		// Looking for: - {name: 'WP minimum', version: 'WordPress/WordPress#6.6'}
-		$pattern = '/\-\s*\{\s*name:\s*\'WP minimum\'\s*,\s*version:\s*\'WordPress\/WordPress#([\d.]+)\'/';
+		// Looking for: - {name: 'WP minimum', version: 'WordPress/WordPress#x.x-branch'}
+		$pattern = '/\-\s*\{\s*name:\s*\'WP minimum\'\s*,\s*version:\s*\'WordPress\/WordPress#([\d.]+)\-branch\'/';
 		preg_match( $pattern, $cypress_contents, $cypress_match );
 		$this->assertNotEmpty( $cypress_match, 'Unable to parse minimum WordPress version from the "WP minimum" matrix entry in cypress.yml.' );
 		$cypress_min_wp = $cypress_match[1];
