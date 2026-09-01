@@ -10,6 +10,8 @@ import { useEffect, useRef, useState } from '@wordpress/element';
 
 /**
  * The styles applied inside the shadow root.
+ *
+ * Keep in sync with the safe_svg_inline_shadow_styles default in register.php.
  */
 const SHADOW_STYLES =
 	'svg{fill:currentColor;width:100%;height:100%;max-width:100%;max-height:100%}';

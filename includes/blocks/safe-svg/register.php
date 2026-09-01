@@ -142,6 +142,8 @@ function render_block_callback( $attributes ) {
 /**
  * Check whether an SVG carries its own stylesheet.
  *
+ * Keep in sync with hasStylesheet() in inline-svg.js.
+ *
  * @since x.x.x
  *
  * @param string $contents The SVG contents.
@@ -175,8 +177,10 @@ function wrap_in_shadow_root( $svg, $attachment_id ): string {
 		$attachment_id
 	);
 
+	// Stop an unsanitized SVG closing the shadow template early and escaping.
 	$svg = str_ireplace( '</template', '&lt;/template', $svg );
 
+	// Stop a filtered value closing the <style> and injecting markup.
 	$styles = str_replace( '<', '', $styles );
 
 	return sprintf(
