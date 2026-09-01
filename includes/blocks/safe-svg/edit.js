@@ -3,7 +3,6 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { ReactSVG } from 'react-svg'
 import classnames from 'classnames';
 
 /**
@@ -29,6 +28,11 @@ import {
 	LinkControl,
 	getColorClassName,
 } from '@wordpress/block-editor';
+
+/**
+ * Internal dependencies
+ */
+import InlineSvg from './inline-svg';
 
 /**
  * Edit component.
@@ -296,9 +300,10 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 							getColorClassName('color', textColor) || ''
 						)}
 					>
-						<ReactSVG src={svgURL} beforeInjection={(svg) => {
-							svg.setAttribute('style', `width: ${dimensionWidth}px; height: ${dimensionHeight}px;`);
-						}} />
+						<InlineSvg
+							src={svgURL}
+							width={dimensionWidth}
+							height={dimensionHeight} />
 					</div>
 				</div>
 			}
