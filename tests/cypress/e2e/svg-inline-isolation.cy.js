@@ -7,6 +7,11 @@
  *
  * These tests use tests/cypress/fixtures/hostileStyle.svg, which tries both.
  *
+ * The post is created through the REST API rather than the block editor UI. These
+ * tests are about what the block renders on the front end, not how it is inserted,
+ * and driving the editor's inserter couples them to Gutenberg markup that shifts
+ * between WordPress versions.
+ *
  * Note on the file name: Cypress runs specs alphabetically, and
  * tests/cypress/test-plugin/e2e-test-plugin.php refers to attachment ID 6, so the
  * assertions at the end of safe-svg.cy.js depend on how many files earlier specs
@@ -24,31 +29,38 @@ describe( 'Inline SVG CSS isolation', () => {
 	} );
 
 	/**
-	 * Publish a post containing the Inline SVG block, pointed at the most recently
-	 * uploaded SVG.
+	 * Upload an SVG and publish a post containing the Inline SVG block for it.
 	 *
-	 * @param {string} title Post title.
-	 * @return {Cypress.Chainable} Wraps the created post.
+	 * @param {string} title   Post title.
+	 * @param {string} fixture Path to the SVG fixture to upload.
+	 * @return {Cypress.Chainable} Wraps the created post (REST response body).
 	 */
-	const publishPostWithBlock = ( title ) =>
-		cy.createPost( {
-			title,
-			beforeSave: () => {
-				cy.insertBlock( 'safe-svg/svg-icon' );
-				cy.getBlockEditor()
-					.find( '.block-editor-media-placeholder' )
-					.contains( 'button', 'Media Library' )
-					.click();
-				cy.get( '#menu-item-browse' ).click();
-				cy.get( '.attachments-wrapper li:first .thumbnail' ).click();
-				cy.get( '.media-modal .media-button-select' ).click();
-			},
-		} );
+	const publishPostWithBlock = ( title, fixture ) =>
+		cy.uploadMediaThroughGrid( fixture ).then( ( attachmentId ) =>
+			// A REST request needs the cookie nonce; admin-ajax hands one out.
+			cy
+				.request( '/wp-admin/admin-ajax.php?action=rest-nonce' )
+				.then( ( nonceResponse ) =>
+					cy
+						.request( {
+							method: 'POST',
+							url: '/wp-json/wp/v2/posts',
+							headers: { 'X-WP-Nonce': nonceResponse.body },
+							body: {
+								title,
+								status: 'publish',
+								content: `<!-- wp:safe-svg/svg-icon {"imageID":${ attachmentId },"dimensionWidth":120,"dimensionHeight":120} /-->`,
+							},
+						} )
+						.then( ( postResponse ) => postResponse.body )
+				)
+		);
 
 	it( 'SVG CSS does not escape the block', () => {
-		cy.uploadMedia( 'tests/cypress/fixtures/hostileStyle.svg' );
-
-		publishPostWithBlock( 'Inline SVG isolation' ).then( ( post ) => {
+		publishPostWithBlock(
+			'Inline SVG isolation',
+			'tests/cypress/fixtures/hostileStyle.svg'
+		).then( ( post ) => {
 			// The CSS is still served. It is isolated, not stripped, so this is what
 			// proves the isolation is doing the work rather than the sanitizer.
 			cy.request( `/?p=${ post.id }` )
@@ -77,9 +89,10 @@ describe( 'Inline SVG CSS isolation', () => {
 	} );
 
 	it( 'SVG renders inside a shadow root', () => {
-		cy.uploadMedia( 'tests/cypress/fixtures/hostileStyle.svg' );
-
-		publishPostWithBlock( 'Inline SVG shadow root' ).then( ( post ) => {
+		publishPostWithBlock(
+			'Inline SVG shadow root',
+			'tests/cypress/fixtures/hostileStyle.svg'
+		).then( ( post ) => {
 			cy.visit( `/?p=${ post.id }` );
 
 			cy.get( '.safe-svg-shadow-host' ).should( ( $host ) => {
@@ -109,9 +122,10 @@ describe( 'Inline SVG CSS isolation', () => {
 	} );
 
 	it( 'SVG cannot paint outside the space the block gave it', () => {
-		cy.uploadMedia( 'tests/cypress/fixtures/hostileStyle.svg' );
-
-		publishPostWithBlock( 'Inline SVG containment' ).then( ( post ) => {
+		publishPostWithBlock(
+			'Inline SVG containment',
+			'tests/cypress/fixtures/hostileStyle.svg'
+		).then( ( post ) => {
 			cy.visit( `/?p=${ post.id }` );
 
 			cy.document().then( ( doc ) => {
@@ -146,9 +160,10 @@ describe( 'Inline SVG CSS isolation', () => {
 	} );
 
 	it( 'SVG without a stylesheet is left in the light DOM', () => {
-		cy.uploadMedia( 'tests/cypress/fixtures/custom.svg' );
-
-		publishPostWithBlock( 'Inline SVG no stylesheet' ).then( ( post ) => {
+		publishPostWithBlock(
+			'Inline SVG no stylesheet',
+			'tests/cypress/fixtures/custom.svg'
+		).then( ( post ) => {
 			cy.visit( `/?p=${ post.id }` );
 
 			// Nothing to isolate, so nothing changes: themes can still style the SVG.
