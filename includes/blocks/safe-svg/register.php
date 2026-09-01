@@ -52,6 +52,27 @@ function render_block_callback( $attributes ) {
 	 */
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
+	/**
+	 * Whether to isolate this inline SVG inside a shadow root.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param bool   $use_shadow_dom Whether to isolate the SVG. Defaults to true
+	 *                               when the SVG carries its own stylesheet.
+	 * @param string $contents       The SVG contents.
+	 * @param int    $attachment_id  The ID of the attachment.
+	 */
+	$use_shadow_dom = (bool) apply_filters(
+		'safe_svg_inline_use_shadow_dom',
+		svg_has_stylesheet( $contents ),
+		$contents,
+		$attributes['imageID']
+	);
+
+	if ( $use_shadow_dom ) {
+		$contents = wrap_in_shadow_root( $contents, $attributes['imageID'] );
+	}
+
 	if ( ! empty( $attributes['href'] ) ) {
 		$link_target = ! empty( $attributes['linkTarget'] ) ? $attributes['linkTarget'] : false;
 
@@ -115,6 +136,53 @@ function render_block_callback( $attributes ) {
 		$contents,
 		$class_name,
 		$attributes['imageID']
+	);
+}
+
+/**
+ * Check whether an SVG carries its own stylesheet.
+ *
+ * @since x.x.x
+ *
+ * @param string $contents The SVG contents.
+ * @return bool True if the SVG contains a style element.
+ */
+function svg_has_stylesheet( $contents ): bool {
+	return 1 === preg_match( '#<\s*(?:[a-z0-9_.\-]+:)?style\b#i', $contents );
+}
+
+/**
+ * Wrap an SVG in a declarative shadow root.
+ *
+ * @since x.x.x
+ *
+ * @param string $svg           The SVG contents.
+ * @param int    $attachment_id The ID of the attachment.
+ * @return string The SVG wrapped in a shadow host.
+ */
+function wrap_in_shadow_root( $svg, $attachment_id ): string {
+	/**
+	 * The styles applied inside the inline SVG's shadow root.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $styles        The CSS to inject. Return an empty string for none.
+	 * @param int    $attachment_id The ID of the attachment.
+	 */
+	$styles = (string) apply_filters(
+		'safe_svg_inline_shadow_styles',
+		'svg{fill:currentColor;width:100%;height:100%;max-width:100%;max-height:100%}',
+		$attachment_id
+	);
+
+	$svg = str_ireplace( '</template', '&lt;/template', $svg );
+
+	$styles = str_replace( '<', '', $styles );
+
+	return sprintf(
+		'<span class="safe-svg-shadow-guard" style="display: block; height: 100%%; contain: paint;"><span class="safe-svg-shadow-host" style="display: block; height: 100%%;"><template shadowrootmode="open">%1$s%2$s</template></span></span>',
+		'' !== $styles ? '<style>' . $styles . '</style>' : '',
+		$svg
 	);
 }
 
