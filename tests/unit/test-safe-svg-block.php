@@ -81,35 +81,65 @@ class SafeSvgBlockTest extends TestCase {
 
 	/**
 	 * Test that SVGs carrying a stylesheet are recognised.
+	 *
+	 * @dataProvider data_svg_has_stylesheet
+	 *
+	 * @param string $svg SVG markup declaring a stylesheet.
 	 */
-	public function test_svg_has_stylesheet() {
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><style>a{fill:red}</style></svg>' ) );
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><style type="text/css">a{fill:red}</style></svg>' ) );
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><defs><style>a{fill:red}</style></defs></svg>' ) );
+	public function test_svg_has_stylesheet( $svg ) {
+		$this->assertTrue( Block\svg_has_stylesheet( $svg ) );
+	}
 
-		// The HTML parser lower-cases tag names and resolves prefixes, so both of
-		// these become a style element once the SVG is inlined into the page.
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><STYLE>a{fill:red}</STYLE></svg>' ) );
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><svg:style>a{fill:red}</svg:style></svg>' ) );
+	/**
+	 * Data provider for test_svg_has_stylesheet.
+	 *
+	 * @return array[] Data provider.
+	 */
+	public static function data_svg_has_stylesheet() {
+		return array(
+			'style element'              => array( '<svg><style>a{fill:red}</style></svg>' ),
+			'style element with a type'  => array( '<svg><style type="text/css">a{fill:red}</style></svg>' ),
+			'style element within defs'  => array( '<svg><defs><style>a{fill:red}</style></defs></svg>' ),
 
-		// A self closing element still declares a stylesheet.
-		$this->assertTrue( Block\svg_has_stylesheet( '<svg><style/></svg>' ) );
+			// The HTML parser lower-cases tag names and resolves prefixes, so both of
+			// these become a style element once the SVG is inlined into the page.
+			'upper case style element'   => array( '<svg><STYLE>a{fill:red}</STYLE></svg>' ),
+			'prefixed style element'     => array( '<svg><svg:style>a{fill:red}</svg:style></svg>' ),
+
+			// A self closing element still declares a stylesheet.
+			'self closing style element' => array( '<svg><style/></svg>' ),
+		);
 	}
 
 	/**
 	 * Test that SVGs without a stylesheet are left alone.
+	 *
+	 * @dataProvider data_svg_has_no_stylesheet
+	 *
+	 * @param string $svg SVG markup declaring no stylesheet.
 	 */
-	public function test_svg_has_no_stylesheet() {
-		$this->assertFalse( Block\svg_has_stylesheet( '<svg><rect fill="red"/></svg>' ) );
+	public function test_svg_has_no_stylesheet( $svg ) {
+		$this->assertFalse( Block\svg_has_stylesheet( $svg ) );
+	}
 
-		// A style attribute only ever applies to the element it sits on.
-		$this->assertFalse( Block\svg_has_stylesheet( '<svg style="fill:red"><rect style="fill:red"/></svg>' ) );
+	/**
+	 * Data provider for test_svg_has_no_stylesheet.
+	 *
+	 * @return array[] Data provider.
+	 */
+	public static function data_svg_has_no_stylesheet() {
+		return array(
+			'no stylesheet'          => array( '<svg><rect fill="red"/></svg>' ),
 
-		// Escaped markup in a text node is inert.
-		$this->assertFalse( Block\svg_has_stylesheet( '<svg><text>&lt;style&gt;</text></svg>' ) );
+			// A style attribute only ever applies to the element it sits on.
+			'style attributes'       => array( '<svg style="fill:red"><rect style="fill:red"/></svg>' ),
 
-		// Elements that merely start with the same letters are not style elements.
-		$this->assertFalse( Block\svg_has_stylesheet( '<svg><styles>a{fill:red}</styles></svg>' ) );
+			// Escaped markup in a text node is inert.
+			'escaped style element'  => array( '<svg><text>&lt;style&gt;</text></svg>' ),
+
+			// Elements that merely start with the same letters are not style elements.
+			'element named styles'   => array( '<svg><styles>a{fill:red}</styles></svg>' ),
+		);
 	}
 
 	/**
@@ -246,7 +276,7 @@ class SafeSvgBlockTest extends TestCase {
 	 */
 	public function test_isolation_can_be_filtered_off() {
 		\WP_Mock::onFilter( 'safe_svg_inline_use_shadow_dom' )
-			->with( true, $this->fixture( 'svgWithStyle.svg' ), 1 )
+			->with( true, $this->fixture( 'svgWithStyle.svg' ), 1, true )
 			->reply( false );
 
 		$markup = $this->render( 'svgWithStyle.svg' );
@@ -260,7 +290,7 @@ class SafeSvgBlockTest extends TestCase {
 	 */
 	public function test_isolation_can_be_filtered_on() {
 		\WP_Mock::onFilter( 'safe_svg_inline_use_shadow_dom' )
-			->with( false, $this->fixture( 'svgCleanOne.svg' ), 1 )
+			->with( false, $this->fixture( 'svgCleanOne.svg' ), 1, false )
 			->reply( true );
 
 		$markup = $this->render( 'svgCleanOne.svg' );

@@ -52,6 +52,8 @@ function render_block_callback( $attributes ) {
 	 */
 	$class_name = apply_filters( 'safe_svg_inline_class', 'safe-svg-inline' );
 
+	$has_stylesheet = svg_has_stylesheet( $contents );
+
 	/**
 	 * Whether to isolate this inline SVG inside a shadow root.
 	 *
@@ -65,10 +67,10 @@ function render_block_callback( $attributes ) {
 	 */
 	$use_shadow_dom = (bool) apply_filters(
 		'safe_svg_inline_use_shadow_dom',
-		svg_has_stylesheet( $contents ),
+		$has_stylesheet,
 		$contents,
 		$attributes['imageID'],
-		svg_has_stylesheet( $contents )
+		$has_stylesheet
 	);
 
 	if ( $use_shadow_dom ) {
