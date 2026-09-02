@@ -61,12 +61,14 @@ function render_block_callback( $attributes ) {
 	 *                               when the SVG carries its own stylesheet.
 	 * @param string $contents       The SVG contents.
 	 * @param int    $attachment_id  The ID of the attachment.
+	 * @param bool   $has_stylesheet Whether the SVG has a stylesheet.
 	 */
 	$use_shadow_dom = (bool) apply_filters(
 		'safe_svg_inline_use_shadow_dom',
 		svg_has_stylesheet( $contents ),
 		$contents,
-		$attributes['imageID']
+		$attributes['imageID'],
+		svg_has_stylesheet( $contents )
 	);
 
 	if ( $use_shadow_dom ) {
