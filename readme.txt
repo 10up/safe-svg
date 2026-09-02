@@ -73,7 +73,7 @@ They take one argument that must be returned. See below for examples:
 
 Mostly, yes. The Inline SVG block renders an SVG that carries its own `<style>` element inside a shadow root, because CSS inside an inline SVG is otherwise applied to the whole page rather than just the SVG. Stylesheets cannot reach into a shadow root, so theme CSS such as `.entry-content svg { fill: red; }` will not apply to those SVGs.
 
-Inherited properties still cross the boundary, so setting `color` on an ancestor and using `currentColor` inside the SVG works, as do CSS custom properties. SVGs that do not contain a `<style>` element are rendered exactly as before and can be styled normally.
+Inherited properties still cross the boundary, so setting `color` on an ancestor and using `currentColor` inside the SVG works, as do CSS custom properties. SVGs that do not contain a `<style>` element are rendered without the shadow root and can be styled by theme stylesheets.
 
 To turn isolation off, at the cost of allowing an SVG's CSS to affect the rest of the page:
 
