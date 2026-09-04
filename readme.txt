@@ -69,6 +69,16 @@ They take one argument that must be returned. See below for examples:
         return $tags;
     } );
 
+= Can my theme style an inline SVG? =
+
+Mostly, yes. The Inline SVG block renders an SVG that carries its own `<style>` element inside a shadow root, because CSS inside an inline SVG is otherwise applied to the whole page rather than just the SVG. Stylesheets cannot reach into a shadow root, so theme CSS such as `.entry-content svg { fill: red; }` will not apply to those SVGs.
+
+Inherited properties still cross the boundary, so setting `color` on an ancestor and using `currentColor` inside the SVG works, as do CSS custom properties. SVGs that do not contain a `<style>` element are rendered without the shadow root and can be styled by theme stylesheets.
+
+To turn isolation off, at the cost of allowing an SVG's CSS to affect the rest of the page:
+
+    add_filter( 'safe_svg_inline_use_shadow_dom', '__return_false' );
+
 = Why doesn't Safe SVG globally enable SVG uploads? =
 
 Safe SVG only allows SVGs through upload paths it can actively sanitize. While most WordPress uploads use standard functions like `wp_handle_upload()` (which Safe SVG hooks), plugins and themes can create custom upload paths by calling WordPress's underlying `_wp_handle_upload()` function with arbitrary action parameters.

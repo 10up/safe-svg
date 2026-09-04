@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+	<style>
+		.ring { fill: none; stroke: currentColor; stroke-width: 8; }
+		.dot { fill: #2f7d4f; }
+	</style>
+	<circle class="ring" cx="60" cy="60" r="48"/>
+	<circle class="dot" cx="60" cy="60" r="18"/>
+</svg>
