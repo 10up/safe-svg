@@ -69,5 +69,6 @@
   },
   "editorScript": "file:../../../dist/safe-svg-block.js",
   "editorStyle": "file:../../../dist/safe-svg-block.css",
+  "viewScript": "file:../../../dist/safe-svg-block-frontend.js",
   "style": "file:../../../dist/safe-svg-block-frontend.css"
 }

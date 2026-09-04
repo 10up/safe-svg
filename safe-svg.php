@@ -349,6 +349,22 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			}
 
 			/**
+			 * Strip references to remote resources from the SVG.
+			 *
+			 * This removes remote `href`/`xlink:href` targets, along with `url()`,
+			 * `@import` and `image-set()` references inside `<style>` elements and
+			 * `style` attributes.
+			 *
+			 * It is off by default as some SVGs reference remote fonts and images,
+			 * and removing them would silently change how those files render.
+			 *
+			 * @since x.x.x
+			 *
+			 * @param bool $remove_remote_references Whether to strip remote references. Default false.
+			 */
+			$this->sanitizer->removeRemoteReferences( (bool) apply_filters( 'safe_svg_remove_remote_references', false ) );
+
+			/**
 			 * Load extra filters to allow devs to access the safe tags and attrs by themselves.
 			 */
 			$this->sanitizer->setAllowedTags( new SafeSvgTags\safe_svg_tags() );
