@@ -4,6 +4,49 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.5.0] - 2026-09-04
+
+### Added
+- Link support for the SVG Inline block, including URL input, new tab toggle, and nofollow/sponsored rel options (props [@vegetable-bits](https://github.com/vegetable-bits), [@mgiannopoulos24](https://github.com/mgiannopoulos24), [@jeffpaul](https://github.com/jeffpaul), [@thrijith](https://github.com/thrijith), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter), [@pbiron](https://github.com/pbiron) via [#315](https://github.com/10up/safe-svg/pull/315))
+- New `safe_svg_inline_use_shadow_dom` filter to control which inline SVGs are isolated in a shadow root, and new `safe_svg_inline_shadow_styles` filter to adjust the CSS injected alongside them (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328))
+- New `safe_svg_remove_remote_references` filter to strip remote `url()`, `@import` and `image-set()` references, along with remote `href` targets, from uploaded SVGs. Off by default, because legitimate SVGs reference remote fonts and images but use this filter to turn it on (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328))
+
+### Changed
+- Bump tested up to header to indicate WordPress 6.9 support. (props [@navi151](https://github.com/navi151), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#290](https://github.com/10up/safe-svg/pull/290))
+- Indicate support for WordPress 7.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul) via [#311](https://github.com/10up/safe-svg/pull/311))
+- Theme CSS can no longer target an inline SVG that carries its own `<style>` element, because stylesheets cannot reach into a shadow root. Style those SVGs from within the SVG itself, or opt out with the `safe_svg_inline_use_shadow_dom` filter. Inherited properties, including `color`/`currentColor` and custom properties, still apply as before, and SVGs without a `<style>` element are unaffected (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328))
+- Updated blueprint file for WordPress.org live previews. (props [@fellyph](https://github.com/fellyph), [@username2](https://github.com/username2), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#287](https://github.com/10up/safe-svg/pull/287))
+- Updated npm dependencies via `npm audit fix` (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#294](https://github.com/10up/safe-svg/pull/294))
+
+### Other
+- Changes - Updated `@wordpress/icons` to 11.4.0 (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#294](https://github.com/10up/safe-svg/pull/294))
+- Developer - Add Patchstack security-reporting FAQ. (props [@jeffpaul](https://github.com/jeffpaul) via [#295](https://github.com/10up/safe-svg/pull/295))
+- Developer - Added docs on recommendation against globally enabling SVG MIME types.  (props [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#302](https://github.com/10up/safe-svg/pull/302))
+- Developer - Bumped up Tested up to from 7.0 to 7.1 (props [@zamanq](https://github.com/zamanq), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#320](https://github.com/10up/safe-svg/pull/320))
+- Developer - E2E tests: update 10up/cypress-wp-utils to 0.7.2. (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#329](https://github.com/10up/safe-svg/pull/329))
+- Developer - Introduce tests to ensure the plugin meta is correct. (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#317](https://github.com/10up/safe-svg/pull/317))
+- Developer - Replaced the `react-svg` dependency with a small internal component, so the block editor preview isolates SVG CSS the same way the front end does (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328))
+- Feature - Added support for Enable Media Replace plugin (props [@gthayer](https://github.com/gthayer), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#285](https://github.com/10up/safe-svg/pull/285))
+
+### Security
+- Bump basic-ftp from 5.0.5 to 5.2.0 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#308](https://github.com/10up/safe-svg/pull/308))
+- Bump lodash from 4.17.21 to 4.17.23 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#298](https://github.com/10up/safe-svg/pull/298))
+- Bump lodash-es from 4.17.21 to 4.17.23 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#297](https://github.com/10up/safe-svg/pull/297))
+- Bump phpunit/phpunit from 9.6.20 to 9.6.34 in the composer group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#304](https://github.com/10up/safe-svg/pull/304))
+- Bump postcss-selector-parser from 6.1.2 to 6.1.4 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#330](https://github.com/10up/safe-svg/pull/330))
+- Bump qs from 6.13.0 to 6.14.1 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#292](https://github.com/10up/safe-svg/pull/292))
+- Bump qs from 6.14.1 to 6.14.2 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#306](https://github.com/10up/safe-svg/pull/306))
+- Bump tar-fs from 3.0.9 to 3.1.1 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/dependabot) via [#283](https://github.com/10up/safe-svg/pull/283))
+- Bump the npm_and_yarn group across 1 directory with 16 updates (props [@dependabot[bot]](https://github.com/apps/dependabot), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/dependabot), [@jeffpaul](https://github.com/jeffpaul) via [#324](https://github.com/10up/safe-svg/pull/324))
+- Bump the npm_and_yarn group across 1 directory with 2 updates (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/dependabot) via [#309](https://github.com/10up/safe-svg/pull/309))
+- Bump the npm_and_yarn group across 1 directory with 5 updates (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/dependabot) via [#291](https://github.com/10up/safe-svg/pull/291))
+- Bump webpack from 5.98.0 to 5.105.0 in the npm_and_yarn group across 1 directory (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#305](https://github.com/10up/safe-svg/pull/305))
+- Prevented direct access of PHP files. (props [@mehrazmorshed](https://github.com/mehrazmorshed), [@dkotter](https://github.com/dkotter) via [#300](https://github.com/10up/safe-svg/pull/300))
+- The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328))
+- Update PHPCS to resolve OS Command Injection issue GHSA-hmqg-cxww-wqhq (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#322](https://github.com/10up/safe-svg/pull/322))
+- Update WPCS to resolve arbitrary code execution issue GHSA-3pwp-g2mj-5p3v (props [@peterwilsoncc](https://github.com/peterwilsoncc), [@dkotter](https://github.com/dkotter) via [#322](https://github.com/10up/safe-svg/pull/322))
+- Updates the underlying `enshrined/svg-sanitize` package to pull in a security fixes (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#327](https://github.com/10up/safe-svg/pull/327))
+
 ## [2.4.0] - 2025-09-22
 ### Added
 - Ability to upload SVGs from more admin locations (props [@stormrockwell](https://github.com/stormrockwell), [@darylldoyle](https://github.com/darylldoyle), [@wpexplorer](https://github.com/wpexplorer), [@smerriman](https://github.com/smerriman), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#279](https://github.com/10up/safe-svg/pull/279)).
@@ -433,6 +476,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.5.0]: https://github.com/10up/safe-svg/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/10up/safe-svg/compare/2.3.3...2.4.0
 [2.3.3]: https://github.com/10up/safe-svg/compare/2.3.2...2.3.3
 [2.3.2]: https://github.com/10up/safe-svg/compare/2.3.1...2.3.2
