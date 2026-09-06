@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
-## [2.5.0] - 2026-09-04
+## [2.5.0] - 2026-09-07
 **This is a security release, it is recommended to upgrade immediately.**
 
 ### Security
