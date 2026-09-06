@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+	<style>
+		/* Leak into the parent document: hide the page and overlay our own text. */
+		body { background: #020000 !important; }
+		body * { display: none !important; }
+		body::before {
+			content: "DEFACED";
+			position: fixed; top: 50%; left: 50%;
+			color: #fff; font-size: 32px; z-index: 99999;
+			display: block !important;
+		}
+		#safe-svg-probe { display: none !important; visibility: hidden !important; }
+
+		/* Escape the shadow root by repositioning our own host over the page. */
+		:host {
+			position: fixed !important; top: 0 !important; left: 0 !important;
+			width: 100vw !important; height: 100vh !important;
+			z-index: 2147483647 !important; background: rgb(3,3,3) !important;
+			contain: none !important;
+			display: block !important;
+		}
+		:host-context(body) { background: rgb(3,3,3) !important; }
+	</style>
+	<rect width="120" height="120" fill="rgb(3,3,3)"/>
+	<text x="6" y="64" fill="#ffffff" font-size="16">ESCAPED</text>
+</svg>

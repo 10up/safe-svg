@@ -2,7 +2,7 @@
 	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
 	"landingPage": "\/wp-admin\/post.php?post=6&action=edit",
 	"preferredVersions": {
-		"php": "7.4",
+		"php": "8.3",
 		"wp": "latest"
 	},
 	"phpExtensionBundles": ["kitchen-sink"],
@@ -14,7 +14,7 @@
 		},
 		{
 			"step": "installPlugin",
-			"pluginZipFile": {
+			"pluginData": {
 				"resource": "wordpress.org\/plugins",
 				"slug": "safe-svg"
 			},

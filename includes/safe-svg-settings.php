@@ -7,6 +7,10 @@
 
 namespace SafeSvg;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * SVG settings class.
  */
@@ -92,7 +96,7 @@ class safe_svg_settings {
 		$all_roles    = get_editable_roles();
 		$upload_roles = array_filter(
 			$all_roles,
-			function( $_role ) {
+			function ( $_role ) {
 				return $_role['capabilities']['upload_files'] ?? false;
 			}
 		);

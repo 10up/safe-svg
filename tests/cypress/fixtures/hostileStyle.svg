@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+	<style>
+		/* safe-svg-css-leak-probe: these rules must not reach the page. */
+		body { background: rgb(1, 2, 3) !important; }
+		body * { display: none !important; }
+		body::before {
+			content: "SAFE-SVG-CSS-LEAK";
+			position: fixed; top: 50%; left: 50%;
+			color: #fff; font-size: 32px; z-index: 99999;
+			display: block !important;
+		}
+
+		/* Styling its own host is the one thing CSS in a shadow root can still do. */
+		:host {
+			position: fixed !important; top: 0 !important; left: 0 !important;
+			width: 100vw !important; height: 100vh !important;
+			z-index: 2147483647 !important; background: rgb(1, 2, 3) !important;
+			contain: none !important; display: block !important;
+		}
+	</style>
+	<rect width="120" height="120" fill="rgb(1,2,3)"/>
+</svg>

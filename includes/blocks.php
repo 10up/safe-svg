@@ -7,14 +7,18 @@
 
 namespace SafeSvg\Blocks;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Set up blocks
  *
  * @return void
  */
 function setup() {
-	$n = function ( $function ) {
-		return __NAMESPACE__ . "\\$function";
+	$n = function ( $function_name ) {
+		return __NAMESPACE__ . "\\$function_name";
 	};
 
 	add_filter( 'block_categories_all', $n( 'blocks_categories' ), 10, 2 );
