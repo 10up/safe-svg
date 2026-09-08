@@ -25,6 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 define( 'SAFE_SVG_VERSION', '2.5.0' );
+define( 'SAFE_SVG_MINIMUM_PHP', '7.4' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -36,7 +37,7 @@ define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  * @return string Minimum version required.
  */
 function minimum_php_requirement() {
-	return '7.4';
+	return SAFE_SVG_MINIMUM_PHP;
 }
 
 /**

@@ -1,0 +1,58 @@
+checks:
+  plugin-version:
+    normalize: version
+    expected:
+      reader: wordpress-plugin
+      file: safe-svg.php
+      path: $.Version
+    values:
+      php-constant:
+        reader: php
+        file: safe-svg.php
+        path: $.constants.SAFE_SVG_VERSION
+      wordpress-readme:
+        reader: wordpress-readme
+        file: readme.txt
+        path: $['Stable tag']
+      package-json:
+        reader: json
+        file: package.json
+        path: $.version
+      package-lock:
+        reader: json
+        file: package-lock.json
+        path: $.version
+      package-lock-root:
+        reader: json
+        file: package-lock.json
+        path: $.packages[''].version
+
+  minimum-php:
+    normalize: version
+    expected:
+      reader: composer
+      file: composer.json
+      path: $.require.php
+      normalize: composer-minimum
+    values:
+      php-constant:
+        reader: php
+        file: safe-svg.php
+        path: $.constants.SAFE_SVG_MINIMUM_PHP
+      wordpress-readme:
+        reader: wordpress-readme
+        file: readme.txt
+        path: $['Requires PHP']
+
+  minimum-wordpress:
+    normalize: version
+    expected:
+      reader: wordpress-readme
+      file: readme.txt
+      path: $['Requires at least']
+    values:
+      cypress-workflow:
+        reader: yaml
+        file: .github/workflows/cypress.yml
+        path: $.jobs.cypress.strategy.matrix.core[?@.name == "WP minimum"].version
+        normalize: wp-env-core
