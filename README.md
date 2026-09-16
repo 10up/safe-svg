@@ -31,7 +31,7 @@ WordPress’s `_wp_handle_upload( $file, $action )` function allows any `$action
 
 ## Requirements
 
-* PHP 7.4+
+* PHP 8.2+
 * [WordPress](http://wordpress.org/) 6.6+
 
 ## Installation
