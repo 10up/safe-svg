@@ -14,7 +14,7 @@ on:
 
 jobs:
   php_compatibility:
-    name: PHP minimum 7.4
+    name: PHP 7.4 through 8.5 compatibility
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       - name: Set PHP version
         uses: shivammathur/setup-php@9e72090525849c5e82e596468b86eb55e9cc5401 # v2.32.0
         with:
-          php-version: 7.4
+          php-version: '8.5'
           tools: composer:v2
           coverage: none
 
