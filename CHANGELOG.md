@@ -4,6 +4,23 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.5.1] - 2026-09-22
+**This is a security release, it is recommended to upgrade immediately.**
+
+### Added
+- New REST endpoint, `/safe-svg/v1/svg/ATTACHMENT-ID`, that can be passed an attachment ID for an SVG and will return sanitized markup (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+
+### Removed
+- Remove the `$sanitizer` property from the `safe_svg` class. If you directly use the `safe_svg` class in order to access the `$sanitizer` property, you'll need to update your code to instead use the new `Svg_Sanitizer` class (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+
+### Security
+- Resolve GHSA-qq4c-2xh7-x2wf (props [@dhakalananda](https://github.com/dhakalananda), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-qq4c-2xh7-x2wf](https://github.com/10up/safe-svg/security/advisories/GHSA-qq4c-2xh7-x2wf)).
+- Resolve GHSA-vcfp-vw5v-gc9c (props [@spectreDeveloper](https://github.com/spectreDeveloper), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-vcfp-vw5v-gc9c](https://github.com/10up/safe-svg/security/advisories/GHSA-vcfp-vw5v-gc9c)).
+- Resolve GHSA-3hhm-5qc9-q4xf (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+
+### Developer
+- Bump `js-yaml` from 3.14.2 to 3.15.2, `picomatch` from 2.3.1 to 2.3.2, `adm-zip` from 0.6.0 to 0.6.1, `ws` from 7.5.10 to 7.5.13, `http-proxy-middleware` from 2.0.9 to 2.0.10, `@wordpress/env` from 10.21.0 to 11.15.0, `@wordpress/scripts` from 34.2.0 to 35.0.0 and removes `extract-zip` (props [@dependabot[bot]](https://github.com/apps/dependabot), [@dkotter](https://github.com/dkotter) via [#336](https://github.com/10up/safe-svg/pull/336)).
+
 ## [2.5.0] - 2026-09-07
 **This is a security release, it is recommended to upgrade immediately.**
 
@@ -493,6 +510,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.5.1]: https://github.com/10up/safe-svg/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/10up/safe-svg/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/10up/safe-svg/compare/2.3.3...2.4.0
 [2.3.3]: https://github.com/10up/safe-svg/compare/2.3.2...2.3.3

@@ -93,6 +93,13 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 
 == Changelog ==
 
+= 2.5.1 - 2026-09-22 =
+* **Added:** New REST endpoint, `/safe-svg/v1/svg/ATTACHMENT-ID`, that can be passed an attachment ID for an SVG and will return sanitized markup (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+* **Removed:** Remove the `$sanitizer` property from the `safe_svg` class. If you directly use the `safe_svg` class in order to access the `$sanitizer` property, you'll need to update your code to instead use the new `Svg_Sanitizer` class (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+* **Security:** Resolve GHSA-qq4c-2xh7-x2wf (props [@dhakalananda](https://github.com/dhakalananda), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-qq4c-2xh7-x2wf](https://github.com/10up/safe-svg/security/advisories/GHSA-qq4c-2xh7-x2wf)).
+* **Security:** Resolve GHSA-vcfp-vw5v-gc9c (props [@spectreDeveloper](https://github.com/spectreDeveloper), [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc), [@darylldoyle](https://github.com/darylldoyle), [@jeffpaul](https://github.com/jeffpaul) via [GHSA-vcfp-vw5v-gc9c](https://github.com/10up/safe-svg/security/advisories/GHSA-vcfp-vw5v-gc9c)).
+* **Security:** Resolve GHSA-3hhm-5qc9-q4xf (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
+
 = 2.5.0 - 2026-09-07 =
 * **Security:** Prevented direct access of PHP files (props [@mehrazmorshed](https://github.com/mehrazmorshed), [@dkotter](https://github.com/dkotter) via [#300](https://github.com/10up/safe-svg/pull/300)).
 * **Security:** The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328)).
@@ -153,6 +160,9 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 [View historical changelog details here](https://github.com/10up/safe-svg/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.5.1 =
+This is a security release, it is recommended to upgrade immediately.
 
 = 2.5.0 =
 This is a security release, it is recommended to upgrade immediately.
