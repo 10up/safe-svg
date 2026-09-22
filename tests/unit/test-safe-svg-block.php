@@ -21,6 +21,13 @@ class SafeSvgBlockTest extends TestCase {
 	 */
 	public function setUp(): void {
 		\WP_Mock::setUp();
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'args'   => array( 'safe_svg_large_svg' ),
+				'return' => 0,
+			)
+		);
 	}
 
 	/**
@@ -47,14 +54,19 @@ class SafeSvgBlockTest extends TestCase {
 	}
 
 	/**
-	 * Render the block for one of the SVG fixtures.
+	 * Mock WordPress functions used to load an SVG attachment.
 	 *
-	 * @param string $fixture    File name within tests/unit/files.
-	 * @param array  $attributes Block attributes to merge in.
-	 *
-	 * @return string The rendered block markup.
+	 * @param string $fixture File name within tests/unit/files.
+	 * @return void
 	 */
-	protected function render( $fixture, $attributes = array() ) {
+	protected function mock_svg_attachment( $fixture ) {
+		$attachment            = new \stdClass();
+		$attachment->post_type = 'attachment';
+
+		\WP_Mock::userFunction(
+			'get_post',
+			array( 'return' => $attachment )
+		);
 		\WP_Mock::userFunction(
 			'get_post_mime_type',
 			array( 'return' => 'image/svg+xml' )
@@ -63,6 +75,26 @@ class SafeSvgBlockTest extends TestCase {
 			'get_attached_file',
 			array( 'return' => TEST_PLUGIN_DIR . '/tests/unit/files/' . $fixture )
 		);
+		\WP_Mock::userFunction(
+			'is_wp_error',
+			array(
+				'return' => function ( $thing ) {
+					return $thing instanceof \WP_Error;
+				},
+			)
+		);
+	}
+
+	/**
+	 * Render the block for one of the SVG fixtures.
+	 *
+	 * @param string $fixture    File name within tests/unit/files.
+	 * @param array  $attributes Block attributes to merge in.
+	 *
+	 * @return string The rendered block markup.
+	 */
+	protected function render( $fixture, $attributes = array() ) {
+		$this->mock_svg_attachment( $fixture );
 		\WP_Mock::passthruFunction( 'esc_attr' );
 		\WP_Mock::passthruFunction( 'esc_url' );
 
@@ -275,8 +307,10 @@ class SafeSvgBlockTest extends TestCase {
 	 * Test that isolation can be turned off for a site that styles SVGs from its theme.
 	 */
 	public function test_isolation_can_be_filtered_off() {
+		$contents = \SafeSvg\Svg_Sanitizer::sanitize_markup( $this->fixture( 'svgWithStyle.svg' ) );
+
 		\WP_Mock::onFilter( 'safe_svg_inline_use_shadow_dom' )
-			->with( true, $this->fixture( 'svgWithStyle.svg' ), 1, true )
+			->with( true, $contents, 1, true )
 			->reply( false );
 
 		$markup = $this->render( 'svgWithStyle.svg' );
@@ -289,8 +323,10 @@ class SafeSvgBlockTest extends TestCase {
 	 * Test that isolation can be forced on for every SVG.
 	 */
 	public function test_isolation_can_be_filtered_on() {
+		$contents = \SafeSvg\Svg_Sanitizer::sanitize_markup( $this->fixture( 'svgCleanOne.svg' ) );
+
 		\WP_Mock::onFilter( 'safe_svg_inline_use_shadow_dom' )
-			->with( false, $this->fixture( 'svgCleanOne.svg' ), 1, false )
+			->with( false, $contents, 1, false )
 			->reply( true );
 
 		$markup = $this->render( 'svgCleanOne.svg' );
@@ -303,11 +339,491 @@ class SafeSvgBlockTest extends TestCase {
 	 * Test that a non SVG attachment renders nothing.
 	 */
 	public function test_non_svg_renders_nothing() {
+		$attachment            = new \stdClass();
+		$attachment->post_type = 'attachment';
+
+		\WP_Mock::userFunction(
+			'get_post',
+			array( 'return' => $attachment )
+		);
 		\WP_Mock::userFunction(
 			'get_post_mime_type',
 			array( 'return' => 'image/png' )
 		);
+		\WP_Mock::userFunction(
+			'is_wp_error',
+			array(
+				'return' => function ( $thing ) {
+					return $thing instanceof \WP_Error;
+				},
+			)
+		);
 
 		$this->assertSame( '', Block\render_block_callback( array( 'imageID' => 1 ) ) );
+	}
+
+	/**
+	 * Test that a missing image ID renders nothing.
+	 */
+	public function test_missing_image_id_renders_nothing() {
+		$this->assertSame( '', Block\render_block_callback( array() ) );
+		$this->assertSame( '', Block\render_block_callback( array( 'imageID' => 0 ) ) );
+	}
+
+	/**
+	 * Test that a script in a file the plugin never sanitized is stripped.
+	 */
+	public function test_unsanitized_script_is_stripped() {
+		$markup = $this->render( 'svgTestOne.svg' );
+
+		$this->assertStringNotContainsString( '<script', strtolower( $markup ) );
+		$this->assertStringNotContainsString( 'onload=', strtolower( $markup ) );
+		$this->assertStringContainsString( '<svg', $markup );
+	}
+
+	/**
+	 * Mock what the save-time guard depends on.
+	 *
+	 * @param int  $user_id  Current user ID; 0 for a save with no user.
+	 * @param bool $can_edit Whether the user can edit_posts.
+	 * @param bool $can_read Whether the user can read_post for attachment 12.
+	 * @return void
+	 */
+	protected function mock_save_context( $user_id, $can_edit = true, $can_read = false ) {
+		\WP_Mock::userFunction( 'get_current_user_id', array( 'return' => $user_id ) );
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => array( 'edit_posts' ),
+				'return' => $can_edit,
+			)
+		);
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => array( 'read_post', 12 ),
+				'return' => $can_read,
+			)
+		);
+		\WP_Mock::userFunction(
+			'has_block',
+			array(
+				'return' => function ( $name, $content ) {
+					return false !== strpos( $content, 'wp:' . $name );
+				},
+			)
+		);
+		\WP_Mock::passthruFunction( 'wp_slash' );
+		\WP_Mock::passthruFunction( 'wp_unslash' );
+	}
+
+	/**
+	 * Build a parsed SVG block, as parse_blocks() would return it.
+	 *
+	 * @param int $attachment_id Attachment ID referenced by the block.
+	 * @return array A parsed block.
+	 */
+	protected function parsed_block( $attachment_id ) {
+		return array(
+			'blockName'    => 'safe-svg/svg-icon',
+			'attrs'        => array( 'imageID' => $attachment_id ),
+			'innerBlocks'  => array(),
+			'innerHTML'    => '',
+			'innerContent' => array(),
+		);
+	}
+
+	/**
+	 * Build post data holding one SVG block.
+	 *
+	 * @param int $attachment_id Attachment ID referenced by the block.
+	 * @return array Post data, as wp_insert_post_data receives it.
+	 */
+	protected function post_data( $attachment_id ) {
+		return array(
+			'post_content' => '<!-- wp:safe-svg/svg-icon {"imageID":' . $attachment_id . '} /-->',
+		);
+	}
+
+	/**
+	 * Test that an ID the saving user cannot read is dropped.
+	 */
+	public function test_save_drops_unreadable_attachment_id() {
+		$this->mock_save_context( 3, true, false );
+		$changed = false;
+
+		$blocks = Block\without_unreadable_attachment_ids( array( $this->parsed_block( 12 ) ), $changed );
+
+		$this->assertTrue( $changed );
+		$this->assertSame( 0, $blocks[0]['attrs']['imageID'] );
+	}
+
+	/**
+	 * Test that an ID the saving user can read is left alone.
+	 */
+	public function test_save_keeps_readable_attachment_id() {
+		$this->mock_save_context( 3, true, true );
+		$changed = false;
+
+		$blocks = Block\without_unreadable_attachment_ids( array( $this->parsed_block( 12 ) ), $changed );
+
+		$this->assertFalse( $changed );
+		$this->assertSame( 12, $blocks[0]['attrs']['imageID'] );
+	}
+
+	/**
+	 * Test that an unreadable ID nested inside another block is still dropped.
+	 */
+	public function test_save_drops_unreadable_id_inside_inner_blocks() {
+		$this->mock_save_context( 3, true, false );
+		$changed = false;
+
+		$blocks = Block\without_unreadable_attachment_ids(
+			array(
+				array(
+					'blockName'    => 'core/group',
+					'attrs'        => array(),
+					'innerBlocks'  => array( $this->parsed_block( 12 ) ),
+					'innerHTML'    => '',
+					'innerContent' => array(),
+				),
+			),
+			$changed
+		);
+
+		$this->assertTrue( $changed );
+		$this->assertSame( 0, $blocks[0]['innerBlocks'][0]['attrs']['imageID'] );
+	}
+
+	/**
+	 * Test that other blocks are not touched.
+	 */
+	public function test_save_leaves_other_blocks_alone() {
+		$this->mock_save_context( 3, true, false );
+		$changed = false;
+
+		$other  = array(
+			'blockName'    => 'core/image',
+			'attrs'        => array( 'imageID' => 12 ),
+			'innerBlocks'  => array(),
+			'innerHTML'    => '',
+			'innerContent' => array(),
+		);
+		$blocks = Block\without_unreadable_attachment_ids( array( $other ), $changed );
+
+		$this->assertFalse( $changed );
+		$this->assertSame( 12, $blocks[0]['attrs']['imageID'] );
+	}
+
+	/**
+	 * Test that a classic-content null blockName is skipped.
+	 */
+	public function test_save_skips_blocks_without_a_name() {
+		$this->mock_save_context( 3, true, false );
+		$changed = false;
+
+		$blocks = Block\without_unreadable_attachment_ids(
+			array(
+				array(
+					'blockName'    => null,
+					'attrs'        => array(),
+					'innerBlocks'  => array(),
+					'innerHTML'    => '<p>Classic.</p>',
+					'innerContent' => array( '<p>Classic.</p>' ),
+				),
+			),
+			$changed
+		);
+
+		$this->assertFalse( $changed );
+		$this->assertCount( 1, $blocks );
+	}
+
+	/**
+	 * Test that a save with no current user is left alone.
+	 *
+	 * Imports, cron and WP-CLI have no user, and every capability check would
+	 * fail for them, stripping references that were perfectly valid.
+	 */
+	public function test_save_ignores_posts_saved_without_a_user() {
+		$this->mock_save_context( 0, false, false );
+
+		$data = Block\drop_unreadable_attachment_ids( $this->post_data( 12 ) );
+
+		$this->assertStringContainsString( '"imageID":12', $data['post_content'] );
+	}
+
+	/**
+	 * Test that slashed content is unslashed before it is parsed.
+	 *
+	 * Everything reaching wp_insert_post_data is slashed, and block attributes are
+	 * JSON, so parsing it as-is finds no attributes and skips every block.
+	 */
+	public function test_save_parses_slashed_content() {
+		\WP_Mock::userFunction( 'get_current_user_id', array( 'return' => 3 ) );
+		\WP_Mock::userFunction(
+			'wp_unslash',
+			array(
+				'return' => function ( $value ) {
+					return stripslashes( $value );
+				},
+			)
+		);
+
+		// Returning false stops the run here, so this is the content the parser
+		// would have been handed.
+		$seen = '';
+		\WP_Mock::userFunction(
+			'has_block',
+			array(
+				'return' => function ( $name, $content ) use ( &$seen ) {
+					$seen = $content;
+					return false;
+				},
+			)
+		);
+
+		Block\drop_unreadable_attachment_ids(
+			array( 'post_content' => '<!-- wp:safe-svg/svg-icon {\\"imageID\\":12} /-->' )
+		);
+
+		$this->assertStringContainsString( '{"imageID":12}', $seen );
+	}
+
+	/**
+	 * Test that content without the block is left alone.
+	 */
+	public function test_save_ignores_content_without_the_block() {
+		$this->mock_save_context( 3, true, false );
+
+		$data = Block\drop_unreadable_attachment_ids( array( 'post_content' => '<p>Nothing here.</p>' ) );
+
+		$this->assertSame( '<p>Nothing here.</p>', $data['post_content'] );
+	}
+
+	/**
+	 * Build a handler array as rest_request_before_callbacks receives it.
+	 *
+	 * @param bool $is_block_renderer Whether the handler is core's block renderer.
+	 * @return array A route handler.
+	 */
+	protected function handler( $is_block_renderer = true ) {
+		if ( ! $is_block_renderer ) {
+			return array( 'callback' => '__return_empty_string' );
+		}
+
+		return array( 'callback' => array( new \WP_REST_Block_Renderer_Controller(), 'get_item' ) );
+	}
+
+	/**
+	 * Mock the capabilities the render guard consults.
+	 *
+	 * @param bool $can_edit Whether the user can edit_posts.
+	 * @param bool $can_read Whether the user can read_post on attachment 12.
+	 * @return void
+	 */
+	protected function mock_render_caps( $can_edit, $can_read ) {
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => array( 'edit_posts' ),
+				'return' => $can_edit,
+			)
+		);
+		\WP_Mock::userFunction(
+			'current_user_can',
+			array(
+				'args'   => array( 'read_post', 12 ),
+				'return' => $can_read,
+			)
+		);
+		\WP_Mock::userFunction( 'is_wp_error', array( 'return' => false ) );
+	}
+
+	/**
+	 * Test that an ID the requesting user cannot read is zeroed before rendering.
+	 */
+	public function test_render_request_drops_unreadable_attachment_id() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => 12 ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request );
+
+		$this->assertSame( array( 'imageID' => 0 ), $request['attributes'] );
+	}
+
+	/**
+	 * Test that a contributor cannot bypass the guard with a string ID.
+	 */
+	public function test_render_request_drops_unreadable_string_attachment_id() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => '12' ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request );
+
+		$this->assertSame( array( 'imageID' => 0 ), $request['attributes'] );
+	}
+
+	/**
+	 * Test that an ID the requesting user can read is left alone.
+	 */
+	public function test_render_request_keeps_readable_attachment_id() {
+		$this->mock_render_caps( true, true );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => 12 ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request );
+
+		$this->assertSame( array( 'imageID' => 12 ), $request['attributes'] );
+		$this->assertFalse( $request->was_set );
+	}
+
+	/**
+	 * Test that requests for another block are left alone.
+	 */
+	public function test_render_request_ignores_other_blocks() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'core/archives', array( 'imageID' => 12 ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request );
+
+		$this->assertSame( array( 'imageID' => 12 ), $request['attributes'] );
+		$this->assertFalse( $request->was_set );
+	}
+
+	/**
+	 * Test that routes other than the block renderer are left alone.
+	 *
+	 * This is what keeps the frontend, and the REST responses that render post
+	 * content for headless sites, rendering saved blocks as normal.
+	 */
+	public function test_render_request_ignores_other_routes() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => 12 ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler( false ), $request );
+
+		$this->assertSame( array( 'imageID' => 12 ), $request['attributes'] );
+		$this->assertFalse( $request->was_set );
+	}
+
+	/**
+	 * Test that a request another filter already rejected is left alone.
+	 */
+	public function test_render_request_ignores_an_existing_error() {
+		\WP_Mock::userFunction( 'is_wp_error', array( 'return' => true ) );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => 12 ) );
+
+		$response = Block\drop_unreadable_rendered_attachment_id( new \WP_Error( 'nope', 'Nope.' ), $this->handler(), $request );
+
+		$this->assertInstanceOf( \WP_Error::class, $response );
+		$this->assertFalse( $request->was_set );
+	}
+
+	/**
+	 * Test that a request without an imageID is left alone.
+	 */
+	public function test_render_request_without_an_image_id_is_left_alone() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'href' => 'https://example.com' ) );
+
+		Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request );
+
+		$this->assertFalse( $request->was_set );
+	}
+
+	/**
+	 * Test that the response is passed through untouched.
+	 */
+	public function test_render_request_returns_the_response_unchanged() {
+		$this->mock_render_caps( true, false );
+		$request = new SafeSvgFakeRestRequest( 'safe-svg/svg-icon', array( 'imageID' => 12 ) );
+
+		$this->assertNull( Block\drop_unreadable_rendered_attachment_id( null, $this->handler(), $request ) );
+	}
+}
+
+/**
+ * Stand-in for WP_REST_Request covering the surface the render guard uses.
+ */
+class SafeSvgFakeRestRequest implements ArrayAccess {
+	/**
+	 * Whether set_param() was called.
+	 *
+	 * @var bool
+	 */
+	public $was_set = false;
+
+	/**
+	 * Request parameters.
+	 *
+	 * @var array
+	 */
+	private $params;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string $name       Registered block name.
+	 * @param array  $attributes Block attributes.
+	 */
+	public function __construct( $name, $attributes ) {
+		$this->params = array(
+			'name'       => $name,
+			'attributes' => $attributes,
+		);
+	}
+
+	/**
+	 * Set a request parameter.
+	 *
+	 * @param string $key   Parameter name.
+	 * @param mixed  $value Parameter value.
+	 * @return void
+	 */
+	public function set_param( $key, $value ) {
+		$this->was_set        = true;
+		$this->params[ $key ] = $value;
+	}
+
+	/**
+	 * Whether a parameter is set.
+	 *
+	 * @param mixed $offset Parameter name.
+	 * @return bool
+	 */
+	public function offsetExists( $offset ): bool {
+		return isset( $this->params[ $offset ] );
+	}
+
+	/**
+	 * Read a parameter.
+	 *
+	 * @param mixed $offset Parameter name.
+	 * @return mixed
+	 */
+	#[\ReturnTypeWillChange]
+	public function offsetGet( $offset ) {
+		return isset( $this->params[ $offset ] ) ? $this->params[ $offset ] : null;
+	}
+
+	/**
+	 * Set a parameter.
+	 *
+	 * @param mixed $offset Parameter name.
+	 * @param mixed $value  Parameter value.
+	 * @return void
+	 */
+	public function offsetSet( $offset, $value ): void {
+		$this->params[ $offset ] = $value;
+	}
+
+	/**
+	 * Remove a parameter.
+	 *
+	 * @param mixed $offset Parameter name.
+	 * @return void
+	 */
+	public function offsetUnset( $offset ): void {
+		unset( $this->params[ $offset ] );
 	}
 }

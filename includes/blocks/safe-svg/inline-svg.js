@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 /**
  * WordPress dependencies
  */
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useEffect, useRef } from '@wordpress/element';
 
 /**
  * The styles applied inside the shadow root.
@@ -29,33 +29,14 @@ const hasStylesheet = (markup) =>
  * Render an SVG inline, isolating it when it brings its own CSS.
  *
  * @param {Object} props        The component props.
- * @param {string} props.src    The SVG URL.
+ * @param {string} props.markup Sanitized SVG markup, from the server.
  * @param {number} props.width  Width to render the SVG at, in pixels.
  * @param {number} props.height Height to render the SVG at, in pixels.
  * @return {Function} The SVG host element.
  */
-const InlineSvg = ({ src, width, height }) => {
+const InlineSvg = ({ markup, width, height }) => {
 	const hostRef = useRef(null);
 	const attachedRef = useRef(false);
-	const [markup, setMarkup] = useState('');
-
-	useEffect(() => {
-		if (!src) {
-			setMarkup('');
-			return undefined;
-		}
-
-		const controller = new AbortController();
-
-		fetch(src, { signal: controller.signal })
-			.then((response) => (response.ok ? response.text() : ''))
-			.then(setMarkup)
-			.catch(() => {
-				// Aborted, or the file couldn't be read. Leave the preview empty.
-			});
-
-		return () => controller.abort();
-	}, [src]);
 
 	useEffect(() => {
 		const host = hostRef.current;
@@ -70,8 +51,7 @@ const InlineSvg = ({ src, width, height }) => {
 			host.shadowRoot ||
 			(hasStylesheet(markup) ? host.attachShadow({ mode: 'open' }) : null);
 
-		// The file was sanitized on upload, which is what makes it safe to inline
-		// here, exactly as the front end inlines the same bytes.
+		// Markup was sanitized by the server before we received it.
 		if (shadow) {
 			attachedRef.current = true;
 			shadow.innerHTML = `<style>${SHADOW_STYLES}</style>${markup}`;
@@ -108,7 +88,7 @@ const InlineSvg = ({ src, width, height }) => {
 };
 
 InlineSvg.propTypes = {
-	src: PropTypes.string,
+	markup: PropTypes.string,
 	width: PropTypes.number,
 	height: PropTypes.number,
 };
