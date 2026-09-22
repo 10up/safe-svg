@@ -16,14 +16,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Stateless helpers for configuring the sanitizer and reading safe markup.
  *
- * @since x.x.x
+ * @since 2.5.1
  */
 class Svg_Sanitizer {
 
 	/**
 	 * Post meta key holding the cached sanitized markup for an attachment.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @var string
 	 */
@@ -32,7 +32,7 @@ class Svg_Sanitizer {
 	/**
 	 * Smallest file worth caching, in bytes.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @var int
 	 */
@@ -41,7 +41,7 @@ class Svg_Sanitizer {
 	/**
 	 * Whether a string is gzip-compressed.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param string $contents Content to check.
 	 * @return bool
@@ -64,7 +64,7 @@ class Svg_Sanitizer {
 	/**
 	 * Return a sanitizer configured the same way as the upload path.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param Sanitizer|null $sanitizer Optional sanitizer to configure. A new
 	 *                                  instance is created when none is given.
@@ -115,7 +115,7 @@ class Svg_Sanitizer {
 	 * is never re-compressed. Callers that persist `.svgz` files must gzip
 	 * again.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param string $dirty Raw SVG markup, optionally gzip-compressed.
 	 * @return string|false Clean SVG markup, or false on failure.
@@ -145,7 +145,7 @@ class Svg_Sanitizer {
 	/**
 	 * Fingerprint of everything that changes what sanitization produces.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @return string
 	 */
@@ -171,7 +171,7 @@ class Svg_Sanitizer {
 	/**
 	 * Whether the current user may see the SVG at an attachment ID.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param int $attachment_id Attachment ID.
 	 * @return bool
@@ -199,7 +199,7 @@ class Svg_Sanitizer {
 		 *
 		 *     add_filter( 'safe_svg_require_read_post', '__return_false' );
 		 *
-		 * @since x.x.x
+		 * @since 2.5.1
 		 *
 		 * @param bool $require       Whether to require the `read_post` capability.
 		 * @param int  $attachment_id Attachment ID being requested.
@@ -214,7 +214,7 @@ class Svg_Sanitizer {
 	/**
 	 * Read an attachment from disk and return sanitized SVG markup.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param int $attachment_id Attachment ID.
 	 * @return string|\WP_Error Sanitized SVG markup, or an error on failure.

@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Registers the endpoint that returns sanitized SVG markup.
  *
- * @since x.x.x
+ * @since 2.5.1
  */
 class Rest {
 
@@ -28,7 +28,7 @@ class Rest {
 	/**
 	 * Register REST routes.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 */
 	public function register_routes() {
 		register_rest_route(
@@ -53,7 +53,7 @@ class Rest {
 	/**
 	 * Whether the current user can request sanitized markup for an attachment.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return bool
@@ -71,7 +71,7 @@ class Rest {
 	/**
 	 * Return sanitized SVG markup for an attachment.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.1
 	 *
 	 * @param \WP_REST_Request $request Request.
 	 * @return \WP_REST_Response|\WP_Error
