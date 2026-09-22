@@ -31,7 +31,7 @@ function register() {
 /**
  * Drop attachment IDs the saving user is not allowed to see.
  *
- * @since x.x.x
+ * @since 2.5.1
  *
  * @param array $data Sanitized post data, about to be stored.
  * @return array The post data, with unreadable references removed.
@@ -61,7 +61,7 @@ function drop_unreadable_attachment_ids( $data ) {
 /**
  * Zero out every SVG block reference the current user cannot read.
  *
- * @since x.x.x
+ * @since 2.5.1
  *
  * @param array $blocks  Parsed blocks.
  * @param bool  $changed Set to true when a reference is dropped. Passed by reference.
@@ -95,7 +95,7 @@ function without_unreadable_attachment_ids( $blocks, &$changed ) {
 /**
  * Whether a request is core's block renderer asking for this block.
  *
- * @since x.x.x
+ * @since 2.5.1
  *
  * @param array            $handler Route handler used for the request.
  * @param \WP_REST_Request $request Request used to generate the response.
@@ -114,7 +114,7 @@ function is_block_renderer_request( $handler, $request ): bool {
 /**
  * Drop an unreadable attachment ID from an ad-hoc block render request.
  *
- * @since x.x.x
+ * @since 2.5.1
  *
  * @param \WP_REST_Response|\WP_HTTP_Response|\WP_Error|mixed $response Result to send to the client.
  * @param array                                               $handler  Route handler used for the request.
@@ -181,7 +181,7 @@ function render_block_callback( $attributes ) {
 	/**
 	 * Whether to isolate this inline SVG inside a shadow root.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.0
 	 *
 	 * @param bool   $use_shadow_dom Whether to isolate the SVG. Defaults to true
 	 *                               when the SVG carries its own stylesheet.
@@ -272,7 +272,7 @@ function render_block_callback( $attributes ) {
  *
  * Keep in sync with hasStylesheet() in inline-svg.js.
  *
- * @since x.x.x
+ * @since 2.5.0
  *
  * @param string $contents The SVG contents.
  * @return bool True if the SVG contains a style element.
@@ -284,7 +284,7 @@ function svg_has_stylesheet( $contents ): bool {
 /**
  * Wrap an SVG in a declarative shadow root.
  *
- * @since x.x.x
+ * @since 2.5.0
  *
  * @param string $svg           The SVG contents.
  * @param int    $attachment_id The ID of the attachment.
@@ -294,7 +294,7 @@ function wrap_in_shadow_root( $svg, $attachment_id ): string {
 	/**
 	 * The styles applied inside the inline SVG's shadow root.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.0
 	 *
 	 * @param string $styles        The CSS to inject. Return an empty string for none.
 	 * @param int    $attachment_id The ID of the attachment.
