@@ -1,6 +1,6 @@
 {
   "name": "@10up/safe-svg",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "description": "Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website",
   "homepage": "https://github.com/10up/safe-svg#readme",
   "license": "GPL-2.0-or-later",
@@ -43,9 +43,9 @@
   },
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.7.2",
-    "@wordpress/env": "^10.21.0",
+    "@wordpress/env": "^11.15.0",
     "@wordpress/icons": "^11.4.0",
-    "@wordpress/scripts": "34.2.0",
+    "@wordpress/scripts": "35.0.0",
     "cypress": "^15.21.1",
     "cypress-mochawesome-reporter": "^3.8.2",
     "mochawesome-json-to-md": "^0.7.2"

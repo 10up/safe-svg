@@ -13,6 +13,7 @@ import {
 	Placeholder,
 	PanelBody,
 	Dropdown,
+	Notice,
 	ToolbarButton,
 	TextControl,
 } from '@wordpress/components';
@@ -33,6 +34,33 @@ import {
  * Internal dependencies
  */
 import InlineSvg from './inline-svg';
+import useSanitizedSvg from './use-sanitized-svg';
+
+/**
+ * Explain why an SVG could not be shown.
+ *
+ * @param {string} code The error code from the REST response.
+ * @return {string} A message for the block editor.
+ */
+const errorMessage = (code) => {
+	switch (code) {
+		case 'rest_forbidden':
+		case 'safe_svg_invalid_attachment':
+		case 'safe_svg_not_svg':
+		case 'safe_svg_unreadable':
+			return __(
+				'This SVG is not available to you. Pick another from the media library.',
+				'safe-svg'
+			);
+		case 'safe_svg_sanitize_failed':
+			return __(
+				'This SVG could not be sanitized, so it has not been displayed.',
+				'safe-svg'
+			);
+		default:
+			return __('This SVG could not be loaded. Please try again.', 'safe-svg');
+	}
+};
 
 /**
  * Edit component.
@@ -40,7 +68,7 @@ import InlineSvg from './inline-svg';
  *
  * @param {Object}   props                      The block props.
  * @param {Object}   props.attributes           Block attributes.
- * @param {Object}   props.attributes.svgURL    SVG URL.
+ * @param {Object}   props.attributes.svgURL    SVG URL. Legacy: stored for back compat, never read.
  * @param {boolean}  props.attributes.alignment Alignment of the SVG.
  * @param {string}   props.className            Class name for the block.
  * @param {Function} props.setAttributes        Sets the value for block attributes.
@@ -50,7 +78,6 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 
 	const {
 		contentPostType,
-		svgURL,
 		type,
 		imageID,
 		imageSizes,
@@ -66,6 +93,9 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 		sponsored,
 		linkLabel,
 	} = attributes;
+
+	// Get the markup and URL from the attachment ID.
+	const { markup, url: mediaURL, error } = useSanitizedSvg(imageID);
 
 	const blockProps = useBlockProps(
 		{
@@ -172,7 +202,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 
 	return (
 		<>
-			{svgURL &&
+			{!!imageID &&
 				<>
 					<InspectorControls>
 						<PanelBody
@@ -200,7 +230,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 					<BlockControls>
 						<MediaReplaceFlow
 							mediaId={imageID}
-							mediaURL={svgURL}
+							mediaURL={mediaURL}
 							allowedTypes={ALLOWED_MEDIA_TYPES}
 							accept={ALLOWED_MEDIA_TYPES}
 							onSelect={onSelectImage}
@@ -278,7 +308,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 				</>
 			}
 
-			{!svgURL &&
+			{!imageID &&
 				<MediaPlaceholder
 					onSelect={onSelectImage}
 					allowedTypes={ALLOWED_MEDIA_TYPES}
@@ -291,7 +321,15 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 				/>
 			}
 
-			{svgURL &&
+			{!!imageID && !!error &&
+				<div {...containerBlockProps}>
+					<Notice status="warning" isDismissible={false}>
+						{errorMessage(error)}
+					</Notice>
+				</div>
+			}
+
+			{!!imageID && !error &&
 				<div {...containerBlockProps}>
 					<div
 						style={style}
@@ -301,7 +339,7 @@ const SafeSvgBlockEdit = ({ attributes, setAttributes }) => {
 						)}
 					>
 						<InlineSvg
-							src={svgURL}
+							markup={markup}
 							width={dimensionWidth}
 							height={dimensionHeight} />
 					</div>

@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.5.0
+ * Version:           2.5.1
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPL-2.0-or-later
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.5.0' );
+define( 'SAFE_SVG_VERSION', '2.5.1' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -102,9 +102,12 @@ if ( ! site_meets_php_requirements() ) {
 require __DIR__ . '/includes/safe-svg-tags.php';
 require __DIR__ . '/includes/safe-svg-attributes.php';
 require __DIR__ . '/includes/safe-svg-settings.php';
+require __DIR__ . '/includes/safe-svg-sanitizer.php';
+require __DIR__ . '/includes/safe-svg-rest.php';
 require __DIR__ . '/includes/blocks.php';
 require __DIR__ . '/includes/optimizer.php';
 
+new Rest();
 new \SafeSVG\Optimizer();
 
 if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
@@ -115,19 +118,9 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 	class safe_svg {
 
 		/**
-		 * The sanitizer
-		 *
-		 * @var \enshrined\svgSanitize\Sanitizer
-		 */
-		protected $sanitizer;
-
-		/**
 		 * Set up the class
 		 */
 		public function __construct() {
-			$this->sanitizer = new Sanitizer();
-			$this->sanitizer->minify( true );
-
 			// Allow SVG uploads from specific contexts.
 			add_action( 'load-upload.php', array( $this, 'allow_svg_from_upload' ) );
 			add_action( 'load-post-new.php', array( $this, 'allow_svg_from_upload' ) );
@@ -332,51 +325,19 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		protected function sanitize( $file ) {
 			$dirty = file_get_contents( $file ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
-			// Is the SVG gzipped? If so we try and decode the string
+			if ( false === $dirty ) {
+				return false;
+			}
+
+			// Remember compression before sanitize_markup() decodes it.
 			$is_zipped = $this->is_gzipped( $dirty );
-			if ( $is_zipped ) {
-				$dirty = gzdecode( $dirty );
-
-				// If decoding fails, bail as we're not secure
-				if ( false === $dirty ) {
-					return false;
-				}
-			}
-
-			// Allow large SVGs if the setting is on.
-			if ( get_option( 'safe_svg_large_svg' ) ) {
-				$this->sanitizer->setAllowHugeFiles( true );
-			}
-
-			/**
-			 * Strip references to remote resources from the SVG.
-			 *
-			 * This removes remote `href`/`xlink:href` targets, along with `url()`,
-			 * `@import` and `image-set()` references inside `<style>` elements and
-			 * `style` attributes.
-			 *
-			 * It is off by default as some SVGs reference remote fonts and images,
-			 * and removing them would silently change how those files render.
-			 *
-			 * @since x.x.x
-			 *
-			 * @param bool $remove_remote_references Whether to strip remote references. Default false.
-			 */
-			$this->sanitizer->removeRemoteReferences( (bool) apply_filters( 'safe_svg_remove_remote_references', false ) );
-
-			/**
-			 * Load extra filters to allow devs to access the safe tags and attrs by themselves.
-			 */
-			$this->sanitizer->setAllowedTags( new SafeSvgTags\safe_svg_tags() );
-			$this->sanitizer->setAllowedAttrs( new SafeSvgAttr\safe_svg_attributes() );
-
-			$clean = $this->sanitizer->sanitize( $dirty );
+			$clean     = Svg_Sanitizer::sanitize_markup( $dirty );
 
 			if ( false === $clean ) {
 				return false;
 			}
 
-			// If we were gzipped, we need to re-zip
+			// Persist `.svgz` attachments as gzip, matching what we read.
 			if ( $is_zipped ) {
 				$clean = gzencode( $clean );
 			}
@@ -396,13 +357,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return bool
 		 */
 		protected function is_gzipped( $contents ) {
-			// phpcs:disable Generic.Strings.UnnecessaryStringConcat.Found
-			if ( function_exists( 'mb_strpos' ) ) {
-				return 0 === mb_strpos( $contents, "\x1f" . "\x8b" . "\x08" );
-			} else {
-				return 0 === strpos( $contents, "\x1f" . "\x8b" . "\x08" );
-			}
-			// phpcs:enable
+			return Svg_Sanitizer::is_gzipped( $contents );
 		}
 
 		/**
