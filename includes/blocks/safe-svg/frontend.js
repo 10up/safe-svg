@@ -32,43 +32,21 @@ const attach = ( template ) => {
 };
 
 /**
- * Upgrade every unattached template within a root.
- *
- * @param {ParentNode} root The subtree to search.
- */
-const upgrade = ( root ) => {
-	if ( root.matches && root.matches( SELECTOR ) ) {
-		attach( root );
-	}
-
-	if ( root.querySelectorAll ) {
-		root.querySelectorAll( SELECTOR ).forEach( attach );
-	}
-};
-
-/**
- * Upgrade what's on the page, then watch for anything added later.
+ * Attach the templates the server rendered, in browsers that don't do it natively.
  */
 const start = () => {
-	upgrade( document );
-
-	// Content can be injected at any point in a page's life, so keep watching.
-	new MutationObserver( ( mutations ) => {
-		mutations.forEach( ( { addedNodes } ) => {
-			addedNodes.forEach( ( node ) => {
-				if ( node.nodeType === Node.ELEMENT_NODE ) {
-					upgrade( node );
-				}
-			} );
-		} );
-	} ).observe( document.documentElement, {
-		childList: true,
-		subtree: true,
-	} );
+	document.querySelectorAll( SELECTOR ).forEach( attach );
 };
 
-if ( document.readyState === 'loading' ) {
-	document.addEventListener( 'DOMContentLoaded', start );
-} else {
-	start();
+if (
+	! Object.prototype.hasOwnProperty.call(
+		window.HTMLTemplateElement.prototype,
+		'shadowRootMode'
+	)
+) {
+	if ( document.readyState === 'loading' ) {
+		document.addEventListener( 'DOMContentLoaded', start );
+	} else {
+		start();
+	}
 }
