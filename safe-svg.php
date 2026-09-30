@@ -110,6 +110,12 @@ require __DIR__ . '/includes/optimizer.php';
 new Rest();
 new \SafeSVG\Optimizer();
 
+// Register the WP-CLI commands when running under WP-CLI.
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once __DIR__ . '/includes/safe-svg-cli.php';
+	\WP_CLI::add_command( 'safe-svg', '\SafeSvg\safe_svg_cli' );
+}
+
 if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 	/**
@@ -598,6 +604,48 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			}
 
 			return $data;
+		}
+
+		/**
+		 * Regenerate the metadata for an SVG attachment.
+		 *
+		 * @param integer $attachment_id The attachment ID to regenerate metadata for.
+		 *
+		 * @return array|bool The new metadata on success, false if the metadata could not be regenerated.
+		 */
+		public function regenerate_metadata( $attachment_id ) {
+			if ( 'image/svg+xml' !== get_post_mime_type( $attachment_id ) ) {
+				return false;
+			}
+
+			$svg_path = get_attached_file( $attachment_id );
+
+			// A missing file cannot be regenerated.
+			if ( ! $svg_path || ! file_exists( $svg_path ) ) {
+				return false;
+			}
+
+			if ( ! function_exists( 'simplexml_load_file' ) ) {
+				return false;
+			}
+
+			// Validate the file so cached dimensions cannot mask a malformed SVG.
+			$xml = @simplexml_load_file( $svg_path ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+
+			if ( ! $xml ) {
+				return false;
+			}
+
+			$metadata = wp_generate_attachment_metadata( $attachment_id, $svg_path );
+
+			// Keep the existing metadata when the SVG could not be parsed.
+			if ( ! is_array( $metadata ) || empty( $metadata['width'] ) || empty( $metadata['height'] ) ) {
+				return false;
+			}
+
+			wp_update_attachment_metadata( $attachment_id, $metadata );
+
+			return $metadata;
 		}
 
 		/**
