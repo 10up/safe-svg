@@ -94,7 +94,23 @@ This is a deliberate design decision: Safe SVG prioritizes guaranteed sanitizati
 
 ### Where do I report security bugs found in this plugin?
 
-Please report security bugs found in the source code of the Safe SVG plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb4ed-587a-4ada-8dc3-a5b7362c0501).  The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+Please report security bugs found in the source code of the Safe SVG plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fb4ed-587a-4ada-8dc3-a5b7362c0501).  The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
+## WP-CLI Commands
+
+### `wp safe-svg regenerate-metadata`
+
+Regenerates the metadata of SVG attachments. The metadata stores the image sizes registered by the theme at upload time, so run this command after changing the theme or the image size settings to refresh the size data of previously uploaded SVGs.
+
+```
+# Regenerate the metadata for all SVG attachments.
+$ wp safe-svg regenerate-metadata --yes
+
+# Regenerate the metadata for the given attachments.
+$ wp safe-svg regenerate-metadata 123 456
+```
+
+Attachments whose SVG file cannot be parsed are skipped and keep their existing metadata.
 
 ## Support Level
 

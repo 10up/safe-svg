@@ -371,4 +371,147 @@ class SafeSvgTest extends TestCase {
 		$response = $this->instance->featured_image_fix( 'test', 1 );
 		$this->assertSame( 'test', $response );
 	}
+
+	/**
+	 * Test `regenerate_metadata` function.
+	 *
+	 * @return void
+	 */
+	public function test_regenerate_metadata() {
+		// Test with a non-SVG attachment.
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 1,
+				'return' => 'image/jpeg',
+			)
+		);
+
+		$this->assertFalse( $this->instance->regenerate_metadata( 1 ) );
+
+		// Test with a missing file.
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 2,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 2,
+				'return' => '',
+			)
+		);
+
+		$this->assertFalse( $this->instance->regenerate_metadata( 2 ) );
+
+		// Test with an SVG that could not be parsed. The existing metadata must not be overwritten.
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 3,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 3,
+				'return' => __DIR__ . '/files/svgNoDimensions.svg',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_generate_attachment_metadata',
+			array(
+				'args'   => [ 3, __DIR__ . '/files/svgNoDimensions.svg' ],
+				'return' => array( 'filesize' => 1001 ),
+			)
+		);
+
+		$this->assertFalse( $this->instance->regenerate_metadata( 3 ) );
+
+		// Test with a nonexistent file. The metadata must not be regenerated.
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 5,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 5,
+				'return' => __DIR__ . '/files/not-on-disk.svg',
+			)
+		);
+
+		$this->assertFalse( $this->instance->regenerate_metadata( 5 ) );
+
+		// Test with a malformed SVG file. The metadata must not be regenerated.
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 6,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 6,
+				'return' => __DIR__ . '/files/badXmlTestOne.svg',
+			)
+		);
+
+		$this->assertFalse( $this->instance->regenerate_metadata( 6 ) );
+
+		// Test with a valid SVG.
+		$metadata = array(
+			'width'  => 600,
+			'height' => 600,
+			'file'   => '2022/02/test.svg',
+		);
+
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 4,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 4,
+				'return' => __DIR__ . '/files/svgCleanOne.svg',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_generate_attachment_metadata',
+			array(
+				'args'   => [ 4, __DIR__ . '/files/svgCleanOne.svg' ],
+				'return' => $metadata,
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_update_attachment_metadata',
+			array(
+				'args'   => [ 4, $metadata ],
+				'return' => true,
+			)
+		);
+
+		$this->assertSame( $metadata, $this->instance->regenerate_metadata( 4 ) );
+	}
 }
