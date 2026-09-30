@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Added
+- New `safe_svg_sanitize_markup()` helper that runs an SVG markup string through the plugin's sanitizer, so themes and plugins can sanitize SVG from an API or other third-party source before outputting it (props [@saas786](https://github.com/saas786) via [#115](https://github.com/10up/safe-svg/issues/115)).
+
+### Fixed
+- Sanitizing XML that has no single `<svg>` root now returns `false` instead of throwing, which could previously fatal on the upload, REST, and block render paths.
+
 ## [2.5.1] - 2026-09-22
 **This is a security release, it is recommended to upgrade immediately.**
 

@@ -262,6 +262,15 @@ class SafeSvgSanitizerTest extends TestCase {
 	}
 
 	/**
+	 * Test that XML without an <svg> root returns false instead of throwing.
+	 */
+	public function test_sanitize_svg_markup_returns_false_without_svg_root() {
+		$result = \SafeSvg\Svg_Sanitizer::sanitize_markup( '<?xml version="1.0"?><note><to>Tove</to></note>' );
+
+		$this->assertFalse( $result );
+	}
+
+	/**
 	 * Test that a fresh cache entry is served without re-sanitizing the file.
 	 */
 	public function test_get_sanitized_svg_returns_cached_markup() {

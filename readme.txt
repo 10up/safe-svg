@@ -69,6 +69,18 @@ They take one argument that must be returned. See below for examples:
         return $tags;
     } );
 
+= Can I sanitize SVG markup in my own code? =
+
+Yes. The `safe_svg_sanitize_markup()` helper runs any SVG markup string through the same sanitizer the plugin uses on upload, so it honors the `svg_allowed_tags` and `svg_allowed_attributes` filters and the other sanitizer settings. Use it for SVG markup that comes from an API, a custom field, or any other third-party source before you output it.
+
+    $svg = safe_svg_sanitize_markup( $raw_svg );
+
+    if ( false !== $svg ) {
+        echo $svg; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    }
+
+The helper returns sanitized XML, or `false` when the markup is empty, is not a string, or cannot be sanitized. Gzipped input is decoded first. Pass the `<svg>` element on its own, not a larger chunk of HTML it sits inside, since the input has to be a single SVG document. Always check for `false` before echoing.
+
 = Can my theme style an inline SVG? =
 
 Mostly, yes. The Inline SVG block renders an SVG that carries its own `<style>` element inside a shadow root, because CSS inside an inline SVG is otherwise applied to the whole page rather than just the SVG. Stylesheets cannot reach into a shadow root, so theme CSS such as `.entry-content svg { fill: red; }` will not apply to those SVGs.

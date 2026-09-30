@@ -133,7 +133,13 @@ class Svg_Sanitizer {
 			}
 		}
 
-		$clean = self::configure()->sanitize( $dirty );
+		try {
+			$clean = self::configure()->sanitize( $dirty );
+		} catch ( \Throwable $e ) {
+			// The library throws LogicException on well-formed XML without a
+			// single <svg> root; treat anything it can't clean as a failure.
+			return false;
+		}
 
 		if ( false === $clean || '' === $clean ) {
 			return false;

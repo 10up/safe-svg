@@ -103,6 +103,7 @@ require __DIR__ . '/includes/safe-svg-tags.php';
 require __DIR__ . '/includes/safe-svg-attributes.php';
 require __DIR__ . '/includes/safe-svg-settings.php';
 require __DIR__ . '/includes/safe-svg-sanitizer.php';
+require __DIR__ . '/includes/safe-svg-functions.php';
 require __DIR__ . '/includes/safe-svg-rest.php';
 require __DIR__ . '/includes/blocks.php';
 require __DIR__ . '/includes/optimizer.php';
