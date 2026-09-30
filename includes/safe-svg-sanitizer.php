@@ -133,7 +133,16 @@ class Svg_Sanitizer {
 			}
 		}
 
-		$clean = self::configure()->sanitize( $dirty );
+		// The library throws when the markup parses but isn't an SVG, for example
+		// an HTML page saved with an .svg extension. Treat that as a failed
+		// sanitization so callers reject the file instead of hitting a fatal.
+		$sanitizer = self::configure();
+
+		try {
+			$clean = $sanitizer->sanitize( $dirty );
+		} catch ( \Throwable $e ) {
+			return false;
+		}
 
 		if ( false === $clean || '' === $clean ) {
 			return false;
