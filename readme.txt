@@ -93,6 +93,10 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 
 == Changelog ==
 
+= Unreleased =
+
+* **Fixed:** Uploading a file with an `.svg` extension that isn't an SVG document no longer causes a PHP fatal error. Sanitizer exceptions are now handled the same as a failed sanitization, so the upload is rejected with the plugin's message instead.
+
 = 2.5.1 - 2026-09-22 =
 * **Added:** New REST endpoint, `/safe-svg/v1/svg/ATTACHMENT-ID`, that can be passed an attachment ID for an SVG and will return sanitized markup (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
 * **Removed:** Remove the `$sanitizer` property from the `safe_svg` class. If you directly use the `safe_svg` class in order to access the `$sanitizer` property, you'll need to update your code to instead use the new `Svg_Sanitizer` class (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).

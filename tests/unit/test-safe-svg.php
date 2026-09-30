@@ -184,6 +184,22 @@ class SafeSvgTest extends TestCase {
 
 		$result = $this->instance->check_for_svg( $file );
 		$this->assertArrayHasKey( 'error', $result );
+
+		// Test a file with an .svg name but non-SVG content.
+		// This parses as XML but has no <svg> root, which the sanitizer library
+		// rejects by throwing. The upload must fail with an error, not a fatal.
+		$filename  = 'nonSvgTestOne.svg';
+		$temp      = tempnam( sys_get_temp_dir(), 'TMP_' );
+		$files_dir = __DIR__ . '/files';
+		copy( "{$files_dir}/{$filename}", $temp );
+
+		$file = array(
+			'tmp_name' => $temp,
+			'name'     => $filename,
+		);
+
+		$result = $this->instance->check_for_svg( $file );
+		$this->assertArrayHasKey( 'error', $result );
 	}
 
 	/**
