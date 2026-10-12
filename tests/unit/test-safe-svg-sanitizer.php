@@ -262,6 +262,30 @@ class SafeSvgSanitizerTest extends TestCase {
 	}
 
 	/**
+	 * Test that markup which parses but isn't an SVG is rejected.
+	 *
+	 * The sanitizer library throws when the document has no single <svg> root,
+	 * which used to surface as an uncaught exception.
+	 */
+	public function test_sanitize_svg_markup_rejects_non_svg_content() {
+		$dirty = '<html><body><script>alert(1)</script></body></html>';
+
+		$this->assertFalse( \SafeSvg\Svg_Sanitizer::sanitize_markup( $dirty ) );
+	}
+
+	/**
+	 * Test that a non-SVG attachment returns an error rather than throwing.
+	 */
+	public function test_get_sanitized_svg_rejects_non_svg_content() {
+		$this->mock_attachment( 'nonSvgTestOne.svg' );
+
+		$result = \SafeSvg\Svg_Sanitizer::from_attachment( 12 );
+
+		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assertSame( 'safe_svg_sanitize_failed', $result->get_error_code() );
+	}
+
+	/**
 	 * Test that a fresh cache entry is served without re-sanitizing the file.
 	 */
 	public function test_get_sanitized_svg_returns_cached_markup() {
