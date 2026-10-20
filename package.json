@@ -43,11 +43,11 @@
   },
   "devDependencies": {
     "@10up/cypress-wp-utils": "^0.7.2",
-    "@wordpress/env": "^11.15.0",
+    "@wordpress/env": "^12.0.0",
     "@wordpress/icons": "^11.4.0",
-    "@wordpress/scripts": "36.0.0",
+    "@wordpress/scripts": "37.0.0",
     "cypress": "^15.21.1",
-    "cypress-mochawesome-reporter": "^3.8.2",
+    "cypress-mochawesome-reporter": "^5.0.0",
     "mochawesome-json-to-md": "^0.7.2"
   },
   "dependencies": {
