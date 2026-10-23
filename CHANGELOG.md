@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Fixed
+- Stop adding empty image sizes (those registered with no width and height) to SVG attachment metadata, matching how WordPress handles sizes that are disabled.
+
 ## [2.5.1] - 2026-09-22
 **This is a security release, it is recommended to upgrade immediately.**
 

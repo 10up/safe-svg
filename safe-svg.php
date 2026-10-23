@@ -543,38 +543,42 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				// Might come handy to create the sizes array too - But it's not needed for this workaround! Always links to original svg-file => Hey, it's a vector graphic! ;)
 				$sizes = array();
 				foreach ( get_intermediate_image_sizes() as $s ) {
-					$sizes[ $s ] = array(
-						'width'  => '',
-						'height' => '',
-						'crop'   => false,
-					);
-
 					if ( isset( $additional_image_sizes[ $s ]['width'] ) ) {
 						// For theme-added sizes
-						$sizes[ $s ]['width'] = intval( $additional_image_sizes[ $s ]['width'] );
+						$width = intval( $additional_image_sizes[ $s ]['width'] );
 					} else {
 						// For default sizes set in options
-						$sizes[ $s ]['width'] = get_option( "{$s}_size_w" );
+						$width = get_option( "{$s}_size_w" );
 					}
 
 					if ( isset( $additional_image_sizes[ $s ]['height'] ) ) {
 						// For theme-added sizes
-						$sizes[ $s ]['height'] = intval( $additional_image_sizes[ $s ]['height'] );
+						$height = intval( $additional_image_sizes[ $s ]['height'] );
 					} else {
 						// For default sizes set in options
-						$sizes[ $s ]['height'] = get_option( "{$s}_size_h" );
+						$height = get_option( "{$s}_size_h" );
+					}
+
+					// WordPress skips sizes registered without dimensions, so we do the same to avoid storing empty entries.
+					if ( empty( $width ) && empty( $height ) ) {
+						continue;
 					}
 
 					if ( isset( $additional_image_sizes[ $s ]['crop'] ) ) {
 						// For theme-added sizes
-						$sizes[ $s ]['crop'] = intval( $additional_image_sizes[ $s ]['crop'] );
+						$crop = intval( $additional_image_sizes[ $s ]['crop'] );
 					} else {
 						// For default sizes set in options
-						$sizes[ $s ]['crop'] = get_option( "{$s}_crop" );
+						$crop = get_option( "{$s}_crop" );
 					}
 
-					$sizes[ $s ]['file']      = $filename;
-					$sizes[ $s ]['mime-type'] = $mime;
+					$sizes[ $s ] = array(
+						'width'     => $width,
+						'height'    => $height,
+						'crop'      => $crop,
+						'file'      => $filename,
+						'mime-type' => $mime,
+					);
 				}
 				$metadata['sizes'] = $sizes;
 			}

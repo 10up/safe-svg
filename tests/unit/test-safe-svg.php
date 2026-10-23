@@ -315,6 +315,109 @@ class SafeSvgTest extends TestCase {
 	}
 
 	/**
+	 * Test `skip_svg_regeneration` function.
+	 * Sizes registered without dimensions should be skipped, matching how WordPress
+	 * core skips them when generating attachment metadata.
+	 *
+	 * @return void
+	 */
+	public function test_skip_svg_regeneration_skips_sizes_without_dimensions() {
+		\WP_Mock::userFunction(
+			'get_post_mime_type',
+			array(
+				'args'   => 1,
+				'return' => 'image/svg+xml',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_attached_file',
+			array(
+				'args'   => 1,
+				'return' => __DIR__ . '/files/svgCleanOne.svg',
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_upload_dir',
+			array(
+				'return' => array( 'basedir' => '/var/www/wp-content/uploads' ),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'trailingslashit',
+			array(
+				'return' => function ( $string ) {
+					return rtrim( $string, '/\\' ) . '/';
+				},
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_get_attachment_metadata',
+			array(
+				'args'   => 1,
+				'return' => array(
+					'width'  => 600,
+					'height' => 600,
+				),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'wp_get_additional_image_sizes',
+			array(
+				'return' => array(
+					// A size disabled by registering it without dimensions.
+					'medium_large' => array(
+						'width'  => 0,
+						'height' => 0,
+						'crop'   => 0,
+					),
+					// A size with only a width set is still valid.
+					'flexible'     => array(
+						'width'  => 768,
+						'height' => 0,
+						'crop'   => 0,
+					),
+				),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_intermediate_image_sizes',
+			array(
+				'return' => array( 'thumbnail', 'medium_large', 'flexible' ),
+			)
+		);
+
+		\WP_Mock::userFunction(
+			'get_option',
+			array(
+				'return' => function ( $option, $default = false ) {
+					if ( 'thumbnail_size_w' === $option ) {
+						return 150;
+					}
+
+					return $default;
+				},
+			)
+		);
+
+		$metadata = $this->instance->skip_svg_regeneration( array(), 1 );
+
+		$this->assertArrayHasKey( 'sizes', $metadata );
+		$this->assertArrayHasKey( 'thumbnail', $metadata['sizes'] );
+		$this->assertArrayHasKey( 'flexible', $metadata['sizes'] );
+		$this->assertArrayNotHasKey( 'medium_large', $metadata['sizes'] );
+
+		// A size reduced to width only keeps its width.
+		$this->assertSame( 768, $metadata['sizes']['flexible']['width'] );
+		$this->assertSame( 0, intval( $metadata['sizes']['flexible']['height'] ) );
+	}
+
+	/**
 	 * Test `fix_admin_preview` function.
 	 *
 	 * @return void
