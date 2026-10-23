@@ -141,7 +141,7 @@ class safe_svg_settings {
 			?>
 			<div>
 				<label>
-					<input type="checkbox" name="safe_svg_upload_roles[]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, $upload_roles, true ), true ); ?> /> <?php echo esc_html( $info['name'] ); ?>
+					<input type="checkbox" name="safe_svg_upload_roles[]" value="<?php echo esc_attr( $role ); ?>" <?php checked( in_array( $role, $upload_roles, true ), true ); ?> /> <?php echo esc_html( translate_user_role( $info['name'] ) ); ?>
 				</label>
 			</div>
 			<?php
