@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+### Fixed
+- Uploading a file with an `.svg` extension that isn't an SVG document no longer causes a PHP fatal error. Sanitizer exceptions are now handled the same as a failed sanitization, so the upload is rejected with the plugin's message instead.
+
 ## [2.5.1] - 2026-09-22
 **This is a security release, it is recommended to upgrade immediately.**
 
