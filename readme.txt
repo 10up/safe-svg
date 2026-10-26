@@ -94,8 +94,7 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 == Changelog ==
 
 = 2.5.2 - 2026-10-26 =
-* **Added:** New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ( [GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
-* **Security:** Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+* **Added:** New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
 * **Security:** Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
 * **Security:** Resolve GHSA-xjvq-4jwj-3mwq ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
 * **Security:** Resolve GHSA-xpv8-cx9q-v65f ([GHSA-xpv8-cx9q-v65f](https://github.com/10up/safe-svg/security/advisories/GHSA-xpv8-cx9q-v65f)).

@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 **This is a security release, it is recommended to upgrade immediately.**
 
 ### Added
-- New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ( [GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+- New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
 
 ### Security
 - Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
