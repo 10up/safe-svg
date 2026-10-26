@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.5.2] - 2026-10-26
+**This is a security release, it is recommended to upgrade immediately.**
+
+### Security
+- Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+
+### Developer
+- Bump `brace-expansion` from 1.1.18 to 1.1.21 ([#352](https://github.com/10up/safe-svg/pull/352)).
+- Bump `compression` from 1.8.1 to 1.8.2 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `fast-uri` from 3.1.6 to 3.1.8 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `http-cache-semantics` from 4.1.1 to 4.3.0 ([#352](https://github.com/10up/safe-svg/pull/352)).
+- Bump `linkify-it` from 3.0.3 to 5.0.2 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `markdown-it` from 12.3.2 to 14.3.3 ([#344](https://github.com/10up/safe-svg/pull/344), [#358](https://github.com/10up/safe-svg/pull/358)).
+- Bump `minimatch` from 9.0.5 to 9.0.9 and from 5.1.6 to 5.1.9 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `proxy-addr` from 2.0.7 to 2.0.8 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `shell-quote` from 1.10.0 to 1.12.0 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `simple-git` from 3.36.0 to 4.0.2 ([#357](https://github.com/10up/safe-svg/pull/357)).
+- Bump `source-map-js` from 1.2.1 to 1.2.2 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Remove `uuid` ([#357](https://github.com/10up/safe-svg/pull/357)).
+
 ## [2.5.1] - 2026-09-22
 **This is a security release, it is recommended to upgrade immediately.**
 

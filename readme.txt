@@ -93,6 +93,12 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 
 == Changelog ==
 
+= 2.5.2 - 2026-10-26 =
+
+**Security**
+
+- Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+
 = 2.5.1 - 2026-09-22 =
 * **Added:** New REST endpoint, `/safe-svg/v1/svg/ATTACHMENT-ID`, that can be passed an attachment ID for an SVG and will return sanitized markup (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
 * **Removed:** Remove the `$sanitizer` property from the `safe_svg` class. If you directly use the `safe_svg` class in order to access the `$sanitizer` property, you'll need to update your code to instead use the new `Svg_Sanitizer` class (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).
@@ -114,14 +120,12 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 * **Changed:** Updated blueprint file for WordPress.org live previews (props [@fellyph](https://github.com/fellyph), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#287](https://github.com/10up/safe-svg/pull/287)).
 * **Changed:** Bump `svgo` from 3.2.0 to 3.3.5 (props [@dependabot[bot]](https://github.com/apps/dependabot), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc), [@dependabot](https://github.com/dependabot) via [#309](https://github.com/10up/safe-svg/pull/309)).
 
-= 2.4.0 - 2025-09-22 =
-* **Added:** Ability to upload SVGs from more admin locations (props [@stormrockwell](https://github.com/stormrockwell), [@darylldoyle](https://github.com/darylldoyle), [@wpexplorer](https://github.com/wpexplorer), [@smerriman](https://github.com/smerriman), [@jeffpaul](https://github.com/jeffpaul), [@dkotter](https://github.com/dkotter) via [#279](https://github.com/10up/safe-svg/pull/279)).
-* **Changed:** Added `$attachment_id` argument to filters `safe_svg_use_width_height_attributes` and `safe_svg_dimensions` (props [@roborourke](https://github.com/roborourke), [@dkotter](https://github.com/dkotter) via [#278](https://github.com/10up/safe-svg/pull/278)).
-* **Fixed:** Inconsistent or incorrect data type for `$svg` argument in the filters `safe_svg_use_width_height_attributes` and `safe_svg_dimensions` (props [@roborourke](https://github.com/roborourke), [@dkotter](https://github.com/dkotter) via [#278](https://github.com/10up/safe-svg/pull/278)).
-
 [View historical changelog details here](https://github.com/10up/safe-svg/blob/develop/CHANGELOG.md).
 
 == Upgrade Notice ==
+
+= 2.5.2 =
+This is a security release, it is recommended to upgrade immediately.
 
 = 2.5.1 =
 This is a security release, it is recommended to upgrade immediately.
