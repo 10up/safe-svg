@@ -60,7 +60,7 @@ class SafeSvgSanitizerTest extends TestCase {
 	 * @return string Path to the file.
 	 */
 	protected function mock_large_attachment( $contents, $id = 12 ) {
-		$path               = tempnam( sys_get_temp_dir(), 'safe-svg-' );
+		$path               = sys_get_temp_dir() . '/' . uniqid( 'safe-svg-', true ) . '.svg';
 		$this->temp_files[] = $path;
 
 		$padding = \SafeSvg\Svg_Sanitizer::CACHE_MIN_FILESIZE - strlen( $contents );
@@ -233,6 +233,48 @@ class SafeSvgSanitizerTest extends TestCase {
 
 		$this->assertInstanceOf( WP_Error::class, $result );
 		$this->assertSame( 'safe_svg_unreadable', $result->get_error_code() );
+	}
+
+	/**
+	 * Test that an SVG-typed attachment whose file is not an SVG is rejected.
+	 *
+	 * XML-RPC lets the uploader choose the mime type for any allowed file name.
+	 */
+	public function test_get_sanitized_svg_rejects_spoofed_extension() {
+		$path               = sys_get_temp_dir() . '/' . uniqid( 'safe-svg-', true ) . '.png';
+		$this->temp_files[] = $path;
+
+		copy( $this->fixture_path( 'svgCleanOne.svg' ), $path );
+		$this->mock_attachment_meta( 12, 'image/svg+xml', $path );
+
+		$result = \SafeSvg\Svg_Sanitizer::from_attachment( 12 );
+
+		$this->assertInstanceOf( WP_Error::class, $result );
+		$this->assertSame( 'safe_svg_not_svg', $result->get_error_code() );
+	}
+
+	/**
+	 * Test that an upper-case extension is still accepted.
+	 */
+	public function test_get_sanitized_svg_accepts_uppercase_extension() {
+		$path               = sys_get_temp_dir() . '/' . uniqid( 'safe-svg-', true ) . '.SVG';
+		$this->temp_files[] = $path;
+
+		copy( $this->fixture_path( 'svgCleanOne.svg' ), $path );
+		$this->mock_attachment_meta( 12, 'image/svg+xml', $path );
+
+		$this->assertStringContainsString( '<svg', \SafeSvg\Svg_Sanitizer::from_attachment( 12 ) );
+	}
+
+	/**
+	 * Test that a gzip bomb is refused instead of inflated.
+	 *
+	 * zlib only checks the limit between output chunks, so overshoot it clearly.
+	 */
+	public function test_sanitize_svg_markup_refuses_oversized_gzip() {
+		$bomb = gzencode( '<svg xmlns="http://www.w3.org/2000/svg">' . str_repeat( ' ', 2 * \SafeSvg\Svg_Sanitizer::MAX_INFLATED_SIZE ) . '</svg>', 9 );
+
+		$this->assertFalse( \SafeSvg\Svg_Sanitizer::sanitize_markup( $bomb ) );
 	}
 
 	/**
