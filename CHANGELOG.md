@@ -46,7 +46,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Security
 - Prevented direct access of PHP files (props [@mehrazmorshed](https://github.com/mehrazmorshed), [@dkotter](https://github.com/dkotter) via [#300](https://github.com/10up/safe-svg/pull/300)).
-- The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328)).
+- The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@0xb1lal](https://github.com/0xb1lal), [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328), [GHSA-6w27-923c-c64m](https://github.com/10up/safe-svg/security/advisories/GHSA-6w27-923c-c64m)).
 - Bump `enshrined/svg-sanitize` from `^0.22.0` to `^1.0.0` to pull in security fixes (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#327](https://github.com/10up/safe-svg/pull/327)).
 
 ### Added
