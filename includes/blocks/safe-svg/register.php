@@ -9,6 +9,10 @@ namespace SafeSvg\Blocks\SafeSvgBlock;
 
 use SafeSvg\Svg_Sanitizer;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 /**
  * Register the block
  */
@@ -226,6 +230,9 @@ function render_block_callback( $attributes ) {
 		);
 	}
 
+	$alignment = isset( $attributes['alignment'] ) && in_array( $attributes['alignment'], array( 'left', 'center', 'right' ), true ) ? $attributes['alignment'] : 'left';
+	$spacing   = $attributes['style']['spacing'] ?? array();
+
 	/**
 	 * The wrapper markup.
 	 *
@@ -244,21 +251,21 @@ function render_block_callback( $attributes ) {
 			'<div class="wp-block-safe-svg-svg-icon safe-svg-cover" style="text-align: %1$s;">
 				<div class="safe-svg-inside %2$s%3$s" style="width: %4$spx; height: %5$spx; background-color: var(--wp--preset--color--%6$s); color: var(--wp--preset--color--%7$s); padding-top: %8$s; padding-right: %9$s; padding-bottom: %10$s; padding-left: %11$s; margin-top: %12$s; margin-right: %13$s; margin-bottom: %14$s; margin-left: %15$s;">%16$s</div>
 			</div>',
-			isset( $attributes['alignment'] ) ? esc_attr( $attributes['alignment'] ) : 'left',
+			esc_attr( $alignment ),
 			esc_attr( $class_name ),
 			isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) : '',
 			isset( $attributes['dimensionWidth'] ) ? esc_attr( $attributes['dimensionWidth'] ) : '',
 			isset( $attributes['dimensionHeight'] ) ? esc_attr( $attributes['dimensionHeight'] ) : '',
-			isset( $attributes['backgroundColor'] ) ? esc_attr( $attributes['backgroundColor'] ) : '',
-			isset( $attributes['textColor'] ) ? esc_attr( $attributes['textColor'] ) : '',
-			isset( $attributes['style']['spacing']['padding']['top'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['top'] ) ) : '',
-			isset( $attributes['style']['spacing']['padding']['right'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['right'] ) ) : '',
-			isset( $attributes['style']['spacing']['padding']['bottom'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['bottom'] ) ) : '',
-			isset( $attributes['style']['spacing']['padding']['left'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['padding']['left'] ) ) : '',
-			isset( $attributes['style']['spacing']['margin']['top'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['top'] ) ) : '',
-			isset( $attributes['style']['spacing']['margin']['right'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['right'] ) ) : '',
-			isset( $attributes['style']['spacing']['margin']['bottom'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['bottom'] ) ) : '',
-			isset( $attributes['style']['spacing']['margin']['left'] ) ? esc_attr( convert_to_css_variable( $attributes['style']['spacing']['margin']['left'] ) ) : '',
+			isset( $attributes['backgroundColor'] ) ? esc_attr( sanitize_html_class( $attributes['backgroundColor'] ) ) : '',
+			isset( $attributes['textColor'] ) ? esc_attr( sanitize_html_class( $attributes['textColor'] ) ) : '',
+			esc_attr( sanitize_spacing_value( 'padding-top', $spacing['padding']['top'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'padding-right', $spacing['padding']['right'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'padding-bottom', $spacing['padding']['bottom'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'padding-left', $spacing['padding']['left'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'margin-top', $spacing['margin']['top'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'margin-right', $spacing['margin']['right'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'margin-bottom', $spacing['margin']['bottom'] ?? '' ) ),
+			esc_attr( sanitize_spacing_value( 'margin-left', $spacing['margin']['left'] ?? '' ) ),
 			$contents
 		),
 		$contents,
@@ -316,6 +323,30 @@ function wrap_in_shadow_root( $svg, $attachment_id ): string {
 		'' !== $styles ? '<style>' . $styles . '</style>' : '',
 		$svg
 	);
+}
+
+/**
+ * Return a spacing value that is safe to place in a style declaration.
+ *
+ * @since 2.5.2
+ *
+ * @param string $property The CSS property the value is for, e.g. `padding-top`.
+ * @param mixed  $value    The raw value from the block's `style.spacing` attribute.
+ * @return string The CSS value, or an empty string if it is not one safe value.
+ */
+function sanitize_spacing_value( $property, $value ) {
+	if ( ! is_scalar( $value ) || '' === $value ) {
+		return '';
+	}
+
+	$value = convert_to_css_variable( (string) $value );
+
+	// A ';' would start another declaration; core's CSS filter vets the value itself.
+	if ( str_contains( $value, ';' ) || '' === safecss_filter_attr( "{$property}: {$value}" ) ) {
+		return '';
+	}
+
+	return $value;
 }
 
 /**

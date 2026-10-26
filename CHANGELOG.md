@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ## [Unreleased] - TBD
 
+## [2.5.2] - 2026-10-26
+**This is a security release, it is recommended to upgrade immediately.**
+
+### Added
+- New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+
+### Security
+- Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+- Resolve GHSA-xjvq-4jwj-3mwq ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+- Resolve GHSA-xpv8-cx9q-v65f ([GHSA-xpv8-cx9q-v65f](https://github.com/10up/safe-svg/security/advisories/GHSA-xpv8-cx9q-v65f)).
+- Resolve GHSA-h56m-22q9-r6xc ([GHSA-h56m-22q9-r6xc](https://github.com/10up/safe-svg/security/advisories/GHSA-h56m-22q9-r6xc)).
+- Resolve GHSA-vm75-mq6x-x57m ([GHSA-vm75-mq6x-x57m](https://github.com/10up/safe-svg/security/advisories/GHSA-vm75-mq6x-x57m)).
+
+### Developer
+- Bump `brace-expansion` from 1.1.18 to 1.1.21 ([#352](https://github.com/10up/safe-svg/pull/352)).
+- Bump `compression` from 1.8.1 to 1.8.2 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `fast-uri` from 3.1.6 to 3.1.8 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `http-cache-semantics` from 4.1.1 to 4.3.0 ([#352](https://github.com/10up/safe-svg/pull/352)).
+- Bump `linkify-it` from 3.0.3 to 5.0.2 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `markdown-it` from 12.3.2 to 14.3.3 ([#344](https://github.com/10up/safe-svg/pull/344), [#358](https://github.com/10up/safe-svg/pull/358)).
+- Bump `minimatch` from 9.0.5 to 9.0.9 and from 5.1.6 to 5.1.9 ([#344](https://github.com/10up/safe-svg/pull/344)).
+- Bump `proxy-addr` from 2.0.7 to 2.0.8 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `shell-quote` from 1.10.0 to 1.12.0 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Bump `simple-git` from 3.36.0 to 4.0.2 ([#357](https://github.com/10up/safe-svg/pull/357)).
+- Bump `source-map-js` from 1.2.1 to 1.2.2 ([#353](https://github.com/10up/safe-svg/pull/353)).
+- Remove `uuid` ([#357](https://github.com/10up/safe-svg/pull/357)).
+
 ## [2.5.1] - 2026-09-22
 **This is a security release, it is recommended to upgrade immediately.**
 
@@ -26,7 +53,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 
 ### Security
 - Prevented direct access of PHP files (props [@mehrazmorshed](https://github.com/mehrazmorshed), [@dkotter](https://github.com/dkotter) via [#300](https://github.com/10up/safe-svg/pull/300)).
-- The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328)).
+- The Inline SVG block now renders SVGs that carry their own `<style>` element inside a shadow root, so their CSS is scoped to the block instead of applying to the whole page (props [@0xb1lal](https://github.com/0xb1lal), [@darylldoyle](https://github.com/darylldoyle), [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#328](https://github.com/10up/safe-svg/pull/328), [GHSA-6w27-923c-c64m](https://github.com/10up/safe-svg/security/advisories/GHSA-6w27-923c-c64m)).
 - Bump `enshrined/svg-sanitize` from `^0.22.0` to `^1.0.0` to pull in security fixes (props [@dkotter](https://github.com/dkotter), [@jeffpaul](https://github.com/jeffpaul), [@peterwilsoncc](https://github.com/peterwilsoncc) via [#327](https://github.com/10up/safe-svg/pull/327)).
 
 ### Added
@@ -510,6 +537,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.5.2]: https://github.com/10up/safe-svg/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/10up/safe-svg/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/10up/safe-svg/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/10up/safe-svg/compare/2.3.3...2.4.0

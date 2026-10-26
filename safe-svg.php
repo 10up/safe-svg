@@ -3,7 +3,7 @@
  * Plugin Name:       Safe SVG
  * Plugin URI:        https://wordpress.org/plugins/safe-svg/
  * Description:       Enable SVG uploads and sanitize them to stop XML/SVG vulnerabilities in your WordPress website
- * Version:           2.5.1
+ * Version:           2.5.2
  * Author:            10up
  * Author URI:        https://10up.com
  * License:           GPL-2.0-or-later
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-define( 'SAFE_SVG_VERSION', '2.5.1' );
+define( 'SAFE_SVG_VERSION', '2.5.2' );
 define( 'SAFE_SVG_PLUGIN_DIR', __DIR__ );
 define( 'SAFE_SVG_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -144,6 +144,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			add_action( 'init', array( $this, 'setup_blocks' ) );
 			add_filter( 'wp_handle_sideload_prefilter', array( $this, 'check_for_svg' ) );
 			add_filter( 'wp_handle_upload_prefilter', array( $this, 'check_for_svg' ) );
+			add_filter( 'wp_handle_upload', array( $this, 'sanitize_uploaded_svg' ) );
 			add_filter( 'wp_prepare_attachment_for_js', array( $this, 'fix_admin_preview' ), 10, 3 );
 			add_filter( 'wp_get_attachment_image_src', array( $this, 'one_pixel_fix' ), 10, 4 );
 			add_filter( 'admin_post_thumbnail_html', array( $this, 'featured_image_fix' ), 10, 3 );
@@ -174,25 +175,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return bool
 		 */
 		public function current_user_can_upload_svg() {
-			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
-			$can_upload   = false;
-
-			if ( empty( $upload_roles ) ) {
-				// Fallback to upload_files check for backwards compatibility.
-				$can_upload = current_user_can( 'upload_files' );
-			} else {
-				// Use our custom capability if some upload roles are set.
-				$can_upload = current_user_can( 'safe_svg_upload_svg' );
-			}
-
-			/**
-			 * Determine if the current user can upload an svg.
-			 *
-			 * @param bool $can_upload Can the current user upload an svg?
-			 *
-			 * @return bool
-			 */
-			return (bool) apply_filters( 'safe_svg_current_user_can_upload', $can_upload );
+			return Svg_Sanitizer::current_user_can_upload();
 		}
 
 		/**
@@ -237,6 +220,15 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 				$exploded = explode( '.', $filename );
 				$ext      = strtolower( end( $exploded ) );
 			}
+
+			// Ensure a user has permission to upload an SVG before we vouch for it.
+			if (
+				in_array( $ext, array( 'svg', 'svgz' ), true ) &&
+				! $this->current_user_can_upload_svg()
+			) {
+				return $data;
+			}
+
 			if ( 'svg' === $ext ) {
 				$data['type'] = 'image/svg+xml';
 				$data['ext']  = 'svg';
@@ -277,7 +269,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 
 			$type = ! empty( $wp_filetype['type'] ) ? $wp_filetype['type'] : '';
 
-			if ( 'image/svg+xml' === $type ) {
+			if ( 'image/svg+xml' === $type || Svg_Sanitizer::is_svg_filename( $file_name ) ) {
 				if ( ! $this->current_user_can_upload_svg() ) {
 					$file['error'] = __(
 						'Sorry, you are not allowed to upload SVG files.',
@@ -296,6 +288,49 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 			}
 
 			return $file;
+		}
+
+		/**
+		 * Sanitize an SVG after it has been written to the uploads directory.
+		 *
+		 * @param array $upload {
+		 *     Array of upload data.
+		 *
+		 *     @type string $file  Filename of the newly-uploaded file.
+		 *     @type string $url   URL of the newly-uploaded file.
+		 *     @type string $type  Mime type of the newly-uploaded file.
+		 * }
+		 *
+		 * @return array
+		 */
+		public function sanitize_uploaded_svg( $upload ) {
+			if ( ! is_array( $upload ) || isset( $upload['error'] ) || empty( $upload['file'] ) ) {
+				return $upload;
+			}
+
+			$type = isset( $upload['type'] ) ? $upload['type'] : '';
+
+			if ( 'image/svg+xml' !== $type && ! Svg_Sanitizer::is_svg_filename( $upload['file'] ) ) {
+				return $upload;
+			}
+
+			if ( ! is_file( $upload['file'] ) ) {
+				return $upload;
+			}
+
+			if ( ! $this->sanitize( $upload['file'] ) ) {
+				// Never leave an unsanitized SVG in a public directory.
+				wp_delete_file( $upload['file'] );
+
+				return array(
+					'error' => __(
+						"Sorry, this file couldn't be sanitized so for security reasons wasn't uploaded",
+						'safe-svg'
+					),
+				);
+			}
+
+			return $upload;
 		}
 
 		/**

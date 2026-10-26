@@ -7,7 +7,7 @@
 
 namespace SafeSVG;
 
-use enshrined\svgSanitize\Sanitizer;
+use SafeSvg\Svg_Sanitizer;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -169,15 +169,26 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 
 			check_ajax_referer( $this->nonce_name, 'svg_nonce' );
 
+			// Force the same permission check normal uploads use.
+			if ( ! Svg_Sanitizer::current_user_can_upload() ) {
+				return;
+			}
+
 			$svg_path = get_attached_file( $attachment_id );
 			if ( empty( $svg_path ) ) {
 				return;
 			}
 
+			// Only ever overwrite a plain .svg file; never another file type, or gzipped .svgz.
+			if (
+				'image/svg+xml' !== get_post_mime_type( $attachment_id ) ||
+				'svg' !== strtolower( pathinfo( $svg_path, PATHINFO_EXTENSION ) )
+			) {
+				return;
+			}
+
 			$maybe_dirty = stripcslashes( $_GET['optimized_svg'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$sanitizer   = new Sanitizer();
-			$sanitizer->minify( true );
-			$sanitized = $sanitizer->sanitize( $maybe_dirty );
+			$sanitized   = Svg_Sanitizer::configure()->sanitize( $maybe_dirty );
 
 			if ( empty( $sanitized ) ) {
 				return;
