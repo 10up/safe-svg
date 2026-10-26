@@ -39,6 +39,17 @@ class Svg_Sanitizer {
 	const CACHE_MIN_FILESIZE = 8192;
 
 	/**
+	 * Largest default size a gzipped SVG may inflate to, in bytes.
+	 *
+	 * Increased ten fold when the large SVG option is enabled.
+	 *
+	 * @since x.x.x
+	 *
+	 * @var int
+	 */
+	const MAX_INFLATED_SIZE = 10485760;
+
+	/**
 	 * Whether a string is gzip-compressed.
 	 *
 	 * @since 2.5.1
@@ -59,6 +70,20 @@ class Svg_Sanitizer {
 		}
 
 		return 0 === strpos( $contents, $magic );
+	}
+
+	/**
+	 * Whether a filename has an SVG extension.
+	 *
+	 * @since x.x.x
+	 *
+	 * @param string $filename File name or path.
+	 * @return bool
+	 */
+	public static function is_svg_filename( $filename ) {
+		$ext = strtolower( (string) pathinfo( (string) $filename, PATHINFO_EXTENSION ) );
+
+		return in_array( $ext, array( 'svg', 'svgz' ), true );
 	}
 
 	/**
@@ -126,7 +151,22 @@ class Svg_Sanitizer {
 		}
 
 		if ( self::is_gzipped( $dirty ) ) {
-			$dirty = gzdecode( $dirty );
+			$max_size = get_option( 'safe_svg_large_svg' ) ? 10 * self::MAX_INFLATED_SIZE : self::MAX_INFLATED_SIZE;
+
+			/**
+			 * Filters the largest size a gzipped SVG may inflate to, in bytes.
+			 *
+			 * @since x.x.x
+			 *
+			 * @param int $max_size Maximum inflated size in bytes. Default 10 MB,
+			 *                      or 100 MB when large SVGs are allowed.
+			 */
+			$max_size = (int) apply_filters( 'safe_svg_max_inflated_size', $max_size );
+
+			// gzdecode() treats 0 as unlimited so we enforce 1 as our minimum.
+			$max_size = max( 1, $max_size );
+
+			$dirty = @gzdecode( $dirty, $max_size ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 
 			if ( false === $dirty ) {
 				return false;
@@ -245,6 +285,15 @@ class Svg_Sanitizer {
 			return new \WP_Error(
 				'safe_svg_unreadable',
 				__( 'The SVG file could not be read.', 'safe-svg' ),
+				array( 'status' => 404 )
+			);
+		}
+
+		// Ensure the stored mime type is the same as the file extension.
+		if ( ! self::is_svg_filename( $path ) ) {
+			return new \WP_Error(
+				'safe_svg_not_svg',
+				__( 'The requested attachment is not an SVG.', 'safe-svg' ),
 				array( 'status' => 404 )
 			);
 		}
