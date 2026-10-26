@@ -328,7 +328,7 @@ function wrap_in_shadow_root( $svg, $attachment_id ): string {
 /**
  * Return a spacing value that is safe to place in a style declaration.
  *
- * @since x.x.x
+ * @since 2.5.2
  *
  * @param string $property The CSS property the value is for, e.g. `padding-top`.
  * @param mixed  $value    The raw value from the block's `style.spacing` attribute.

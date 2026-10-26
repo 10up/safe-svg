@@ -43,7 +43,7 @@ class Svg_Sanitizer {
 	 *
 	 * Increased ten fold when the large SVG option is enabled.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.2
 	 *
 	 * @var int
 	 */
@@ -75,7 +75,7 @@ class Svg_Sanitizer {
 	/**
 	 * Whether a filename has an SVG extension.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.2
 	 *
 	 * @param string $filename File name or path.
 	 * @return bool
@@ -156,7 +156,7 @@ class Svg_Sanitizer {
 			/**
 			 * Filters the largest size a gzipped SVG may inflate to, in bytes.
 			 *
-			 * @since x.x.x
+			 * @since 2.5.2
 			 *
 			 * @param int $max_size Maximum inflated size in bytes. Default 10 MB,
 			 *                      or 100 MB when large SVGs are allowed.
@@ -254,7 +254,7 @@ class Svg_Sanitizer {
 	/**
 	 * Whether the current user may upload, or otherwise write, SVG files.
 	 *
-	 * @since x.x.x
+	 * @since 2.5.2
 	 *
 	 * @return bool
 	 */
