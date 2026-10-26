@@ -252,6 +252,36 @@ class Svg_Sanitizer {
 	}
 
 	/**
+	 * Whether the current user may upload, or otherwise write, SVG files.
+	 *
+	 * @since x.x.x
+	 *
+	 * @return bool
+	 */
+	public static function current_user_can_upload() {
+		$upload_roles = get_option( 'safe_svg_upload_roles', [] );
+		$can_upload   = false;
+
+		if ( empty( $upload_roles ) ) {
+			// Fallback to upload_files check for backwards compatibility.
+			$can_upload = current_user_can( 'upload_files' );
+		} else {
+			// Use our custom capability if some upload roles are set.
+			$can_upload = current_user_can( 'safe_svg_upload_svg' );
+		}
+
+		/**
+		 * Determine if the current user can upload an svg.
+		 *
+		 * @since 2.2.5
+		 *
+		 * @param bool $can_upload Can the current user upload an svg?
+		 * @return bool
+		 */
+		return (bool) apply_filters( 'safe_svg_current_user_can_upload', $can_upload );
+	}
+
+	/**
 	 * Read an attachment from disk and return sanitized SVG markup.
 	 *
 	 * @since 2.5.1

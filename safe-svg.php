@@ -174,25 +174,7 @@ if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
 		 * @return bool
 		 */
 		public function current_user_can_upload_svg() {
-			$upload_roles = get_option( 'safe_svg_upload_roles', [] );
-			$can_upload   = false;
-
-			if ( empty( $upload_roles ) ) {
-				// Fallback to upload_files check for backwards compatibility.
-				$can_upload = current_user_can( 'upload_files' );
-			} else {
-				// Use our custom capability if some upload roles are set.
-				$can_upload = current_user_can( 'safe_svg_upload_svg' );
-			}
-
-			/**
-			 * Determine if the current user can upload an svg.
-			 *
-			 * @param bool $can_upload Can the current user upload an svg?
-			 *
-			 * @return bool
-			 */
-			return (bool) apply_filters( 'safe_svg_current_user_can_upload', $can_upload );
+			return Svg_Sanitizer::current_user_can_upload();
 		}
 
 		/**
