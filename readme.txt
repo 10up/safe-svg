@@ -94,10 +94,13 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 == Changelog ==
 
 = 2.5.2 - 2026-10-26 =
-
-**Security**
-
-- Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+* **Added:** New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ( [GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+* **Security:** Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+* **Security:** Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+* **Security:** Resolve GHSA-xjvq-4jwj-3mwq ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+* **Security:** Resolve GHSA-xpv8-cx9q-v65f ([GHSA-xpv8-cx9q-v65f](https://github.com/10up/safe-svg/security/advisories/GHSA-xpv8-cx9q-v65f)).
+* **Security:** Resolve GHSA-h56m-22q9-r6xc ([GHSA-h56m-22q9-r6xc](https://github.com/10up/safe-svg/security/advisories/GHSA-h56m-22q9-r6xc)).
+* **Security:** Resolve GHSA-vm75-mq6x-x57m ([GHSA-vm75-mq6x-x57m](https://github.com/10up/safe-svg/security/advisories/GHSA-vm75-mq6x-x57m)).
 
 = 2.5.1 - 2026-09-22 =
 * **Added:** New REST endpoint, `/safe-svg/v1/svg/ATTACHMENT-ID`, that can be passed an attachment ID for an SVG and will return sanitized markup (props [@dkotter](https://github.com/dkotter), [@peterwilsoncc](https://github.com/peterwilsoncc) via [GHSA-3hhm-5qc9-q4xf](https://github.com/10up/safe-svg/security/advisories/GHSA-3hhm-5qc9-q4xf)).

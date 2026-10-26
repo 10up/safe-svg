@@ -7,8 +7,15 @@ All notable changes to this project will be documented in this file, per [the Ke
 ## [2.5.2] - 2026-10-26
 **This is a security release, it is recommended to upgrade immediately.**
 
+### Added
+- New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ( [GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+
 ### Security
 - Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
+- Resolve GHSA-xjvq-4jwj-3mwq ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
+- Resolve GHSA-xpv8-cx9q-v65f ([GHSA-xpv8-cx9q-v65f](https://github.com/10up/safe-svg/security/advisories/GHSA-xpv8-cx9q-v65f)).
+- Resolve GHSA-h56m-22q9-r6xc ([GHSA-h56m-22q9-r6xc](https://github.com/10up/safe-svg/security/advisories/GHSA-h56m-22q9-r6xc)).
+- Resolve GHSA-vm75-mq6x-x57m ([GHSA-vm75-mq6x-x57m](https://github.com/10up/safe-svg/security/advisories/GHSA-vm75-mq6x-x57m)).
 
 ### Developer
 - Bump `brace-expansion` from 1.1.18 to 1.1.21 ([#352](https://github.com/10up/safe-svg/pull/352)).
@@ -530,6 +537,7 @@ All notable changes to this project will be documented in this file, per [the Ke
 - Initial Release.
 
 [Unreleased]: https://github.com/10up/safe-svg/compare/trunk...develop
+[2.5.2]: https://github.com/10up/safe-svg/compare/2.5.1...2.5.2
 [2.5.1]: https://github.com/10up/safe-svg/compare/2.5.0...2.5.1
 [2.5.0]: https://github.com/10up/safe-svg/compare/2.4.0...2.5.0
 [2.4.0]: https://github.com/10up/safe-svg/compare/2.3.3...2.4.0
