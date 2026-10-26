@@ -188,7 +188,14 @@ if ( ! class_exists( '\SafeSVG\Optimizer' ) ) {
 			}
 
 			$maybe_dirty = stripcslashes( $_GET['optimized_svg'] ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-			$sanitized   = Svg_Sanitizer::configure()->sanitize( $maybe_dirty );
+
+			// The library throws when the markup isn't an SVG. Bail out on the same
+			// early return used for other sanitization failures.
+			try {
+				$sanitized = Svg_Sanitizer::configure()->sanitize( $maybe_dirty );
+			} catch ( \Throwable $e ) {
+				return;
+			}
 
 			if ( empty( $sanitized ) ) {
 				return;

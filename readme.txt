@@ -93,6 +93,10 @@ Please report security bugs found in the source code of the Safe SVG plugin thro
 
 == Changelog ==
 
+= Unreleased =
+
+* **Fixed:** Uploading a file with an `.svg` extension that isn't an SVG document no longer causes a PHP fatal error. Sanitizer exceptions are now handled the same as a failed sanitization, so the upload is rejected with the plugin's message instead.
+
 = 2.5.2 - 2026-10-26 =
 * **Added:** New filter, `safe_svg_max_inflated_size`, allowing you to increase or decrease the max size an SVG can inflate to ([GHSA-xjvq-4jwj-3mwq](https://github.com/10up/safe-svg/security/advisories/GHSA-xjvq-4jwj-3mwq)).
 * **Security:** Updates the underlying `enshrined/svg-sanitize` package to v1.1.0 ([#355](https://github.com/10up/safe-svg/pull/355)).
