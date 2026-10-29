@@ -104,10 +104,12 @@ require __DIR__ . '/includes/safe-svg-attributes.php';
 require __DIR__ . '/includes/safe-svg-settings.php';
 require __DIR__ . '/includes/safe-svg-sanitizer.php';
 require __DIR__ . '/includes/safe-svg-rest.php';
+require __DIR__ . '/includes/safe-svg-abilities.php';
 require __DIR__ . '/includes/blocks.php';
 require __DIR__ . '/includes/optimizer.php';
 
 new Rest();
+new Abilities();
 new \SafeSVG\Optimizer();
 
 if ( ! class_exists( 'SafeSvg\\safe_svg' ) ) {
