@@ -67,7 +67,7 @@ class Abilities {
 			'safe-svg/upload-svg',
 			array(
 				'label'               => __( 'Upload SVG', 'safe-svg' ),
-				'description'         => __( 'Adds an SVG to the media library from its markup. The markup is sanitized the same way as an SVG uploaded in wp-admin, and is refused if it cannot be sanitized. Returns the attachment ID and URL, which can be used in an image or Safe SVG block.', 'safe-svg' ),
+				'description'         => __( 'Adds an SVG to the media library from its markup. The markup is sanitized the same way as an SVG uploaded in wp-admin, and is refused if it cannot be sanitized or is larger than the site\'s maximum upload size. Returns the attachment ID and URL, which can be used in an image or Safe SVG block.', 'safe-svg' ),
 				'category'            => self::CATEGORY,
 				'input_schema'        => array(
 					'type'                 => 'object',
@@ -90,7 +90,7 @@ class Abilities {
 							'type'        => 'integer',
 							'minimum'     => 0,
 							'default'     => 0,
-							'description' => __( 'ID of the post to attach the SVG to. 0 leaves it unattached.', 'safe-svg' ),
+							'description' => __( 'ID of the post to attach the SVG to (not a revision or attachment). 0 leaves it unattached.', 'safe-svg' ),
 						),
 					),
 					'required'             => array( 'svg' ),
@@ -204,6 +204,13 @@ class Abilities {
 			return new \WP_Error( 'safe_svg_upload_limited_space', __( 'Not enough space to upload the SVG.', 'safe-svg' ), array( 'status' => 400 ) );
 		}
 
+		$post_id = absint( $input['post_id'] ?? 0 );
+
+		// Same restriction as the media REST endpoint.
+		if ( $post_id && in_array( get_post_type( $post_id ), array( 'revision', 'attachment' ), true ) ) {
+			return new \WP_Error( 'safe_svg_invalid_post', __( 'An SVG cannot be attached to a revision or another attachment.', 'safe-svg' ), array( 'status' => 400 ) );
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -222,7 +229,7 @@ class Abilities {
 				'name'     => $name,
 				'tmp_name' => $tmp,
 			),
-			absint( $input['post_id'] ?? 0 ),
+			$post_id,
 			null,
 			$post_data
 		);
