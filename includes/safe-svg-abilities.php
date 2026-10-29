@@ -80,7 +80,7 @@ class Abilities {
 						'filename' => array(
 							'type'        => 'string',
 							'default'     => 'image.svg',
-							'description' => __( 'File name. The .svg extension is added if missing.', 'safe-svg' ),
+							'description' => __( 'File name. Its extension, if any, is replaced with .svg.', 'safe-svg' ),
 						),
 						'title'    => array(
 							'type'        => 'string',
@@ -192,6 +192,18 @@ class Abilities {
 	 * @return array|\WP_Error
 	 */
 	public function upload_svg( $input ) {
+		$size     = strlen( $input['svg'] );
+		$max_size = wp_max_upload_size();
+
+		// Sideloading skips check_upload_size(), so apply the same limits as a direct upload.
+		if ( $max_size > 0 && $size > $max_size ) {
+			return new \WP_Error( 'safe_svg_file_too_big', __( 'The SVG is larger than the maximum upload size.', 'safe-svg' ), array( 'status' => 400 ) );
+		}
+
+		if ( is_multisite() && ! get_site_option( 'upload_space_check_disabled' ) && $size > get_upload_space_available() ) {
+			return new \WP_Error( 'safe_svg_upload_limited_space', __( 'Not enough space to upload the SVG.', 'safe-svg' ), array( 'status' => 400 ) );
+		}
+
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 		require_once ABSPATH . 'wp-admin/includes/media.php';
 		require_once ABSPATH . 'wp-admin/includes/image.php';
@@ -204,7 +216,7 @@ class Abilities {
 			return new \WP_Error( 'safe_svg_upload_failed', __( 'The SVG could not be written to a temporary file.', 'safe-svg' ) );
 		}
 
-		$post_data = isset( $input['title'] ) ? array( 'post_title' => $input['title'] ) : array();
+		$post_data = isset( $input['title'] ) && '' !== trim( $input['title'] ) ? array( 'post_title' => $input['title'] ) : array();
 		$id        = media_handle_sideload(
 			array(
 				'name'     => $name,
