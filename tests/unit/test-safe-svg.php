@@ -42,6 +42,7 @@ class SafeSvgTest extends TestCase {
 	 */
 	public function test_constructor() {
 		\WP_Mock::expectActionAdded( 'load-upload.php', array( $this->instance, 'allow_svg_from_upload' ) );
+		\WP_Mock::expectActionAdded( 'load-customize.php', array( $this->instance, 'allow_svg_from_upload' ) );
 		\WP_Mock::expectFilterAdded( 'wp_handle_upload_prefilter', array( $this->instance, 'check_for_svg' ) );
 		\WP_Mock::expectFilterAdded( 'wp_handle_sideload_prefilter', array( $this->instance, 'check_for_svg' ) );
 		\WP_Mock::expectFilterAdded( 'wp_handle_upload', array( $this->instance, 'sanitize_uploaded_svg' ) );
