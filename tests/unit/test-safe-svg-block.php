@@ -233,6 +233,19 @@ class SafeSvgBlockTest extends TestCase {
 	}
 
 	/**
+	 * Test that text alignment is only output when an alignment is selected.
+	 */
+	public function test_no_text_align_without_alignment() {
+		$markup = $this->render( 'svgCleanOne.svg', array( 'alignment' => null ) );
+
+		$this->assertStringNotContainsString( 'text-align', $markup );
+
+		$markup = $this->render( 'svgCleanOne.svg' );
+
+		$this->assertStringContainsString( 'style="text-align: left;"', $markup );
+	}
+
+	/**
 	 * Test that the shadow root carries the styles the block stylesheet can't reach in with.
 	 */
 	public function test_shadow_root_includes_block_styles() {

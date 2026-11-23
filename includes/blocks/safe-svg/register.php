@@ -230,7 +230,7 @@ function render_block_callback( $attributes ) {
 		);
 	}
 
-	$alignment = isset( $attributes['alignment'] ) && in_array( $attributes['alignment'], array( 'left', 'center', 'right' ), true ) ? $attributes['alignment'] : 'left';
+	$alignment = isset( $attributes['alignment'] ) && in_array( $attributes['alignment'], array( 'left', 'center', 'right' ), true ) ? $attributes['alignment'] : '';
 	$spacing   = $attributes['style']['spacing'] ?? array();
 
 	/**
@@ -248,10 +248,10 @@ function render_block_callback( $attributes ) {
 	return apply_filters(
 		'safe_svg_inline_markup',
 		sprintf(
-			'<div class="wp-block-safe-svg-svg-icon safe-svg-cover" style="text-align: %1$s;">
+			'<div class="wp-block-safe-svg-svg-icon safe-svg-cover"%1$s>
 				<div class="safe-svg-inside %2$s%3$s" style="width: %4$spx; height: %5$spx; background-color: var(--wp--preset--color--%6$s); color: var(--wp--preset--color--%7$s); padding-top: %8$s; padding-right: %9$s; padding-bottom: %10$s; padding-left: %11$s; margin-top: %12$s; margin-right: %13$s; margin-bottom: %14$s; margin-left: %15$s;">%16$s</div>
 			</div>',
-			esc_attr( $alignment ),
+			'' !== $alignment ? ' style="text-align: ' . esc_attr( $alignment ) . ';"' : '',
 			esc_attr( $class_name ),
 			isset( $attributes['className'] ) ? ' ' . esc_attr( $attributes['className'] ) : '',
 			isset( $attributes['dimensionWidth'] ) ? esc_attr( $attributes['dimensionWidth'] ) : '',
